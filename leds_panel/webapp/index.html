@@ -13,6 +13,7 @@
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/background.css">
+<link rel="stylesheet" href="css/slider.css">
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -28,12 +29,46 @@
     <div class="btn-group" role="group" aria-label="Basic example" style="margin:10px" >
       <button id="btnOff" class="btn btn-dark" type="button">Off</button>
     </div>
-    <input id="inNodeId" style="width:120px;margin:10px" type="text" class="form-control" placeholder="delay..." aria-label="Search for...">
+    <input id="inDuration" style="width:120px;margin:10px" type="text" class="form-control" placeholder="duration sec..." aria-label="Search for...">
     <div class="btn-group" role="group" aria-label="Basic example"  style="margin:10px" >
       <button id="btnBlue"  class="btn btn-dark" type="button">Blue</button>
       <button id="btnGreenWave" class="btn btn-dark" type="button">Green Wave</button>
       <button id="btnRedWave" class="btn btn-dark" type="button">Red Wave</button>
     </div>
+  </div>
+  <div id="config" class="row" style="margin:10px">
+    <input id="inColor" type="color" value="#ff0000"  list="presetColors" style="margin:10px">
+    <datalist id="presetColors">
+      <option>#ff0000</option>
+      <option>#00ff00</option>
+      <option>#0000ff</option>
+    </datalist>
+    <input id="inWavelength" type="range" value="16" min="1" max="32" step="1" list="tickmarks" style="margin:10px" class="slider">
+    <label id="wavelengthLabel" style="margin:10px ">wavelength 16 px</label>
+
+    <div class="dropdown">
+      <button class="btn btn-dark dropdown-toggle" type="button" id="inSpeedDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin:10px">
+        x1 Left
+      </button>
+      <div class="dropdown-menu" aria-labelledby="inSpeedDropDown">
+        <a class="dropdown-item" href="#">x1 Left</a>
+        <a class="dropdown-item" href="#">x2 Left</a>
+        <a class="dropdown-item" href="#">x1 Right</a>
+        <a class="dropdown-item" href="#">x2 Right</a>
+      </div>
+    </div>
+
+    <button id="btnColorWave" class="btn btn-dark" type="button">Start Wave</button>
+  </div>
+
+  <div id="config" class="row" style="margin:10px">
+    <button id="btnOcean" class="btn btn-dark btn-lg btn-block" type="button" >Ocean</button>
+    <img id="imgOcean" src="img/ocean.jpg" alt="ocean" class="img-thumbnail" >
+  </div>
+
+  <div id="config" class="row" style="margin:10px">
+    <button id="btnSavana" class="btn btn-dark btn-lg btn-block" type="button" >Savana Sunset</button>
+    <img    id="imgSavana" src="img/savana.jpg" alt="savana"  class="img-thumbnail  img-responsive center-block" >
   </div>
 
   <script src="src/main.js" type="module"></script>

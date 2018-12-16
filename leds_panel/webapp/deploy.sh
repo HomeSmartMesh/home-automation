@@ -1,4 +1,4 @@
 #!/bin/bash
-sudo rm -rf /var/www/html/mesh
-sudo cp -r mesh_wizard /var/www/html/mesh
-sudo rm /var/www/html/mesh/deploy.sh
+sudo rm -rf /var/www/html/panel
+sudo cp -r mesh_wizard /var/www/html/panel
+sudo rm /var/www/html/panel/deploy.sh
