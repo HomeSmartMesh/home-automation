@@ -36,14 +36,14 @@ function hexCol_to_rgb(hexcol){
   return rgb;
 }
 
-function waveParamsToJson(){
+function waveParamsToJson(wavetype){
 
   var duration = durationEdit.value == "" ? 1000 : durationEdit.value*1000;
 
   var col = hexCol_to_rgb(colorPicker.value);
 
   var myWave = {
-                  action      : "wave",
+                  action      : wavetype,
                   duration_ms : duration,
                   length      : wavelengthSlider.value,
                   freq        : 1,
@@ -87,8 +87,10 @@ function sendOcean(){
 
 function sendSavana(){
 
-  var col1=hexCol_to_rgb("#FBC600");
-  var col2=hexCol_to_rgb("#AB2C01");
+  //var col1=hexCol_to_rgb("#FBC600");
+  //var col2=hexCol_to_rgb("#AB2C01");
+  var col1=hexCol_to_rgb("#826500");
+  var col2=hexCol_to_rgb("#4F1400");
 
   sendWavesColors(col1,col2);
 }
@@ -98,20 +100,22 @@ function setup_buttons(){
   var btnBlue = document.getElementById("btnBlue");
   var btnGreenWave = document.getElementById("btnGreenWave");
   var btnColorWave = document.getElementById("btnColorWave");
+  var btnColorWavelet = document.getElementById("btnColorWavelet");
   var btnOcean = document.getElementById("btnOcean");
   var imgOcean = document.getElementById("imgOcean");
   var btnSavana = document.getElementById("btnSavana");
   var imgSavana = document.getElementById("imgSavana");
 
-  btnOff.onclick        = function() { client.send("esp/curvy/panel",'{"action":"off"}');  }
-  btnBlue.onclick       = function() { client.send("esp/curvy/pixels/all",'{"red":0,"green":0,"blue":3}');  }
-  btnGreenWave.onclick  = function() { client.send("esp/curvy/panel",'{"action":"wave", "duration_ms":1000,"length":32,"freq":1,"r":0,"g":10,"b":0}');  }
-  btnRedWave.onclick    = function() { client.send("esp/curvy/panel",'{"action":"wave", "duration_ms":1000,"length":32,"freq":-1,"r":10,"g":0,"b":0}');  }
-  btnColorWave.onclick  = function() { client.send("esp/curvy/panel",waveParamsToJson())  }
+  btnOff.onclick          = function() { client.send("esp/curvy/panel",'{"action":"off"}');  }
+  btnBlue.onclick         = function() { client.send("esp/curvy/pixels/all",'{"red":0,"green":0,"blue":3}');  }
+  btnGreenWave.onclick    = function() { client.send("esp/curvy/panel",'{"action":"wave", "duration_ms":1000,"length":32,"freq":1,"r":0,"g":10,"b":0}');  }
+  btnRedWave.onclick      = function() { client.send("esp/curvy/panel",'{"action":"wave", "duration_ms":1000,"length":32,"freq":-1,"r":10,"g":0,"b":0}');  }
+  btnColorWave.onclick    = function() { client.send("esp/curvy/panel",waveParamsToJson("wave"))  }
+  btnColorWavelet.onclick = function() { client.send("esp/curvy/panel",waveParamsToJson("wavelet"))  }
   btnOcean.onclick      = sendOcean;
   imgOcean.onclick      = sendOcean;
-  btnSavana.onclick      = sendSavana;
-  imgSavana.onclick      = sendSavana;
+  btnSavana.onclick     = sendSavana;
+  imgSavana.onclick     = sendSavana;
 
 }
 
