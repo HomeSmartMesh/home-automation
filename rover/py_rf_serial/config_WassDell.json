@@ -14,7 +14,7 @@
         "subscribe" :false
     },
     "log":{
-        "logfile":"D:\\Dev\\nRF52_Mesh\\raspi\\rover\\rover_client.log",
-        "level":"Info"
+        "logfile":".\\rover_client.log",
+        "level":"Debug"
     }
 }
