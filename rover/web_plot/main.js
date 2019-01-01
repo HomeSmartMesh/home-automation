@@ -7,6 +7,7 @@ var mqtt_port = 1884;
 var first_call = true;
 var topicPlot = "jNodes/75/text";
 var topicRov = "jNodes/75/rov";
+var timestamp = 0;
 
 var inAlpha = document.getElementById("inAlpha");
 var labelAlpha = document.getElementById("labelAlpha");
@@ -34,11 +35,16 @@ function onMessageArrived(message) {
   //console.log(message.destinationName	+ " : "+message.payloadString);
 
   let sample = JSON.parse(message.payloadString);
+  if(sample["ts"]<=timestamp){//if a new timestamp is smaller than the previous , then reset the plot
+    first_call = true
+  }
+
+  timestamp = sample["ts"];
   if(first_call)
   {
     first_call = false
     var data = [{
-      x: [sample["ts"]], 
+      x: [timestamp], 
       y: [sample["p1"]],
       mode: 'lines',
       line: {color: '#80CAF6'}

@@ -94,11 +94,18 @@ def mesh_on_broadcast(msg):
     return
 
 def node_log(msg):
-    log_text = f'log >{json.dumps(msg)}'
+    payload = json.dumps(msg)
+    log_text = f'log >{payload}'
     log.debug(log_text)
-    if(config["mqtt"]["publish"]):
+    try:
         topic = "jNodes/"+msg["src"]+"/log"
-        clientMQTT.publish(topic,msg)
+    except KeyError:
+        try:
+            topic = "jNodes/"+msg["nodeid"]+"/log"
+        except KeyError:
+            log.error("Error> no node identifier")
+    if(config["mqtt"]["publish"]):
+        clientMQTT.publish(topic,payload)
     return
 
 def mesh_on_message(msg):
@@ -134,7 +141,7 @@ def mqtt_on_message(client, userdata, msg):
     if((len(topics) == 3) and (topics[2] == "rov")):
         cmd = json.loads(msg.payload)
         try:
-            rov_bldc(cmd["alpha"],cmd["norm"])
+            rov_bldc(cmd["alpha"],float(cmd["norm"]))
         except KeyError:
             log.error("mqtt> requires alpha and norm")
     return
@@ -221,15 +228,15 @@ mesh.start(config,mesh_on_broadcast,mesh_on_message,mesh_on_cmd_response,node_lo
 this_node_id = get_node_id()
 if(this_node_id == 0):
     log.error("Error> cannot communicate with rf dongle")
-    exit(1)
+    #exit(1)
 else:
-    log.info(f"rf dongle nodeid = {this_node_id}")
+    log.info(f"dongle> nodeid = {this_node_id}")
 
-set_channel(chan)
+#set_channel(chan)
 
-loop(10) #to get the node id
+#loop(10) #to get the node id
 
-rov_bldc(0,0.2)
+#rov_bldc(0,0.2)
 
 while(True):
     mesh.run()

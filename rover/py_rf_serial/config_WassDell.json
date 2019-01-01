@@ -1,6 +1,6 @@
 {
     "serial":{
-        "port":"COM18",
+        "port":"COM4",
         "baud":460800
     },
     "mqtt":{
@@ -17,6 +17,6 @@
     },
     "log":{
         "logfile":".\\rover_client.log",
-        "level":"Info"
+        "level":"Debug"
     }
 }

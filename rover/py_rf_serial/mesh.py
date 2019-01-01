@@ -10,7 +10,7 @@ import logging as log
 on_broadcast = None
 on_message = None
 on_cmd_response = None
-
+on_log = None
 nodes_config = os.getenv('NODES_CONFIG','/home/pi/nRF52_Mesh/raspi/mesh_wizard/nodes.json')
 log.info("using NODES_CONFIG : %s",nodes_config)
 nodes = cfg.get_local_nodes(nodes_config)
@@ -226,7 +226,7 @@ def serial_on_line(line):
         on_cmd_response(ldict,False)
         log.info("cmd resp > "+line)
     elif("nodeid" in ldict):
-        node_log(ldict)
+        on_log(ldict)
     return
 
 def run():
@@ -237,6 +237,7 @@ def start(config,mesh_on_broadcast,mesh_on_message,mesh_on_cmd_response,node_log
     global on_broadcast
     global on_message
     global on_cmd_response
+    global on_log
     on_broadcast = mesh_on_broadcast
     on_cmd_response = mesh_on_cmd_response
     on_message = mesh_on_message
