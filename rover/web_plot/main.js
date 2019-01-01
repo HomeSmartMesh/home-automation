@@ -10,6 +10,8 @@ var topicRov = "jNodes/75/rov";
 
 var inAlpha = document.getElementById("inAlpha");
 var labelAlpha = document.getElementById("labelAlpha");
+var inNorm = document.getElementById("inNorm");
+var labelNorm = document.getElementById("labelNorm");
 var isSendOnMove = document.getElementById("isSendOnMove");
 
 
@@ -37,20 +39,21 @@ function onMessageArrived(message) {
     first_call = false
     var data = [{
       x: [sample["ts"]], 
-      y: [sample["loop"]],
+      y: [sample["p1"]],
       mode: 'lines',
       line: {color: '#80CAF6'}
     }] 
     
-    
+    //console.log(data)
     Plotly.plot('graph', data);  
   }
   else
   {
     var update = {
       x:  [[sample["ts"]]],
-      y: [[sample["loop"]]]
+      y: [[sample["p1"]]]
       }
+      //console.log(update)
       Plotly.extendTraces('graph', update, [0])
   }
 }
@@ -59,7 +62,7 @@ function update_rov(){
   console.log("updating rov")
   var rov_data = {
     alpha: inAlpha.value, 
-    norm: 1
+    norm: ((inNorm.value)/255.0).toFixed(2)
   }
   client.send(topicRov,JSON.stringify(rov_data));
 
@@ -74,6 +77,14 @@ function setup_buttons(){
   }
   inAlpha.oninput = function (){
     labelAlpha.innerHTML = "Alpha = "+this.value
+    if(isSendOnMove.checked){
+      update_rov();
+    }
+  }
+
+  inNorm.onclick = inAlpha.onclick
+  inNorm.oninput = function (){
+    labelNorm.innerHTML = "Norm = "+this.value
     if(isSendOnMove.checked){
       update_rov();
     }
