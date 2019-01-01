@@ -4,12 +4,19 @@ var client;
 
 var mqtt_host = "10.0.0.12";
 var mqtt_port = 1884;
-var first_call = true
+var first_call = true;
+var topicPlot = "jNodes/75/text";
+var topicRov = "jNodes/75/rov";
+
+var inAlpha = document.getElementById("inAlpha");
+var labelAlpha = document.getElementById("labelAlpha");
+var isSendOnMove = document.getElementById("isSendOnMove");
+
 
 // called when the client connects
 function onConnect() {
   // Once a connection has been made, make a subscription and send a message.
-  client.subscribe("jNodes/75/text")
+  client.subscribe(topicPlot)
   console.log("onConnect");
 }
 
@@ -48,7 +55,29 @@ function onMessageArrived(message) {
   }
 }
 
+function update_rov(){
+  console.log("updating rov")
+  var rov_data = {
+    alpha: inAlpha.value, 
+    norm: 1
+  }
+  client.send(topicRov,JSON.stringify(rov_data));
+
+}
+
 function setup_buttons(){
+
+  inAlpha.onclick = function(){
+    if(! isSendOnMove.checked){
+      update_rov();
+    }
+  }
+  inAlpha.oninput = function (){
+    labelAlpha.innerHTML = "Alpha = "+this.value
+    if(isSendOnMove.checked){
+      update_rov();
+    }
+  }
 
 }
 
@@ -61,6 +90,8 @@ function init(){
 
   // connect the client
   client.connect({onSuccess:onConnect});
+
+  setup_buttons();
 
 }
 
