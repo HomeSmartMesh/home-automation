@@ -8,13 +8,15 @@
         "port":1883,
         "keepalive":60,
         "client_id":"rover_client",
-        "subscriptions":[],
+        "subscriptions":[
+            "jNodes/75/rov"
+        ],
         "actions"   :[],
         "publish" :true,
-        "subscribe" :false
+        "subscribe" :true
     },
     "log":{
         "logfile":".\\rover_client.log",
-        "level":"Debug"
+        "level":"Info"
     }
 }

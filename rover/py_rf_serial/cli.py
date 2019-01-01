@@ -113,13 +113,20 @@ def mesh_on_cmd_response(resp,is_remote):
         topic = "remote_cmd/response/"+resp["cmd"]
     else:
         topic = "cmd/response/"+resp["cmd"]
-    print(f"cmd_resp> {topic} : {json.dumps(resp)}")
+    log.info(f"cmd_resp> {topic} : {json.dumps(resp)}")
     if(resp["cmd"] == "get_node_id"):
         this_node_id = int(resp["node_id"])
     return
 
 def mqtt_on_message(client, userdata, msg):
-    log.error("mqtt> Unexpected topic %s",msg.topic)
+    log.debug(f"mqtt> topic {msg.topic}")
+    topics = msg.topic.split("/")
+    if((len(topics) == 3) and (topics[2] == "rov")):
+        cmd = json.loads(msg.payload)
+        try:
+            rov_bldc(cmd["alpha"],cmd["norm"])
+        except KeyError:
+            log.error("mqtt> requires alpha and norm")
     return
 
 def loop(nb):
@@ -159,10 +166,14 @@ def ping(target_node):
     loop(2)
     return
 
-def bldc(target_node,alpha):
-    log.debug(f"msg > bldc from {this_node_id} -> {target_node} set alpha = {alpha}")
+def rov_bldc(alpha, norm):
+    target_node = 75
+    log.debug(f"msg > bldc from {this_node_id} -> {target_node} set alpha = {alpha} ; norm = {norm}")
     control = 0x70
-    mesh.send([control,mesh.pid["bldc"],this_node_id,target_node,alpha])
+    if(norm > 1):
+        norm = 1
+    byte_norm = int(norm * 255)
+    mesh.send([control,mesh.pid["bldc"],this_node_id,target_node,alpha,byte_norm])
     #loop(2)
     return
 
@@ -187,7 +198,7 @@ this_node_id = 0
 #so that the command line can only override the config if required
 chan = int(args.channel)
 
-clientMQTT = mqtt_start(config,mqtt_on_message)
+clientMQTT = mqtt_start(config,mqtt_on_message,True)
 
 mesh.start(config,mesh_on_broadcast,mesh_on_message,mesh_on_cmd_response,node_log)
 
@@ -195,10 +206,7 @@ set_channel(chan)
 
 get_node_id()
 
-#%%
-if(args.function == 'l'):
-    loop(1000000)
-
+rov_bldc(0,0.2)
 
 while(True):
     mesh.run()
