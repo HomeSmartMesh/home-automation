@@ -210,6 +210,8 @@ def send(payload):
 def serial_on_line(line):
     #print(line)
     ldict = line2dict(line)
+    if(line.endswith(">")):
+        log.error(f"Error> text size limit with: '{line}'")
     if("ctrl" in ldict):
         if(is_broadcast(ldict["ctrl"])):
             on_broadcast(ldict)

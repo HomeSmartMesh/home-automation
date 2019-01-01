@@ -19,7 +19,10 @@ import mesh as mesh
 import cfg
 from mqtt import mqtt_start
 
+this_node_id = 0
+
 def mesh_do_action(cmd,remote,params):
+    global this_node_id
     control = 0x71
     try:
         if(cmd == "dimmer"):
@@ -34,6 +37,7 @@ def mesh_do_action(cmd,remote,params):
     return
 
 def remote_execute_command(cmd,params):
+    global this_node_id
     control = 0x21
     try:
         if(cmd == "set_channel"):
@@ -70,10 +74,7 @@ def execute_command(cmd,params):
         log.error("mqtt_req > KeyError Exception for %s",cmd)
     return True
 
-'''It's important to provide the msg dictionnary here as it might be used in a multitude of ways
-   by other modules
-'''
-def mesh_on_broadcast(msg):
+def mqtt_publish_rf_message(msg):
     try:
         log_text = f'rf > src:{msg["src"]} - {mesh.node_name(msg["src"])} : pid={mesh.inv_pid[int(msg["pid"])]}'
         log.debug(log_text)
@@ -83,6 +84,13 @@ def mesh_on_broadcast(msg):
                 clientMQTT.publish(topic,payload)
     except KeyError :
         log.error(f"no pid,msg in {json.dumps(msg)}")
+    return
+
+'''It's important to provide the msg dictionnary here as it might be used in a multitude of ways
+   by other modules
+'''
+def mesh_on_broadcast(msg):
+    mqtt_publish_rf_message(msg)
     return
 
 def node_log(msg):
@@ -103,6 +111,8 @@ def mesh_on_message(msg):
                     )
         topic = "Nodes/"+msg["src"]+"/ack"
         payload = 1
+    else:
+        mqtt_publish_rf_message(msg)
     return
 ''' the return mesntions if the logto the user is handled or if not
     the raw line will be logged
@@ -137,6 +147,7 @@ def loop(nb):
     return
 
 def remote_set_channel(remote,chan):
+    global this_node_id
     log.debug("remote_set_channel(nodeid %d @ chan %d)",remote,chan)
     control = 0x21
     mesh.send([control,mesh.pid["exec_cmd"],this_node_id,remote,mesh.exec_cmd["set_channel"],remote,chan])
@@ -154,12 +165,16 @@ def get_channel():
     loop(2)
     return
 def get_node_id():
+    global this_node_id
+    this_node_id = 0
     log.debug("cmd > get_node_id()")
     mesh.command("get_node_id",[])
-    loop(2)
-    return
+    loop(5)
+    return this_node_id
+
 
 def ping(target_node):
+    global this_node_id
     log.debug("msg > ping %d -> %d ",this_node_id,target_node)
     control = 0x70
     mesh.send([control,mesh.pid["ping"],this_node_id,target_node])
@@ -167,13 +182,15 @@ def ping(target_node):
     return
 
 def rov_bldc(alpha, norm):
+    global this_node_id
     target_node = 75
     log.debug(f"msg > bldc from {this_node_id} -> {target_node} set alpha = {alpha} ; norm = {norm}")
     control = 0x70
     if(norm > 1):
         norm = 1
+    byte_alpha = int(alpha)
     byte_norm = int(norm * 255)
-    mesh.send([control,mesh.pid["bldc"],this_node_id,target_node,alpha,byte_norm])
+    mesh.send([control,mesh.pid["bldc"],this_node_id,target_node,byte_alpha,byte_norm])
     #loop(2)
     return
 
@@ -193,7 +210,6 @@ parser.add_argument("-c","--channel",default=10)
 parser.add_argument("-f","--function",default="x")
 args = parser.parse_args()
 
-this_node_id = 0
 #TODO this have a default that comes from the config
 #so that the command line can only override the config if required
 chan = int(args.channel)
@@ -202,9 +218,16 @@ clientMQTT = mqtt_start(config,mqtt_on_message,True)
 
 mesh.start(config,mesh_on_broadcast,mesh_on_message,mesh_on_cmd_response,node_log)
 
+this_node_id = get_node_id()
+if(this_node_id == 0):
+    log.error("Error> cannot communicate with rf dongle")
+    exit(1)
+else:
+    log.info(f"rf dongle nodeid = {this_node_id}")
+
 set_channel(chan)
 
-get_node_id()
+loop(10) #to get the node id
 
 rov_bldc(0,0.2)
 
