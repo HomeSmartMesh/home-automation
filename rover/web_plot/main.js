@@ -4,6 +4,7 @@ var client;
 
 var mqtt_host = "10.0.0.12";
 var mqtt_port = 1884;
+var first_call = true
 
 // called when the client connects
 function onConnect() {
@@ -19,19 +20,32 @@ function onConnectionLost(responseObject) {
   }
 }
 
-
 // called when a message arrives
 function onMessageArrived(message) {
-    console.log(message.destinationName	+ " : "+message.payloadString);
+  //console.log(message.destinationName	+ " : "+message.payloadString);
 
-    let sample = JSON.parse(message.payloadString);
-    var ftime = new Date();
-
+  let sample = JSON.parse(message.payloadString);
+  if(first_call)
+  {
+    first_call = false
+    var data = [{
+      x: [sample["ts"]], 
+      y: [sample["loop"]],
+      mode: 'lines',
+      line: {color: '#80CAF6'}
+    }] 
+    
+    
+    Plotly.plot('graph', data);  
+  }
+  else
+  {
     var update = {
-    x:  [[sample["ts"]]],
-    y: [[sample["loop"]]]
-    }
-    Plotly.extendTraces('graph', update, [0])
+      x:  [[sample["ts"]]],
+      y: [[sample["loop"]]]
+      }
+      Plotly.extendTraces('graph', update, [0])
+  }
 }
 
 function setup_buttons(){
@@ -58,16 +72,4 @@ function rand() {
     return Math.random();
   }
   
-var time = new Date();
-console.log(time);
-  
-var data = [{
-  x: [0], 
-  y: [rand()],
-  mode: 'lines',
-  line: {color: '#80CAF6'}
-}] 
-
-
-Plotly.plot('graph', data);  
 
