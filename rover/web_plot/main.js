@@ -14,7 +14,7 @@ var labelAlpha = document.getElementById("labelAlpha");
 var inNorm = document.getElementById("inNorm");
 var labelNorm = document.getElementById("labelNorm");
 var isSendOnMove = document.getElementById("isSendOnMove");
-
+var graphDiv = document.getElementById("graphDiv")
 
 // called when the client connects
 function onConnect() {
@@ -47,11 +47,29 @@ function onMessageArrived(message) {
       x: [timestamp], 
       y: [sample["A"]],
       mode: 'lines',
-      line: {color: '#80CAF6'}
+      line: {color: '#80CAF6'},
+      name : "encoder"
     }] 
     
     //console.log(data)
-    Plotly.plot('graph', data);  
+    //Plotly.plot('graphDiv', data);
+    var layout = {
+      title: 'nRF MQTT signal',
+      dragmode: "pan",
+      showlegend: true,
+      yaxis: {
+        fixedrange: true
+      }
+    };
+    //layout TODO xaxis.type : date
+
+    var config = {
+      scrollZoom:true,
+      showLink:true,
+      modeBarButtonsToRemove: ['toImage'],
+      responsive: true
+    }
+    Plotly.newPlot(graphDiv, data, layout, config);
   }
   else
   {
@@ -60,7 +78,7 @@ function onMessageArrived(message) {
       y: [[sample["A"]]]
       }
       //console.log(update)
-      Plotly.extendTraces('graph', update, [0])
+      Plotly.extendTraces(graphDiv, update, [0])
   }
 }
 
