@@ -1,0 +1,56 @@
+<html>
+<head>
+  <title>rover rf plot</title>
+  <link rel="shortcut icon" href="">
+  <style>
+    body { margin: 0; }
+    canvas { width: 100%; height: 100% }
+  </style>
+
+<script src="js/Detector.js"></script>
+<script src="js/mqttws31.min.js" type="text/javascript"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/background.css">
+<link rel="stylesheet" href="css/slider.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <label for="is_sendOnMode" style="margin:10px">Send on move
+          <input type="checkbox" id="isSendOnMove" checked>
+        </label>
+      </div>
+      <div class="col">
+        <input id="inAlpha" type="range" value="16" min="0" max="255" step="1" style="margin:10px" class="form-control" >
+        <label id="labelAlpha" style="margin:10px; text-align:center">Alpha = 16</label>
+      </div>
+      <div class="col">
+        <input id="inNorm" type="range" value="16" min="0" max="255" step="1" style="margin:10px" class="form-control" >
+        <label id="labelNorm" style="margin:10px; text-align:center">Norm = 16</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-1">
+        1 of 2
+      </div>
+      <div class="col">
+        <div id="graph"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js" type="module"></script>
+</body>
+</html>

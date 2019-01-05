@@ -17,6 +17,6 @@
     },
     "log":{
         "logfile":".\\rover_client.log",
-        "level":"Debug"
+        "level":"Info"
     }
 }
