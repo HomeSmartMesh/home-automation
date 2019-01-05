@@ -14,6 +14,7 @@ var labelAlpha = document.getElementById("labelAlpha");
 var inNorm = document.getElementById("inNorm");
 var labelNorm = document.getElementById("labelNorm");
 var isSendOnMove = document.getElementById("isSendOnMove");
+var rfChartInstance;
 
 
 // called when the client connects
@@ -40,27 +41,15 @@ function onMessageArrived(message) {
   }
 
   timestamp = sample["ts"];
+  //sample["A"]
   if(first_call)
   {
     first_call = false
-    var data = [{
-      x: [timestamp], 
-      y: [sample["A"]],
-      mode: 'lines',
-      line: {color: '#80CAF6'}
-    }] 
-    
-    //console.log(data)
-    Plotly.plot('graph', data);  
+    plot_first(sample["ts"],sample["A"]);
   }
   else
   {
-    var update = {
-      x:  [[sample["ts"]]],
-      y: [[sample["A"]]]
-      }
-      //console.log(update)
-      Plotly.extendTraces('graph', update, [0])
+    plot_update(sample["ts"],sample["A"]);
   }
 }
 
@@ -114,10 +103,37 @@ function init(){
 
 //----------------------------------------------------------------------------------
 
-init();
 
 function rand() {
     return Math.random();
   }
-  
+function plot_first(timestamp,value){
+  var lineChartData = [
+    // First series
+    {
+      label: "Test 1",
+      values: [ {time: timestamp, y: value}
+      ]
+    }
+  ];
+  rfChartInstance = $('#rfChart').epoch({
+    type: 'time.line',
+    data: lineChartData,
+    axes: ['left', 'bottom'],
+    windowSize : 10
+});
+}
 
+function plot_update(timestamp,value){
+  rfChartInstance.push([{time: timestamp, y: value}])
+}
+    
+init();
+
+/*
+test
+plot_first(1370044800,10);
+plot_update(1370044940,20);
+plot_update(1370044950,30);
+plot_update(1370044960,24);
+*/

@@ -1,0 +1,18 @@
+{
+    "name": "web_plot",
+    "description": "browser based plotting of mqtt timestamped signals",
+    "homepage": "https://github.com/HomeSmartMesh/raspi/tree/master/rover/web_plot",
+    "keywords": [
+        "real time plotting",
+        "time series plotting",
+        "mqtt sensors data"
+    ],
+    "author": "wassfila",
+    "dependencies": {
+        "epoch-charting": "^0.8.4"
+    },
+    "repository": "https://github.com/HomeSmartMesh/raspi.git",
+    "main": "main.js",
+    "version": "0.0.1",
+    "license" : "MIT"
+}

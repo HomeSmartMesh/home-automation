@@ -14,7 +14,7 @@ var labelAlpha = document.getElementById("labelAlpha");
 var inNorm = document.getElementById("inNorm");
 var labelNorm = document.getElementById("labelNorm");
 var isSendOnMove = document.getElementById("isSendOnMove");
-var rfChart = document.getElementById("rfChart");
+
 
 // called when the client connects
 function onConnect() {
@@ -40,7 +40,6 @@ function onMessageArrived(message) {
   }
 
   timestamp = sample["ts"];
-  //sample["A"]
   if(first_call)
   {
     first_call = false
@@ -122,13 +121,3 @@ function rand() {
   }
   
 
-var data = [
-    { label: 'Layer 1', values: [ {x: 0, y: 0}, {x: 1, y: 1}, {x: 2, y: 2} ] },
-    { label: 'Layer 2', values: [ {x: 0, y: 0}, {x: 1, y: 1}, {x: 2, y: 4} ] }
-  ];
-
-var areaChartInstance = $('#rfChart').epoch({
-    type: 'line',
-    data: data,
-    axes: ['left', 'bottom']
-});
