@@ -5,7 +5,8 @@ var client;
 var mqtt_host = "10.0.0.12";
 var mqtt_port = 1884;
 var first_call = true;
-var topicPlot = "jNodes/75/text";
+var topicPlot = "jNodes/75/encoder";
+var VariablePlot = "pos"
 var topicRov = "jNodes/75/rov";
 var timestamp = 0;
 
@@ -45,7 +46,7 @@ function onMessageArrived(message) {
     first_call = false
     var data = [{
       x: [timestamp], 
-      y: [sample["A"]],
+      y: [sample[VariablePlot]],
       mode: 'lines',
       line: {color: '#80CAF6'},
       name : "encoder"
@@ -57,6 +58,9 @@ function onMessageArrived(message) {
       title: 'nRF MQTT signal',
       dragmode: "pan",
       showlegend: true,
+      xaxis:{
+        rangeslider: {range: []}
+      },
       yaxis: {
         fixedrange: true
       }
@@ -75,7 +79,7 @@ function onMessageArrived(message) {
   {
     var update = {
       x:  [[sample["ts"]]],
-      y: [[sample["A"]]]
+      y: [[sample[VariablePlot]]]
       }
       //console.log(update)
       Plotly.extendTraces(graphDiv, update, [0])

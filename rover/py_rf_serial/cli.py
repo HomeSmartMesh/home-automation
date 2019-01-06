@@ -78,10 +78,12 @@ def mqtt_publish_rf_message(msg):
     try:
         log_text = f'rf > src:{msg["src"]} - {mesh.node_name(msg["src"])} : pid={mesh.inv_pid[int(msg["pid"])]}'
         log.debug(log_text)
+        log.debug(json.dumps(msg))
         if(config["mqtt"]["publish"]):
             publishing = mesh.publish(msg)
             for topic,payload in publishing.items():
                 clientMQTT.publish(topic,payload)
+                log.debug(f"publishing on : {topic}")
     except KeyError :
         log.error(f"no pid,msg in {json.dumps(msg)}")
     return

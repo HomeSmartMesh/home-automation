@@ -178,7 +178,11 @@ def publish(msg):
         topic = "Nodes/"+msg["src"]+"/reset"
         pub[topic] = float(msg["reset"])
     elif(inv_pid[int(msg["pid"])] == "text"):
-        topic = "jNodes/"+msg["src"]+"/text"
+        try:
+            topic = "jNodes/"+msg["src"]+"/"+msg["tp"]
+            del msg["tp"]
+        except KeyError:
+            topic = "jNodes/"+msg["src"]+"/text"
         #remove less relevant keys, already in topic
         del msg["pid"]
         del msg["ctrl"]
