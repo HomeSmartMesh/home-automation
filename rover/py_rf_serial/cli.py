@@ -83,7 +83,7 @@ def mqtt_publish_rf_message(msg):
             publishing = mesh.publish(msg)
             for topic,payload in publishing.items():
                 clientMQTT.publish(topic,payload)
-                log.debug(f"publishing on : {topic}")
+                log.debug(f"publishing on : {topic} - msg= {json.dumps(msg)}")
     except KeyError :
         log.error(f"no pid,msg in {json.dumps(msg)}")
     return
@@ -192,7 +192,7 @@ def ping(target_node):
 
 def rov_bldc(alpha, norm):
     global this_node_id
-    target_node = 75
+    target_node = int(config["bldc"]["nodeid"])
     log.debug(f"msg > bldc from {this_node_id} -> {target_node} set alpha = {alpha} ; norm = {norm}")
     control = 0x70
     if(norm > 1):
@@ -200,7 +200,7 @@ def rov_bldc(alpha, norm):
     byte_alpha = int(alpha)
     byte_norm = int(norm * 255)
     mesh.send([control,mesh.pid["bldc"],this_node_id,target_node,byte_alpha,byte_norm])
-    #loop(2)
+    sleep(0.002)#workaround to slow down as UART dongle can't handle 2 successive messages
     return
 
 

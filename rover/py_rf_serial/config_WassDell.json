@@ -9,11 +9,14 @@
         "keepalive":60,
         "client_id":"rover_client",
         "subscriptions":[
-            "jNodes/75/rov"
+            "jNodes/106/rov"
         ],
         "actions"   :[],
         "publish" :true,
         "subscribe" :true
+    },
+    "bldc":{
+        "nodeid":106
     },
     "log":{
         "logfile":".\\rover_client.log",

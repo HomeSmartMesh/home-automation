@@ -7,15 +7,18 @@ var mqtt_port = 1884;
 var first_call = true;
 var topicPlot = "jNodes/75/encoder";
 var VariablePlot = "pos"
-var topicRov = "jNodes/75/rov";
+var topicRov = "jNodes/106/rov";
 var timestamp = 0;
+var mqtt_enabled = true;
 
 var inAlpha = document.getElementById("inAlpha");
 var labelAlpha = document.getElementById("labelAlpha");
 var inNorm = document.getElementById("inNorm");
 var labelNorm = document.getElementById("labelNorm");
 var isSendOnMove = document.getElementById("isSendOnMove");
-var graphDiv = document.getElementById("graphDiv")
+var graphDiv = document.getElementById("graphDiv");
+var btnStop = document.getElementById("btnStop");
+var btnClear = document.getElementById("btnClear");
 
 // called when the client connects
 function onConnect() {
@@ -33,6 +36,10 @@ function onConnectionLost(responseObject) {
 
 // called when a message arrives
 function onMessageArrived(message) {
+  if(!mqtt_enabled)
+  {
+    return;
+  }
   //console.log(message.destinationName	+ " : "+message.payloadString);
 
   let sample = JSON.parse(message.payloadString);
@@ -118,6 +125,35 @@ function setup_buttons(){
     }
   }
 
+  btnStop.onclick          = function() { 
+                              if(mqtt_enabled)
+                              {
+                                mqtt_enabled=false;  
+                                btnStop.innerHTML = "Start";
+                              }
+                              else
+                              {
+                                mqtt_enabled=true;
+                                btnStop.innerHTML = "Stop";
+                              }
+                            }
+                            btnStop.onclick          = function() { 
+                              if(mqtt_enabled)
+                              {
+                                mqtt_enabled=false;  
+                                btnStop.innerHTML = "Start";
+                              }
+                              else
+                              {
+                                mqtt_enabled=true;
+                                btnStop.innerHTML = "Stop";
+                              }
+                            }
+
+  btnClear.onclick          = function() { 
+    Plotly.deleteTraces(graphDiv, 0);//remove the first trace
+    first_call = true;
+  }
 }
 
 function init(){
