@@ -9,7 +9,8 @@
         "keepalive":60,
         "client_id":"rover_client",
         "subscriptions":[
-            "jNodes/106/rov"
+            "jNodes/106/rov",
+            "jNodes/sync"
         ],
         "actions"   :[],
         "publish" :true,

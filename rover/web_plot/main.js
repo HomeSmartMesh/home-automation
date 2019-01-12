@@ -1,13 +1,17 @@
 //http://w3c.github.io/html-reference/input.color.html
+//https://www.eclipse.org/paho/clients/js/
 
 var client;
 
 var mqtt_host = "10.0.0.12";
 var mqtt_port = 1884;
 var first_call = true;
-var topicPlot = "jNodes/75/encoder";
-var VariablePlot = "pos"
+var topicEncoder = "jNodes/75/encoder";
+var topicController = "jNodes/106/controller";
+var VariableEncoder = "pos";
+var VariableController = "alpha";
 var topicRov = "jNodes/106/rov";
+var topicSync = "jNodes/sync";
 var timestamp = 0;
 var mqtt_enabled = true;
 
@@ -19,11 +23,13 @@ var isSendOnMove = document.getElementById("isSendOnMove");
 var graphDiv = document.getElementById("graphDiv");
 var btnStop = document.getElementById("btnStop");
 var btnClear = document.getElementById("btnClear");
+var btnSync = document.getElementById("btnSync");
 
 // called when the client connects
 function onConnect() {
   // Once a connection has been made, make a subscription and send a message.
-  client.subscribe(topicPlot)
+  client.subscribe(topicEncoder);
+  client.subscribe(topicController);
   console.log("onConnect");
 }
 
@@ -43,21 +49,45 @@ function onMessageArrived(message) {
   //console.log(message.destinationName	+ " : "+message.payloadString);
 
   let sample = JSON.parse(message.payloadString);
-  if(sample["ts"]<=timestamp){//if a new timestamp is smaller than the previous , then reset the plot
-    first_call = true
+  var trace_id = 0;
+  var Variable_id = "Not Initialised";
+  if(message.destinationName == topicEncoder)
+  {
+    trace_id = 0;
+    Variable_id = VariableEncoder;
+    sample[VariableEncoder] = sample[VariableEncoder] * 255 / 50;
+    console.log("topic encoder");
   }
+  else
+  {
+    trace_id = 1;
+    Variable_id = VariableController;
+    console.log("topic controller");
+  }
+
+  //if(sample["ts"]<=timestamp){//if a new timestamp is smaller than the previous , then reset the plot
+  //  first_call = true
+  //}
 
   timestamp = sample["ts"];
   if(first_call)
   {
     first_call = false
-    var data = [{
+    var trEncoder = {
       x: [timestamp], 
-      y: [sample[VariablePlot]],
+      y: [sample[VariableEncoder]],
       mode: 'lines',
       line: {color: '#80CAF6'},
       name : "encoder"
-    }] 
+    };
+    var trController = {
+      x: [timestamp], 
+      y: [sample[VariableController]],
+      mode: 'lines',
+      line: {color: '#CA80F6'},
+      name : "controller"
+    }
+    var data = [trEncoder, trController] ;
     
     //console.log(data)
     //Plotly.plot('graphDiv', data);
@@ -86,10 +116,10 @@ function onMessageArrived(message) {
   {
     var update = {
       x:  [[sample["ts"]]],
-      y: [[sample[VariablePlot]]]
+      y: [[sample[Variable_id]]]
       }
       //console.log(update)
-      Plotly.extendTraces(graphDiv, update, [0])
+      Plotly.extendTraces(graphDiv, update, [trace_id])
   }
 }
 
@@ -125,7 +155,8 @@ function setup_buttons(){
     }
   }
 
-  btnStop.onclick          = function() { 
+  btnStop.onclick          = function() 
+                          { 
                               if(mqtt_enabled)
                               {
                                 mqtt_enabled=false;  
@@ -137,7 +168,7 @@ function setup_buttons(){
                                 btnStop.innerHTML = "Stop";
                               }
                             }
-                            btnStop.onclick          = function() { 
+  btnStop.onclick          = function() {
                               if(mqtt_enabled)
                               {
                                 mqtt_enabled=false;  
@@ -148,12 +179,17 @@ function setup_buttons(){
                                 mqtt_enabled=true;
                                 btnStop.innerHTML = "Stop";
                               }
-                            }
+                          }
 
   btnClear.onclick          = function() { 
-    Plotly.deleteTraces(graphDiv, 0);//remove the first trace
+    Plotly.deleteTraces(graphDiv, [0,1]);//remove the first trace
     first_call = true;
   }
+  btnSync.onclick          = function() { 
+    client.send(topicSync,"");
+    //console.log("Sync");
+  }
+                                                      
 }
 
 function init(){

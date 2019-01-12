@@ -146,6 +146,11 @@ def mqtt_on_message(client, userdata, msg):
             rov_bldc(cmd["alpha"],float(cmd["norm"]))
         except KeyError:
             log.error("mqtt> requires alpha and norm")
+    elif((len(topics) == 2) and (topics[1] == "sync")):
+        control = 0x80      #Broadcast !!!
+        mesh.send([control,mesh.pid["sync"],this_node_id])
+        sleep(0.002)#workaround to slow down as UART dongle can't handle 2 successive messages
+        log.info("sending sync")
     return
 
 def loop(nb):

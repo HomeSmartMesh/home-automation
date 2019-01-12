@@ -41,7 +41,8 @@ pid = {
     "text"          : 0x16,
     "bldc"          : 0x17,
     "json"          : 0x18,
-    "test_rf_resp"  : 0x30
+    "test_rf_resp"  : 0x30,
+    "sync"          : 0x40
 }
 
 inv_pid = {v: k for k, v in pid.items()}
