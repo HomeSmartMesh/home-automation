@@ -1,6 +1,6 @@
 {
     "serial":{
-        "port":"COM4",
+        "port":"COM35",
         "baud":460800
     },
     "mqtt":{

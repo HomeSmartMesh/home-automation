@@ -55,7 +55,7 @@ function onMessageArrived(message) {
   {
     trace_id = 0;
     Variable_id = VariableEncoder;
-    sample[VariableEncoder] = sample[VariableEncoder] * 255 / 50;
+    sample[VariableEncoder] = sample[VariableEncoder] * 255 / 600;
     console.log("topic encoder");
   }
   else
@@ -63,6 +63,10 @@ function onMessageArrived(message) {
     trace_id = 1;
     Variable_id = VariableController;
     console.log("topic controller");
+  }
+  if(sample[Variable_id] == undefined)
+  {
+    return;
   }
 
   //if(sample["ts"]<=timestamp){//if a new timestamp is smaller than the previous , then reset the plot
@@ -96,7 +100,7 @@ function onMessageArrived(message) {
       dragmode: "pan",
       showlegend: true,
       xaxis:{
-        rangeslider: {range: []}
+        //rangeslider: {range: []}
       },
       yaxis: {
         fixedrange: true
@@ -194,7 +198,8 @@ function setup_buttons(){
 
 function init(){
   // Create a client instance
-  client = new Paho.MQTT.Client(mqtt_host, Number(mqtt_port), "plotter_webapp");
+  name = "plotter_webapp" + rand();
+  client = new Paho.MQTT.Client(mqtt_host, Number(mqtt_port), name);
   // set callback handlers
   client.onConnectionLost = onConnectionLost;
   client.onMessageArrived = onMessageArrived;
