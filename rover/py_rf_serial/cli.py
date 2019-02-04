@@ -75,17 +75,14 @@ def execute_command(cmd,params):
     return True
 
 def mqtt_publish_rf_message(msg):
-    try:
-        log_text = f'rf > src:{msg["src"]} - {mesh.node_name(msg["src"])} : pid={mesh.inv_pid[int(msg["pid"])]}'
-        log.debug(log_text)
-        log.debug(json.dumps(msg))
-        if(config["mqtt"]["publish"]):
-            publishing = mesh.publish(msg)
-            for topic,payload in publishing.items():
-                clientMQTT.publish(topic,payload)
-                log.debug(f"publishing on : {topic} - msg= {json.dumps(msg)}")
-    except KeyError :
-        log.error(f"no pid,msg in {json.dumps(msg)}")
+    log_text = f'{mesh.node_name(msg["id"])}/topic:{msg["topic"]}>'
+    log.debug(log_text)
+    log.debug(json.dumps(msg))
+    if(config["mqtt"]["publish"]):
+        publishing = mesh.publish(msg)
+        for topic,payload in publishing.items():
+            clientMQTT.publish(topic,payload)
+            log.debug(f"publishing on : {topic} - msg= {json.dumps(msg)}")
     return
 
 '''It's important to provide the msg dictionnary here as it might be used in a multitude of ways
@@ -137,20 +134,23 @@ def mesh_on_cmd_response(resp,is_remote):
         this_node_id = int(resp["node_id"])
     return
 
+def time_sync():
+    mesh.send([0x80,mesh.pid["sync-prepare"],this_node_id])
+    sleep(0.020)#allow main to execute and set is_expecting_sync
+    mesh.send([0x80,mesh.pid["sync"],this_node_id])
+    return
+
 def mqtt_on_message(client, userdata, msg):
     log.debug(f"mqtt> topic {msg.topic}")
     topics = msg.topic.split("/")
-    if((len(topics) == 3) and (topics[2] == "rov")):
-        cmd = json.loads(msg.payload)
-        try:
-            rov_bldc(cmd["alpha"],float(cmd["norm"]))
-        except KeyError:
-            log.error("mqtt> requires alpha and norm")
-    elif((len(topics) == 2) and (topics[1] == "sync")):
-        control = 0x80      #Broadcast !!!
-        mesh.send([control,mesh.pid["sync"],this_node_id])
-        sleep(0.002)#workaround to slow down as UART dongle can't handle 2 successive messages
-        log.info("sending sync")
+    if((len(topics) == 3) and (topics[0] == "mesh")):
+        linejson = ""
+        json_payload = json.loads(msg.payload)
+        for key,val in json_payload.items():
+            linejson = linejson + str(key) + ':' + str(val) + ';'
+        message = topics[1]+'/'+topics[2]+'>'+linejson+"\r\n"
+        print("message >>>>> ", message)
+        mesh.send(message)
     return
 
 def loop(nb):
@@ -232,12 +232,7 @@ clientMQTT = mqtt_start(config,mqtt_on_message,True)
 
 mesh.start(config,mesh_on_broadcast,mesh_on_message,mesh_on_cmd_response,node_log)
 
-this_node_id = get_node_id()
-if(this_node_id == 0):
-    log.error("Error> cannot communicate with rf dongle")
-    #exit(1)
-else:
-    log.info(f"dongle> nodeid = {this_node_id}")
+this_node_id = 5
 
 #set_channel(chan)
 

@@ -11,8 +11,8 @@ on_broadcast = None
 on_message = None
 on_cmd_response = None
 on_log = None
-nodes_config = os.getenv('NODES_CONFIG','/home/pi/nRF52_Mesh/raspi/mesh_wizard/nodes.json')
-log.info("using NODES_CONFIG : %s",nodes_config)
+nodes_config = os.getenv('ROVER_NODES_CONFIG','D:\\Dev\\nRF52_Mesh\\applications\\nodes.json')
+log.info("using ROVER_NODES_CONFIG : %s",nodes_config)
 nodes = cfg.get_local_nodes(nodes_config)
 
 pid = {
@@ -42,7 +42,8 @@ pid = {
     "bldc"          : 0x17,
     "json"          : 0x18,
     "test_rf_resp"  : 0x30,
-    "sync"          : 0x40
+    "sync-prepare"  : 0x40,
+    "sync"          : 0x41
 }
 
 inv_pid = {v: k for k, v in pid.items()}
@@ -129,71 +130,19 @@ def node_name(byte):
 
 def publish(msg):
     pub = {}
-    if("rssi" in msg):
-        topic = "Nodes/"+msg["src"]+"/rssi"
-        pub[topic] = int(msg["rssi"])
-    if(inv_pid[int(msg["pid"])] == "alive"):
-        #Publish both : database count
-        topic = "Nodes/"+msg["src"]+"/alive"
-        pub[topic] = int(msg["alive"])
-        #and then publish json structure with more info
-        topic = "jNodes/"+msg["src"]+"/alive"
-        json_payload = {}
-        json_payload["count"] = int(msg["alive"])
-        nb_rx = int(msg["nb"])
-        for i in range(nb_rx):
-            rx_i = "rx"+str(i+1)
-            json_payload[rx_i] = {}
-            txpow_rssi_nid = msg[rx_i].split(',')
-            json_payload[rx_i]["tx_power"]  = txpow_rssi_nid[0]
-            json_payload[rx_i]["rssi"]      = txpow_rssi_nid[1]
-            json_payload[rx_i]["nodeid"]    = txpow_rssi_nid[2]
-        pub[topic] = json.dumps(json_payload)
-    elif(inv_pid[int(msg["pid"])] == "bme280"):
-        if("temp" in msg):
-            topic_t = "Nodes/"+msg["src"]+"/temperature"
-            pub[topic_t] = float(msg["temp"])
-            topic_h = "Nodes/"+msg["src"]+"/humidity"
-            pub[topic_h] = float(msg["hum"])
-            topic_p = "Nodes/"+msg["src"]+"/pressure"
-            pub[topic_p] = float(msg["press"])
-    elif(inv_pid[int(msg["pid"])] == "light"):
-        if("light" in msg):
-            topic = "Nodes/"+msg["src"]+"/light"
-            pub[topic] = float(msg["light"])
-    elif(inv_pid[int(msg["pid"])] == "battery"):
-        topic = "Nodes/"+msg["src"]+"/battery"
-        pub[topic] = float(msg["battery"])
-    elif(inv_pid[int(msg["pid"])] == "acceleration"):
-        topic = "jNodes/"+msg["src"]+"/acceleration"
-        if("accx" in msg):  #check accx is enough as some have size error logs
-            json_payload = {}
-            json_payload["x"] = float(msg["accx"])
-            json_payload["y"] = float(msg["accy"])
-            json_payload["z"] = float(msg["accz"])
-            pub[topic] = json.dumps(json_payload)
-    elif(inv_pid[int(msg["pid"])] == "button"):
-        topic = "Nodes/"+msg["src"]+"/button"
-        pub[topic] = int(msg["button"])
-    elif(inv_pid[int(msg["pid"])] == "reset"):
-        topic = "Nodes/"+msg["src"]+"/reset"
-        pub[topic] = float(msg["reset"])
-    elif(inv_pid[int(msg["pid"])] == "text"):
-        try:
-            topic = "jNodes/"+msg["src"]+"/"+msg["tp"]
-            del msg["tp"]
-        except KeyError:
-            topic = "jNodes/"+msg["src"]+"/text"
-        #remove less relevant keys, already in topic
-        del msg["pid"]
-        del msg["ctrl"]
-        del msg["src"]
-        pub[topic] = json.dumps(msg)
+    topic = "mesh/"+msg["id"]+"/"+msg["topic"]
+    del msg["topic"]
+    del msg["id"]
+    pub[topic] = json.dumps(msg)
     return pub
 
 def line2dict(line):
     res = {}
-    entries = line.split(';')
+    topic_payload = line.split('>')
+    id_topic = topic_payload[0].split('/')
+    res["id"] = id_topic[0]
+    res["topic"] = id_topic[1]
+    entries = topic_payload[1].split(';')
     for entry in entries:
         kv = entry.split(':')
         if(len(kv)==2):
@@ -206,17 +155,23 @@ def command(cmd,params=[]):
     ser.send(text_cmd)
     return
 
-def send(payload):
+def send_rf(payload):
     #print("payload:",payload)
     text_msg = "msg:0x"+''.join('%02X' % b for b in payload)+"\r\n"
     ser.send(text_msg)
     return
 
+def send(payload):
+    ser.send(payload)
+    return
+
 def serial_on_line(line):
-    #print(line)
     ldict = line2dict(line)
     if(line.endswith(">")):
         log.error(f"Error> text size limit with: '{line}'")
+    if(line.startswith("cmd")):
+        on_cmd_response(ldict,False)
+        log.info("cmd resp > "+line)
     if("ctrl" in ldict):
         if(is_broadcast(ldict["ctrl"])):
             on_broadcast(ldict)
@@ -227,11 +182,8 @@ def serial_on_line(line):
             else:
                 on_message(ldict)
             #log.info("msg > "+line)
-    elif("cmd" in ldict):
-        on_cmd_response(ldict,False)
-        log.info("cmd resp > "+line)
-    elif("nodeid" in ldict):
-        on_log(ldict)
+    else:
+        on_message(ldict)
     return
 
 def run():

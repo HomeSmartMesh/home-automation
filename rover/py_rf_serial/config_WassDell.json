@@ -1,7 +1,7 @@
 {
     "serial":{
-        "port":"COM35",
-        "baud":460800
+        "port":"COM36",
+        "baud":115200
     },
     "mqtt":{
         "host":"10.0.0.12",
@@ -9,8 +9,7 @@
         "keepalive":60,
         "client_id":"rover_client",
         "subscriptions":[
-            "jNodes/106/rov",
-            "jNodes/sync"
+            "mesh/5/motor_ctl"
         ],
         "actions"   :[],
         "publish" :true,
@@ -21,6 +20,6 @@
     },
     "log":{
         "logfile":".\\rover_client.log",
-        "level":"Info"
+        "level":"Debug"
     }
 }
