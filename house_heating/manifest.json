@@ -1,0 +1,18 @@
+{
+    "short_name": "Heating",
+    "name": "House Heating",
+    "icons": [
+      {
+        "src": "/heat/images/fire_192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/heat/images/fire.png",
+        "type": "image/png",
+        "sizes": "266x344"
+      }
+    ],
+    "start_url": "/heat/index.html",
+    "display": "standalone"
+  }
