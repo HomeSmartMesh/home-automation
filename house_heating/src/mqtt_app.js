@@ -15,7 +15,8 @@ var house = {
     "livingroom":"living heat",
     "bedroom":"bedroom heat",
     "kitchen":"kitchen heat",
-    "bathroom":"bathroom heat"
+    "bathroom":"bathroom heat",
+    "office heat":"bathroom heat"
   },
   sensors :{
     "livingroom":{}
@@ -25,25 +26,36 @@ var house = {
       target:document.getElementById("label_r1_target"),
       current:document.getElementById("label_r1_current"),
       boosting:document.getElementById("label_r1_boosting"),
-      window:document.getElementById("label_r1_window")
+      window:document.getElementById("label_r1_window"),
+      seen:document.getElementById("label_r1_seen")
     },
     "bedroom":{
       target:document.getElementById("label_r2_target"),
       current:document.getElementById("label_r2_current"),
       boosting:document.getElementById("label_r2_boosting"),
-      window:document.getElementById("label_r2_window")
+      window:document.getElementById("label_r2_window"),
+      seen:document.getElementById("label_r2_seen")
     },
     "kitchen":{
       target:document.getElementById(   "label_r3_target"),
       current:document.getElementById(  "label_r3_current"),
       boosting:document.getElementById( "label_r3_boosting"),
-      window:document.getElementById(   "label_r3_window")
+      window:document.getElementById(   "label_r3_window"),
+      seen:document.getElementById(   "label_r3_seen")
     },
     "bathroom":{
       target:document.getElementById(   "label_r4_target"),
       current:document.getElementById(  "label_r4_current"),
       boosting:document.getElementById( "label_r4_boosting"),
-      window:document.getElementById(   "label_r4_window")
+      window:document.getElementById(   "label_r4_window"),
+      seen:document.getElementById(   "label_r4_seen")
+    },
+    "office":{
+      target:document.getElementById(   "label_r5_target"),
+      current:document.getElementById(  "label_r5_current"),
+      boosting:document.getElementById( "label_r5_boosting"),
+      window:document.getElementById(   "label_r5_window"),
+      seen:document.getElementById(   "label_r5_seen")
     }
   },
   buttons:{
@@ -70,6 +82,12 @@ var house = {
       plush:document.getElementById("btn_r4_plush"),
       min2:document.getElementById("btn_r4_min2"),
       minh:document.getElementById("btn_r4_minh")
+    },
+    "office":{
+      plus2:document.getElementById("btn_r5_plus2"),
+      plush:document.getElementById("btn_r5_plush"),
+      min2:document.getElementById("btn_r5_min2"),
+      minh:document.getElementById("btn_r5_minh")
     }
   }
 }
@@ -81,6 +99,7 @@ function onConnect() {
   client.subscribe("zig/bedroom heat")
   client.subscribe("zig/kitchen heat")
   client.subscribe("zig/bathroom heat")
+  client.subscribe("zig/office heat")
   console.log("onConnect");
 }
 
@@ -88,6 +107,24 @@ function onConnect() {
 function onConnectionLost(responseObject) {
   if (responseObject.errorCode !== 0) {
     console.log("onConnectionLost:"+responseObject.errorMessage);
+  }
+}
+function update_last_seen(room,sensor){
+  if("last_seen" in sensor){
+    var diff = Date.now() - Date.parse(sensor["last_seen"]);
+    if(diff < 0){
+      diff = 0;//avoids small clocks discrepancies
+    }
+    var nb_min = Math.floor(diff / (60*1000));
+    if(nb_min < 60){
+      house.labels[room].seen.innerHTML = "<span style='color: green;'>"+nb_min+" mn</span>";
+    }else if(nb_min > 60){
+      var nb_h = Math.floor(nb_min / 60);
+      house.labels[room].seen.innerHTML = "<span style='color: reg;'>"+nb_h+" mn</span>";
+    }
+  }
+  else{
+    house.labels[room].seen.innerHTML = "<span style='color: red;'>Not Seen</span>";
   }
 }
 
@@ -108,6 +145,7 @@ function update_room(room,sensor){
     house.labels[room].boosting.innerHTML = "";
   }
   house.sensors[room] = sensor;
+  update_last_seen(room,sensor);
   console.log("update room> sensor in "+room+" = ",sensor);
 }
 
@@ -119,6 +157,7 @@ function onMessageArrived(message) {
   else if(message.destinationName == "zig/bedroom heat"){ update_room("bedroom",JSON.parse(message.payloadString));  }
   else if(message.destinationName == "zig/kitchen heat"){ update_room("kitchen",JSON.parse(message.payloadString));  }
   else if(message.destinationName == "zig/bathroom heat"){update_room("bathroom",JSON.parse(message.payloadString));  }
+  else if(message.destinationName == "zig/office heat"){update_room("office",JSON.parse(message.payloadString));  }
 }
 
 function set_room_temp(room,new_temp){
