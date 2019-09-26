@@ -9,14 +9,13 @@ var btn_cosy = document.getElementById("btn_cosy");
 var btn_active = document.getElementById("btn_active");
 var btn_defrost = document.getElementById("btn_defrost");
 
-
 var house = {
   zigname:{
     "livingroom":"living heat",
     "bedroom":"bedroom heat",
     "kitchen":"kitchen heat",
     "bathroom":"bathroom heat",
-    "office heat":"bathroom heat"
+    "office":"office heat"
   },
   sensors :{
     "livingroom":{}
@@ -89,17 +88,24 @@ var house = {
       min2:document.getElementById("btn_r5_min2"),
       minh:document.getElementById("btn_r5_minh")
     }
+  },
+  topics:{
+    "livingroom":"mzig/living heat",
+    "bedroom":"mzig/bedroom heat",
+    "kitchen":"hzig/kitchen heat",
+    "bathroom":"mzig/bathroom heat",
+    "office":"hzig/office heat"
   }
 }
 
 // called when the client connects
 function onConnect() {
   // Once a connection has been made, make a subscription and send a message.
-  client.subscribe("zig/living heat")
-  client.subscribe("zig/bedroom heat")
-  client.subscribe("zig/kitchen heat")
-  client.subscribe("zig/bathroom heat")
-  client.subscribe("zig/office heat")
+  client.subscribe(house.topics["livingroom"])
+  client.subscribe(house.topics["bedroom"])
+  client.subscribe(house.topics["kitchen"])
+  client.subscribe(house.topics["bathroom"])
+  client.subscribe(house.topics["office"])
   console.log("onConnect");
 }
 
@@ -120,7 +126,7 @@ function update_last_seen(room,sensor){
       house.labels[room].seen.innerHTML = "<span style='color: green;'>"+nb_min+" mn</span>";
     }else if(nb_min > 60){
       var nb_h = Math.floor(nb_min / 60);
-      house.labels[room].seen.innerHTML = "<span style='color: reg;'>"+nb_h+" mn</span>";
+      house.labels[room].seen.innerHTML = "<span style='color: red;'>"+nb_h+" h</span>";
     }
   }
   else{
@@ -153,18 +159,18 @@ function update_room(room,sensor){
 // called when a message arrives
 function onMessageArrived(message) {
   console.log(message.destinationName	+ " : "+message.payloadString);
-  if(message.destinationName == "zig/living heat"){       update_room("livingroom",JSON.parse(message.payloadString));  }
-  else if(message.destinationName == "zig/bedroom heat"){ update_room("bedroom",JSON.parse(message.payloadString));  }
-  else if(message.destinationName == "zig/kitchen heat"){ update_room("kitchen",JSON.parse(message.payloadString));  }
-  else if(message.destinationName == "zig/bathroom heat"){update_room("bathroom",JSON.parse(message.payloadString));  }
-  else if(message.destinationName == "zig/office heat"){update_room("office",JSON.parse(message.payloadString));  }
+  if(message.destinationName == house.topics["livingroom"]){       update_room("livingroom",JSON.parse(message.payloadString));  }
+  else if(message.destinationName == house.topics["bedroom"]){ update_room("bedroom",JSON.parse(message.payloadString));  }
+  else if(message.destinationName == house.topics["kitchen"]){ update_room("kitchen",JSON.parse(message.payloadString));  }
+  else if(message.destinationName == house.topics["bathroom"]){update_room("bathroom",JSON.parse(message.payloadString));  }
+  else if(message.destinationName == house.topics["office"]){update_room("office",JSON.parse(message.payloadString));  }
 }
 
 function set_room_temp(room,new_temp){
   house.sensors[room]["current_heating_setpoint"] = new_temp;
   house.labels[room].target.innerHTML = "Target "+new_temp + " °";
   var payload = '{"current_heating_setpoint":'+new_temp+'}';
-  client.send("zig/"+house.zigname[room]+"/set",payload);
+  client.send(house.topics[room]+"/set",payload);
   console.log("room "+room+" set to : payload = "+payload);
 }
 
@@ -173,6 +179,7 @@ function set_all_rooms_temp(temp){
   set_room_temp("bedroom",temp);
   set_room_temp("kitchen",temp);
   set_room_temp("bathroom",temp);
+  set_room_temp("office",temp);
 }
 
 function temp_add(room,temp_add){
@@ -194,6 +201,7 @@ function setup_buttons(){
   setup_on_click("bedroom");
   setup_on_click("kitchen");
   setup_on_click("bathroom");
+  setup_on_click("office");
   
   btn_cosy.onclick    = function(){ set_all_rooms_temp(21); }
   btn_active.onclick  = function(){ set_all_rooms_temp(18); }
