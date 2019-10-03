@@ -1,24 +1,29 @@
 {
     "serial":{
-        "port":"COM18",
+        "port":"COM35",
         "baud":460800
     },
+    "mesh":{
+        "channel":2
+    },
     "mqtt":{
-        "host":"10.0.0.12",
+        "enable":true,
+        "subscribe" :false,
+        "publish" :true,
+        "base_topic" : "nrf",
+        "host":"10.0.0.42",
         "port":1883,
         "keepalive":60,
-        "client_id":"hci_client",
+        "client_id":"nrf_mesh",
         "subscriptions":[
             "Nodes/#",
             "cmd/request/#",
             "remote_cmd/request/#"
         ],
-        "actions"   :["dimmer","heat","ping"],
-        "rf_2_mqtt" :true,
-        "mqtt_2_rf" :true
+        "actions"   :["dimmer","heat","ping"]
     },
     "log":{
-        "logfile":"D:\\Dev\\nRF52_Mesh\\raspi\\rf_uart\\hci_client.log",
-        "level":"Debug"
+        "logfile":"log_nrf_mesh.log",
+        "level":"Info"
     }
 }

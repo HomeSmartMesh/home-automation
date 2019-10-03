@@ -102,10 +102,12 @@ def mqtt_on_message(client, userdata, msg):
    by other modules
 '''
 def mesh_on_broadcast(msg):
-    log.info("rf  > %s %s : %s"%(msg["src"],mesh.node_name(msg["src"]),mesh.inv_pid[int(msg["pid"])]))
-    if(config["mqtt"]["rf_2_mqtt"]):
+    log.info(f'mesh> {msg["src"]} as "{mesh.node_name(msg["src"])}" => {mesh.inv_pid[int(msg["pid"])]}')
+    if(config["mqtt"]["enable"] and config["mqtt"]["publish"]):
         publishing = mesh.publish(msg)
         for topic,payload in publishing.items():
+            if(config["mqtt"]["base_topic"]):
+                topic = config["mqtt"]["base_topic"]+ "/" + topic
             clientMQTT.publish(topic,payload)
     return
 
@@ -134,6 +136,7 @@ def mesh_on_cmd_response(resp,is_remote):
     clientMQTT.publish(topic,json.dumps(resp))
     if(resp["cmd"] == "get_node_id"):
         this_node_id = int(resp["node_id"])
+        log.debug("get_node_id() => "+str(this_node_id))
     return
 
 def loop_forever():
@@ -190,29 +193,23 @@ def test1():
 config = cfg.configure_log(__file__)
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-c","--channel",default=10)
 parser.add_argument("-f","--function",default="x")
 args = parser.parse_args()
 
-this_node_id = 0
-#TODO this have a default that comes from the config
-#so that the command line can only override the config if required
-chan = int(args.channel)
-
-#will start a separate thread for looping
-clientMQTT = mqtt_start(config,mqtt_on_message)
+#will not start a separate thread for looping
+clientMQTT = mqtt_start(config,mqtt_on_message,start_looping=False)
 
 mesh.start(config,mesh_on_broadcast,mesh_on_message,mesh_on_cmd_response)
 
-set_channel(chan)
+set_channel(config["mesh"]["channel"])
 
+this_node_id = 0
 get_node_id()
 
-#%%
-if(args.function == 'l'):
+try:
     loop_forever()
-
-#loop_forever()
-
-#ping(75)
-test1()
+except KeyboardInterrupt:
+    log.error("Interrupted by user Keyboard")
+    mesh.stop()
+    sys.exit(0)
+#else use as a module

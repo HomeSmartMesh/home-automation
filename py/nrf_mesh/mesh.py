@@ -11,8 +11,10 @@ on_broadcast = None
 on_message = None
 on_cmd_response = None
 
+config = cfg.configure_log(__file__)
+
 nodes_config = os.getenv('NODES_CONFIG','/home/pi/nRF52_Mesh/raspi/mesh_wizard/nodes.json')
-log.info("using NODES_CONFIG : %s",nodes_config)
+log.info("mesh> using NODES_CONFIG : %s",nodes_config)
 nodes = cfg.get_local_nodes(nodes_config)
 
 pid = {
@@ -126,17 +128,16 @@ def node_name(byte):
 
 def publish(msg):
     pub = {}
+    if(msg["src"] in nodes):
+        src_name = nodes[msg["src"]]["name"]
+    else:#keep number as identifier
+        src_name = msg["src"]
+    topic = src_name
+    json_payload = {}
     if("rssi" in msg):
-        topic = "Nodes/"+msg["src"]+"/rssi"
-        pub[topic] = int(msg["rssi"])
+        json_payload["rssi"] = int(msg["rssi"])
     if(inv_pid[int(msg["pid"])] == "alive"):
-        #Publish both : database count
-        topic = "Nodes/"+msg["src"]+"/alive"
-        pub[topic] = int(msg["alive"])
-        #and then publish json structure with more info
-        topic = "jNodes/"+msg["src"]+"/alive"
-        json_payload = {}
-        json_payload["count"] = int(msg["alive"])
+        json_payload["alive_count"] = int(msg["alive"])
         nb_rx = int(msg["nb"])
         for i in range(nb_rx):
             rx_i = "rx"+str(i+1)
@@ -148,21 +149,15 @@ def publish(msg):
         pub[topic] = json.dumps(json_payload)
     elif(inv_pid[int(msg["pid"])] == "bme280"):
         if("temp" in msg):
-            topic_t = "Nodes/"+msg["src"]+"/temperature"
-            pub[topic_t] = float(msg["temp"])
-            topic_h = "Nodes/"+msg["src"]+"/humidity"
-            pub[topic_h] = float(msg["hum"])
-            topic_p = "Nodes/"+msg["src"]+"/pressure"
-            pub[topic_p] = float(msg["press"])
+            json_payload["temperature"] = float(msg["temp"])
+            json_payload["humidity"] = float(msg["hum"])
+            json_payload["pressure"] = float(msg["press"])
     elif(inv_pid[int(msg["pid"])] == "light"):
         if("light" in msg):
-            topic = "Nodes/"+msg["src"]+"/light"
-            pub[topic] = float(msg["light"])
+            json_payload["light"] = float(msg["light"])
     elif(inv_pid[int(msg["pid"])] == "battery"):
-        topic = "Nodes/"+msg["src"]+"/battery"
-        pub[topic] = float(msg["battery"])
+        json_payload["battery"] = float(msg["battery"])
     elif(inv_pid[int(msg["pid"])] == "acceleration"):
-        topic = "jNodes/"+msg["src"]+"/acceleration"
         if("accx" in msg):  #check accx is enough as some have size error logs
             json_payload = {}
             json_payload["x"] = float(msg["accx"])
@@ -170,11 +165,10 @@ def publish(msg):
             json_payload["z"] = float(msg["accz"])
             pub[topic] = json.dumps(json_payload)
     elif(inv_pid[int(msg["pid"])] == "button"):
-        topic = "Nodes/"+msg["src"]+"/button"
-        pub[topic] = int(msg["button"])
+        json_payload["button"] = int(msg["button"])
     elif(inv_pid[int(msg["pid"])] == "reset"):
-        topic = "Nodes/"+msg["src"]+"/reset"
-        pub[topic] = float(msg["reset"])
+        json_payload["reset"] = float(msg["reset"])
+    pub[topic] = json.dumps(json_payload)
     return pub
 
 def line2dict(line):
@@ -199,7 +193,7 @@ def send(payload):
     return
 
 def serial_on_line(line):
-    #print(line)
+    log.debug("mesh> uart> "+line)
     ldict = line2dict(line)
     if("ctrl" in ldict):
         if(is_broadcast(ldict["ctrl"])):
@@ -207,13 +201,13 @@ def serial_on_line(line):
         else:
             if("cmd" in ldict):
                 on_cmd_response(ldict,True)
-                log.info("remote cmd resp > "+line)
+                log.info("mesh> remote cmd resp > "+line)
             else:
                 on_message(ldict)
             #log.info("msg > "+line)
     elif("cmd" in ldict):
         on_cmd_response(ldict,False)
-        log.info("cmd resp > "+line)
+        log.info("mesh> cmd resp > "+line)
     return
 
 def run():
@@ -228,4 +222,8 @@ def start(config,mesh_on_broadcast,mesh_on_message,mesh_on_cmd_response):
     on_cmd_response = mesh_on_cmd_response
     on_message = mesh_on_message
     ser.serial_start(config,serial_on_line)
+    return
+
+def stop():
+    ser.serial_stop()
     return
