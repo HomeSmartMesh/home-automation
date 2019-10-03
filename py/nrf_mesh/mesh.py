@@ -126,6 +126,13 @@ def node_name(byte):
         res = nodes[str(byte)]["name"]
     return res
 
+def int8_signed(byte):
+    val = int(byte)
+    if(val > 127):
+        return (256-val) * (-1)
+    else:
+        return val
+
 def publish(msg):
     pub = {}
     if(msg["src"] in nodes):
@@ -141,17 +148,24 @@ def publish(msg):
         nb_rx = int(msg["nb"])
         for i in range(nb_rx):
             rx_i = "rx"+str(i+1)
-            json_payload[rx_i] = {}
+            json_payload["path"] = []
             txpow_rssi_nid = msg[rx_i].split(',')
-            json_payload[rx_i]["tx_power"]  = txpow_rssi_nid[0]
-            json_payload[rx_i]["rssi"]      = txpow_rssi_nid[1]
-            json_payload[rx_i]["nodeid"]    = txpow_rssi_nid[2]
+            path_entry = {}
+            path_entry["tx_power"]  = int8_signed(txpow_rssi_nid[0])
+            path_entry["rssi"]      = txpow_rssi_nid[1]
+            last_rssi                       = txpow_rssi_nid[1]
+            path_entry["nodeid"]    = txpow_rssi_nid[2]
+            json_payload["path"].append(path_entry)
+        json_payload["rssi"] = int(last_rssi)
         pub[topic] = json.dumps(json_payload)
     elif(inv_pid[int(msg["pid"])] == "bme280"):
         if("temp" in msg):
             json_payload["temperature"] = float(msg["temp"])
             json_payload["humidity"] = float(msg["hum"])
             json_payload["pressure"] = float(msg["press"])
+    elif(inv_pid[int(msg["pid"])] == "temperature"):
+        if("temp" in msg):
+            json_payload["temperature"] = float(msg["temp"])
     elif(inv_pid[int(msg["pid"])] == "light"):
         if("light" in msg):
             json_payload["light"] = float(msg["light"])
@@ -165,7 +179,10 @@ def publish(msg):
             json_payload["z"] = float(msg["accz"])
             pub[topic] = json.dumps(json_payload)
     elif(inv_pid[int(msg["pid"])] == "button"):
-        json_payload["button"] = int(msg["button"])
+        if(int(msg["button"]) == 1):
+            json_payload["button"] = "down"
+        else:
+            json_payload["button"] = "up"
     elif(inv_pid[int(msg["pid"])] == "reset"):
         json_payload["reset"] = float(msg["reset"])
     pub[topic] = json.dumps(json_payload)

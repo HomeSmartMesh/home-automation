@@ -137,6 +137,41 @@ def office_switch(payload):
     #    log.debug("office_light>no click")
     return
 
+
+office_state = False
+office_last_seen = time.time()
+def office_off_check():
+    global office_state
+    delta = time.time() - office_last_seen
+    log.debug(f"Office> callback check {delta:.1f}")
+    if(delta > 4.5):
+        log.debug("Office> high time OFF")
+        if(office_state):
+            lights["Office main"].on = False
+            office_state = False
+    return
+
+#global to be updated in init
+def set_office_on():
+    global office_state
+    if(not office_state):
+        lights["Office main"].on = True
+        office_state = True
+        log.debug("Office> trigger ON")
+    return
+
+def office_alive(payload):
+    global office_last_seen
+    report = json.loads(payload)
+    if("rssi" in report):
+        if(int(report["rssi"]) > -60):
+            log.debug("Office> alive")
+            office_last_seen = time.time()
+            set_office_on()
+    if(office_state):
+        threading.Timer(5, office_off_check).start()
+    return
+
 def aqara_button_sequence(name):
     if(lights["Bed Leds Cupboard"].on):
         if(lights["Bed Leds Cupboard"].brightness == 11):
@@ -326,6 +361,8 @@ def mqtt_on_message(client, userdata, msg):
                 bathroom_light_button(msg.payload)
             elif(name == "but liv light 1") or (name == "but liv light 2"):
                 livroom_light_button(msg.payload)
+            elif(name == "presence tag"):
+                office_alive(msg.payload)
         else:
             log.error("topic: "+msg.topic + "size not matching")
     except Exception as e:
@@ -352,6 +389,8 @@ if(cfg.ping(config["bridges"]["LivingRoom"])):
     for name, light in lights.items():
         log.info(name)
     
+    #init
+    office_state = lights["Office main"].on
 else:
     log.info("Bridge ip not responding")
 

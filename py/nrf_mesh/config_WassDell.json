@@ -1,6 +1,6 @@
 {
     "serial":{
-        "port":"COM35",
+        "port":"COM10",
         "baud":460800
     },
     "mesh":{

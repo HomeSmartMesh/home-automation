@@ -14,11 +14,7 @@
         "port":1883,
         "keepalive":60,
         "client_id":"hue_client",
-        "subscriptions":[   "zigbee/lumi.sensor_cube.aqgl01/Aqara Cube 1",
-                            "zigbee/lumi.sensor_86sw1/LargeSingleSwitch",
-                            "zigbee/lumi.sensor_motion.aq2/MotionLight 1",
-                            "zigbee/SML001/MotionLightHue",
-                            "zigbee/lumi.remote.b1acn01/lumi.remote.b1acn01 16",
+        "subscriptions":[   
                             "zig/entrance light",
                             "zig/sunrise",
                             "zig/kitchen move",
@@ -26,14 +22,12 @@
                             "zig/stairs down move",
                             "zig/dining switch",
                             "zig/night leds button",
-                            "zig/cube"
+                            "zig/cube",
+                            "nrf/presence tag"
                         ],
         "actions"   :[],
         "publish" :true,
         "subscribe" :true
-    },
-    "websocket":{
-        "url":"ws://10.0.0.17:443"
     },
     "log":{
         "logfile":"./out_hue.log",

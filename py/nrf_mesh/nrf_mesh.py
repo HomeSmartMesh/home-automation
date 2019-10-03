@@ -102,7 +102,9 @@ def mqtt_on_message(client, userdata, msg):
    by other modules
 '''
 def mesh_on_broadcast(msg):
-    log.info(f'mesh> {msg["src"]} as "{mesh.node_name(msg["src"])}" => {mesh.inv_pid[int(msg["pid"])]}')
+    sensor_name = mesh.inv_pid[int(msg["pid"])]
+    node_name = mesh.node_name(msg['src'])
+    log.info(f"mesh> {msg['src']} as {node_name} => {sensor_name}")
     if(config["mqtt"]["enable"] and config["mqtt"]["publish"]):
         publishing = mesh.publish(msg)
         for topic,payload in publishing.items():
