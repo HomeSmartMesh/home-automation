@@ -91,10 +91,10 @@ var house = {
   },
   topics:{
     "livingroom":"mzig/living heat",
-    "bedroom":"mzig/bedroom heat",
+    "bedroom":"hzig/bedroom heat",
     "kitchen":"hzig/kitchen heat",
-    "bathroom":"mzig/bathroom heat",
-    "office":"hzig/office heat"
+    "bathroom":"hzig/bathroom heat",
+    "office":"lzig/office heat"
   }
 }
 

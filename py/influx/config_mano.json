@@ -1,0 +1,56 @@
+{
+    "mqtt":{
+        "host":"localhost",
+        "port":1883,
+        "keepalive":60,
+        "client_id":"py_influx",
+        "subscriptions":[   "Nodes/#",
+                            "+/sunrise button",
+                            "+/entrance door",
+                            "+/entrance light",
+                            "+/floody",
+                            "+/dining switch",
+                            "+/cube",
+                            "+/bed light button",
+                            "+/living heat",
+                            "+/kitchen heat",
+                            "+/bed heater",
+                            "+/bedroom weather",
+                            "+/bedroom heat",
+                            "+/bedroom window",
+                            "+/office weather",
+                            "+/office switch",
+                            "+/office heat",
+                            "+/bathroom heat",
+                            "+/balcony weather",
+                            "+/balcony window left",
+                            "+/balcony window right",
+                            "+/balcony door",
+                            "miflora/Flora1"
+                                    ],
+        "publish" :false,
+        "subscribe" :true,
+        "types":{
+            "pressure"      :"int",
+            "temperature"   :"float",
+            "humidity"      :"float",
+            "battery"       :"int",
+            "moisture"      :"int",
+            "conductivity"  :"int",
+            "current_heating_setpoint"  :"float",
+            "occupied_heating_setpoint":"float",
+            "unoccupied_heating_setpoint":"float",
+            "pi_heating_demand" :"int"
+        }
+                    
+    },
+    "influxdb":{
+        "host":"localhost",
+        "port":8086,
+        "db":"meshNet"
+    },
+    "log":{
+        "logfile":"/home/pi/share/influx_client_7.log",
+        "level":"Info"
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "mqtt":{
+        "host":"localhost",
+        "port":1883,
+        "keepalive":60,
+        "client_id":"esp32_py",
+        "subscriptions":[
+            "status/#",
+            "Nodes/98/temperature",
+            "zig/bed heater",
+            "esp/bed heater/#"
+        ],
+        "publish" :true,
+        "subscribe" :true
+    },
+    "log":{
+        "logfile":"/home/pi/share/esp32.log",
+        "level":"Info"
+    }
+}

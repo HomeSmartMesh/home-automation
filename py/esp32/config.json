@@ -1,0 +1,15 @@
+{
+    "mqtt":{
+        "host":"10.0.0.12",
+        "port":1883,
+        "keepalive":60,
+        "client_id":"rf_stm32",
+        "subscriptions":[],
+        "publish" :true,
+        "subscribe" :false
+    },
+    "log":{
+        "logfile":"/home/pi/share/esp32.log",
+        "level":"Debug"
+    }
+}
