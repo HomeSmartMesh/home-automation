@@ -12,10 +12,9 @@ on_message = None
 on_cmd_response = None
 
 config = cfg.configure_log(__file__)
-
-nodes_config = os.getenv('NODES_CONFIG','/home/pi/nRF52_Mesh/raspi/mesh_wizard/nodes.json')
-log.info("mesh> using NODES_CONFIG : %s",nodes_config)
-nodes = cfg.get_local_nodes(nodes_config)
+nodes_config_file = os.getenv('NODES_CONFIG','/home/pi/nRF52_Mesh/raspi/mesh_wizard/nodes.json')
+log.info("mesh> using NODES_CONFIG : %s",nodes_config_file)
+nodes = cfg.get_local_nodes(nodes_config_file)
 
 pid = {
     "exec_cmd"      : 0xEC,
@@ -139,6 +138,12 @@ def publish(msg):
         src_name = nodes[msg["src"]]["name"]
     else:#keep number as identifier
         src_name = msg["src"]
+    if(config["mesh"]["whitelist"] != []):
+        if(src_name not in config["mesh"]["whitelist"]):
+            return
+    if(config["mesh"]["blacklist"] != []):
+        if(src_name in config["mesh"]["blacklist"]):
+            return
     topic = src_name
     json_payload = {}
     if("rssi" in msg):
