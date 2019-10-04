@@ -22,6 +22,6 @@
     },
     "log":{
         "logfile":"/home/pi/share/log_nrf_mesh.log",
-        "level":"Info"
+        "level":"Debug"
     }
 }

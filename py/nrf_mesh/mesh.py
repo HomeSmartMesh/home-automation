@@ -140,9 +140,11 @@ def publish(msg):
         src_name = msg["src"]
     if(config["mesh"]["whitelist"] != []):
         if(src_name not in config["mesh"]["whitelist"]):
+            log.debug(f"{src_name} not whitelisted - discarded")
             return
     if(config["mesh"]["blacklist"] != []):
         if(src_name in config["mesh"]["blacklist"]):
+            log.debug(f"{src_name} balcklisted - discarded")
             return
     topic = src_name
     json_payload = {}
