@@ -1,0 +1,19 @@
+{
+    "mqtt":{
+        "enable":true,
+        "subscribe" :true,
+        "publish" :true,
+        "base_topic" : "nrf",
+        "host":"10.0.0.42",
+        "port":1883,
+        "keepalive":60,
+        "client_id":"nrf_mesh",
+        "subscriptions":[
+            "+/bridge/networkmap/graphviz"
+        ]
+    },
+    "log":{
+        "logfile":"z2m_graph.log",
+        "level":"Info"
+    }
+}
