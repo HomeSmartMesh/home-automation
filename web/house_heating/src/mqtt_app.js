@@ -90,10 +90,10 @@ var house = {
     }
   },
   topics:{
-    "livingroom":"mzig/living heat",
-    "bedroom":"hzig/bedroom heat",
-    "kitchen":"hzig/kitchen heat",
-    "bathroom":"hzig/bathroom heat",
+    "livingroom":"lzig/living heat",
+    "bedroom":"lzig/bedroom heat",
+    "kitchen":"lzig/kitchen heat",
+    "bathroom":"lzig/bathroom heat",
     "office":"lzig/office heat"
   }
 }
