@@ -57,6 +57,8 @@ def mqtt_on_message(client, userdata, msg):
             if("voltage" in fields):
                 fields["voltage"] = float(fields["voltage"])/1000 #convert voltage from milivolts to Volts
             check_all_types(fields)
+            if("path" in fields):
+                del fields["path"]
                 
             is_last_seen_relevant = False
             if("last_seen" in fields):
