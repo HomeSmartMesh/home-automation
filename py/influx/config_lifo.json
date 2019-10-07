@@ -13,7 +13,9 @@
                             "+/bathroom heat",
                             "+/balcony weather",
                             "miflora/Flora1",
-                            "nrf/blue tag desk"
+                            "nrf/blue tag desk",
+                            "nrf/white trio tag",
+                            "nrf/squary too"
                                     ],
         "publish" :false,
         "subscribe" :true,
