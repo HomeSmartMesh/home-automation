@@ -89,8 +89,12 @@ var house = {
       minh:document.getElementById("btn_r5_minh")
     }
   },
+  ranges:{
+    "livingroom":document.getElementById("range_r1")
+  }
+  ,
   topics:{
-    "livingroom":"lzig/living heat",
+    "livingroom":"testzig/living heat",
     "bedroom":"lzig/bedroom heat",
     "kitchen":"lzig/kitchen heat",
     "bathroom":"lzig/bathroom heat",
@@ -203,6 +207,10 @@ function setup_buttons(){
   setup_on_click("bathroom");
   setup_on_click("office");
   
+  house.ranges.livingroom.oninput = function() {
+    house.labels.livingroom.target.innerHTML = "Target "+this.value+" °";
+  }
+
   btn_cosy.onclick    = function(){ set_all_rooms_temp(21); }
   btn_active.onclick  = function(){ set_all_rooms_temp(18); }
   btn_defrost.onclick = function(){ set_all_rooms_temp(5); }

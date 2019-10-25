@@ -12,6 +12,7 @@
 <script src="js/mqttws31.min.js" type="text/javascript"></script>
 
 <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="css/slider.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/background.css">
 <link rel="manifest" href="/manifest.json">
@@ -24,6 +25,8 @@
 </head>
 
 <body>
+    
+  
   <!-- ---------------------------- Control buttons --------------------------------------------- -->
   <h2>
     <label id="label_r1_name" style="margin:10px;text-align:center;">Livingroom</label>
@@ -33,6 +36,9 @@
     <label id="label_r1_window" style="margin:10px;text-align:center;"></label>
     <label id="label_r1_seen" style="margin:10px;text-align:center;"></label>
   </h2>
+  <div style="margin:20px">
+      <input type="range" min="5" max="27" value="18" id="range_r1" steps=0.5>
+  </div>
   <div class="btn-group" role="group" aria-label="Basic example"  style="margin:10px" >
     <button id="btn_r1_defrost"  class="btn btn-primary" type="button">Defrost</button>
     <button id="btn_r1_min2" class="btn btn-primary" type="button">-2&deg</button>

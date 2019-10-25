@@ -8,3 +8,6 @@ raspberry pi home server scripts and configuration files of different frameworks
 - wemo : sockets electrical power consumption to mqtt logging
 - grafana : config and dashboards
 - zigbee2mqtt : config and devices
+
+## slider editing web page
+- http://danielstern.ca/range.css/#/
