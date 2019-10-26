@@ -142,7 +142,7 @@ function update_last_seen(room,sensor){
   }
 }
 
-function update_room(room,sensor){
+function update_room_with_msg(room,sensor){
   house.labels[room].target.innerHTML = "Target "+sensor["current_heating_setpoint"] + " °";
   house.labels[room].current.innerHTML = sensor["local_temperature"] + " °";
   house.ranges[room].value = sensor["current_heating_setpoint"];
@@ -168,16 +168,17 @@ function update_room(room,sensor){
 // called when a message arrives
 function onMessageArrived(message) {
   console.log(message.destinationName	+ " : "+message.payloadString);
-  if(message.destinationName == house.topics["livingroom"]){   update_room("livingroom",JSON.parse(message.payloadString));  }
-  else if(message.destinationName == house.topics["bedroom"]){ update_room("bedroom",JSON.parse(message.payloadString));  }
-  else if(message.destinationName == house.topics["kitchen"]){ update_room("kitchen",JSON.parse(message.payloadString));  }
-  else if(message.destinationName == house.topics["bathroom"]){update_room("bathroom",JSON.parse(message.payloadString));  }
-  else if(message.destinationName == house.topics["office"]){  update_room("office",JSON.parse(message.payloadString));  }
+  if(message.destinationName == house.topics["livingroom"]){   update_room_with_msg("livingroom",JSON.parse(message.payloadString));  }
+  else if(message.destinationName == house.topics["bedroom"]){ update_room_with_msg("bedroom",JSON.parse(message.payloadString));  }
+  else if(message.destinationName == house.topics["kitchen"]){ update_room_with_msg("kitchen",JSON.parse(message.payloadString));  }
+  else if(message.destinationName == house.topics["bathroom"]){update_room_with_msg("bathroom",JSON.parse(message.payloadString));  }
+  else if(message.destinationName == house.topics["office"]){  update_room_with_msg("office",JSON.parse(message.payloadString));  }
 }
 
 function send_room_temp(room,new_temp){
   house.sensors[room]["current_heating_setpoint"] = new_temp;
   house.labels[room].target.innerHTML = "Target "+new_temp + " °";
+  house.ranges[room].value = new_temp;
   var payload = '{"current_heating_setpoint":'+new_temp+'}';
   client.send(house.topics[room]+"/set",payload);
   console.log("room "+room+" set to : payload = "+payload);
@@ -213,6 +214,8 @@ function setup_buttons(){
   setup_events("kitchen");
   setup_events("bathroom");
   setup_events("office");
+
+  btn_defrost.onclick = function(){ set_all_rooms_temp(5); }
   
 }
 
