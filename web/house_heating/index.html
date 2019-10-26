@@ -3,7 +3,7 @@
   <title>Heating</title>
   <link rel="shortcut icon" href="">
   <style>
-    body { margin: 0; }
+    body {       margin: 0;     }
     canvas { width: 100%; height: 100% }
   </style>
 
@@ -39,16 +39,6 @@
   <div style="margin:20px">
       <input type="range" min="5" max="27" value="18" id="range_r1" steps=0.5>
   </div>
-  <div class="btn-group" role="group" aria-label="Basic example"  style="margin:10px" >
-    <button id="btn_r1_defrost"  class="btn btn-primary" type="button">Defrost</button>
-    <button id="btn_r1_min2" class="btn btn-primary" type="button">-2&deg</button>
-    <button id="btn_r1_minh" class="btn btn-primary" type="button">-0.5&deg</button>
-  </div>
-  <div class="btn-group" role="group" aria-label="Basic example"  style="margin:10px" >
-    <button id="btn_r1_plush"  class="btn btn-danger" type="button">+0.5&deg</button>
-    <button id="btn_r1_plus2" class="btn btn-danger" type="button">+2&deg</button>
-    <button id="btn_r1_boost" class="btn btn-danger" type="button">Boost</button>
-  </div>
 
   <h2>
     <label id="label_r2_name" style="margin:10px;text-align:center;">Bedroom</label>
@@ -58,15 +48,8 @@
     <label id="label_r2_window" style="margin:10px;text-align:center;"></label>
     <label id="label_r2_seen" style="margin:10px;text-align:center;"></label>
   </h2>
-  <div class="btn-group" role="group" aria-label="Basic example"  style="margin:10px" >
-    <button id="btn_r2_defrost"  class="btn btn-primary" type="button">Defrost</button>
-    <button id="btn_r2_min2" class="btn btn-primary" type="button">-2&deg</button>
-    <button id="btn_r2_minh" class="btn btn-primary" type="button">-0.5&deg</button>
-  </div>
-  <div class="btn-group" role="group" aria-label="Basic example"  style="margin:10px" >
-    <button id="btn_r2_plush"  class="btn btn-danger" type="button">+0.5&deg</button>
-    <button id="btn_r2_plus2" class="btn btn-danger" type="button">+2&deg</button>
-    <button id="btn_r2_boost" class="btn btn-danger" type="button">Boost</button>
+  <div style="margin:20px">
+    <input type="range" min="5" max="27" value="18" id="range_r2" steps=0.5>
   </div>
 
   <h2>
@@ -77,15 +60,8 @@
     <label id="label_r3_window" style="margin:10px;text-align:center;"></label>
     <label id="label_r3_seen" style="margin:10px;text-align:center;"></label>
   </h2>
-  <div class="btn-group" role="group" aria-label="Basic example"  style="margin:10px" >
-    <button id="btn_r3_defrost"  class="btn btn-primary" type="button">Defrost</button>
-    <button id="btn_r3_min2" class="btn btn-primary" type="button">-2&deg</button>
-    <button id="btn_r3_minh" class="btn btn-primary" type="button">-0.5&deg</button>
-  </div>
-  <div class="btn-group" role="group" aria-label="Basic example"  style="margin:10px" >
-    <button id="btn_r3_plush"  class="btn btn-danger" type="button">+0.5&deg</button>
-    <button id="btn_r3_plus2" class="btn btn-danger" type="button">+2&deg</button>
-    <button id="btn_r3_boost" class="btn btn-danger" type="button">Boost</button>
+  <div style="margin:20px">
+    <input type="range" min="5" max="27" value="18" id="range_r3" steps=0.5>
   </div>
 
   <h2>
@@ -96,15 +72,8 @@
     <label id="label_r4_window" style="margin:10px;text-align:center;"></label>
     <label id="label_r4_seen" style="margin:10px;text-align:center;"></label>
   </h2>
-  <div class="btn-group" role="group" aria-label="Basic example"  style="margin:10px" >
-    <button id="btn_r4_defrost"  class="btn btn-primary" type="button">Defrost</button>
-    <button id="btn_r4_min2" class="btn btn-primary" type="button">-2&deg</button>
-    <button id="btn_r4_minh" class="btn btn-primary" type="button">-0.5&deg</button>
-  </div>
-  <div class="btn-group" role="group" aria-label="Basic example"  style="margin:10px" >
-    <button id="btn_r4_plush"  class="btn btn-danger" type="button">+0.5&deg</button>
-    <button id="btn_r4_plus2" class="btn btn-danger" type="button">+2&deg</button>
-    <button id="btn_r4_boost" class="btn btn-danger" type="button">Boost</button>
+  <div style="margin:20px">
+    <input type="range" min="5" max="27" value="18" id="range_r4" steps=0.5>
   </div>
 
   <h2>
@@ -115,28 +84,10 @@
     <label id="label_r5_window" style="margin:10px;text-align:center;"></label>
     <label id="label_r5_seen" style="margin:10px;text-align:center;"></label>
   </h2>
-  <div class="btn-group" role="group" aria-label="Basic example"  style="margin:10px" >
-    <button id="btn_r5_defrost"  class="btn btn-primary" type="button">Defrost</button>
-    <button id="btn_r5_min2" class="btn btn-primary" type="button">-2&deg</button>
-    <button id="btn_r5_minh" class="btn btn-primary" type="button">-0.5&deg</button>
-  </div>
-  <div class="btn-group" role="group" aria-label="Basic example"  style="margin:10px" >
-    <button id="btn_r5_plush"  class="btn btn-danger" type="button">+0.5&deg</button>
-    <button id="btn_r5_plus2" class="btn btn-danger" type="button">+2&deg</button>
-    <button id="btn_r5_boost" class="btn btn-danger" type="button">Boost</button>
+  <div style="margin:20px">
+    <input type="range" min="5" max="27" value="18" id="range_r5" steps=0.5>
   </div>
 
-
-
-  <div id="config" class="row" style="margin:10px">
-    <button id="btn_cosy" class="btn btn-danger btn-lg btn-block" type="button" >Cosy</button>
-  </div>
-  <div id="config" class="row" style="margin:10px">
-    <button id="btn_active" class="btn btn-dark btn-lg btn-block" type="button" >Active</button>
-  </div>
-  <div id="config" class="row" style="margin:10px">
-    <button id="btn_defrost" class="btn btn-primary btn-lg btn-block" type="button" >Defrost</button>
-  </div>
   <script src="src/main.js" type="module"></script>
 </body>
 </html>
