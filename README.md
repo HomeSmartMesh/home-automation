@@ -21,3 +21,6 @@ Range input supports standard properties and events
 - https://www.w3schools.com/jsref/dom_obj_all.asp
 - https://patrickhlauke.github.io/touch/
 - on release working : https://codepen.io/mhartington/pen/HKGno
+
+## thermometer svg
+- https://upload.wikimedia.org/wikipedia/commons/d/da/Green-Thermometer.svg
