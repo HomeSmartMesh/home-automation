@@ -1,6 +1,6 @@
 
-import * as MyMQTT from './mqtt_app.js';
-import {load} from './three_app.js';
+import * as three from './three_app.js';
+import * as mqtt from './mqtt_app.js';
 
-load();
-MyMQTT.init();
+three.init();
+mqtt.init();

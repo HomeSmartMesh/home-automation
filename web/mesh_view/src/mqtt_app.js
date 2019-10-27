@@ -3,8 +3,6 @@ var client;
 
 var mqtt_port = 1884;
 
-//import {MyHome} from './three_app.js';
-
 // called when the client connects
 function onConnect() {
   // Once a connection has been made, make a subscription and send a message.
@@ -24,8 +22,13 @@ function onConnectionLost(responseObject) {
 
 // called when a message arrives
 function onMessageArrived(message) {
-  var event = new CustomEvent('mqtt_msg', {detail:{ topic: message.destinationName, payload:message.payloadString }});
+  var event = new CustomEvent('mqtt_received', {detail:{ topic: message.destinationName, payload:message.payloadString }});
   window.dispatchEvent(event);
+}
+
+function onMqttSendRequest(e){
+	//console.log("window message on three_app> topic:",e.detail.topic," payload: ",e.detail.payload);
+  client.send(e.detail.topic,e.detail.payload);
 }
 
 function init(){
@@ -37,12 +40,9 @@ function init(){
 
   // connect the client
   client.connect({onSuccess:onConnect});
+	window.addEventListener( 'mqtt_send', onMqttSendRequest, false );
+
 }
 
 //----------------------------------------------------------------------------------
-
-//main();
-
-//setup_buttons();
-
 export{init}
