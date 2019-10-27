@@ -1,3 +1,11 @@
+import { STLLoader } from '../js/STLLoader.js';
+
+import {
+	Matrix4,
+	Raycaster,
+	Vector2
+} from "../js/three.module.js";
+
 var camera, scene, renderer;
 
 var container,controls;
@@ -5,9 +13,7 @@ var container,controls;
 var MyHome;
 var nodes_config;
 var house_config;
-//var _raycaster = new Raycaster();
-
-import { STLLoader } from '../js/STLLoader.js';
+var raycaster;
 
 function mqtt_send(topic,payload){
 	var event = new CustomEvent('mqtt_received', {detail:{ topic: topic, payload:payload }});
@@ -95,6 +101,7 @@ class LightBulb{
 		var size = 20;
 		var nb_sections = 64;
 		var geometry = new THREE.SphereGeometry( size, nb_sections,nb_sections );
+		
 		//material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
 		var material = new THREE.MeshPhongMaterial( {
 			color: 0xf5f2f9,
@@ -114,7 +121,8 @@ class LightBulb{
 		this.mesh.position.set(pos.x,pos.y,pos.z);
 		this.wiremesh.position.set(pos.x,pos.y,pos.z);
 		scene.add( this.mesh );
-	}
+		
+		}
 }
 
 function center_mesh(mesh){
@@ -245,31 +253,6 @@ class Home {
 
 }
 
-class Plane{
-	static init(w,h) {
-		var plane = new THREE.PlaneGeometry( w,h,4,4 );
-		//var pmat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-		var pmat = new THREE.MeshPhongMaterial( {
-			color: 0xABABAB,
-			emissive: 0xABABAB,
-			side: THREE.DoubleSide,
-			flatShading: true
-		});
-		
-		var planemesh = new THREE.Mesh( plane, pmat );
-		planemesh.rotation.x = Math.PI / 2;
-		scene.add( planemesh );
-
-		plane = new THREE.PlaneBufferGeometry( w,h,4,4 );
-		pmat = new THREE.MeshBasicMaterial( {wireframe:true, color:0x000000} );
-		
-		planemesh = new THREE.Mesh( plane, pmat );
-		planemesh.rotation.x = Math.PI / 2;
-		scene.add( planemesh );
-	}
-}
-
-
 function add_controls(){
 	controls = new THREE.OrbitControls( camera, renderer.domElement );
 
@@ -299,30 +282,27 @@ function onWindowResize() {
 	renderer.setSize( w, h );
 }
 
-/*function onMouseDown(event){
+function onMouseDown(event){
 	event.preventDefault();
 
-	_raycaster.setFromCamera( _mouse, _camera );
+	var rect = container.getBoundingClientRect();
+	var mouse = new Vector2();
+	mouse.x = ( ( event.clientX - rect.left ) / rect.width ) * 2 - 1;
+	mouse.y = - ( ( event.clientY - rect.top ) / rect.height ) * 2 + 1;
 
-	var intersects = _raycaster.intersectObjects( _objects, true );
+	//the projectionMatrixInverse is required but not automatically updated !!!
+	camera.projectionMatrixInverse = new THREE.Matrix4();
+	camera.projectionMatrixInverse.getInverse(camera.projectionMatrix);
+	raycaster.setFromCamera( mouse, camera );
+
+	var bulbs_list = [MyHome.bulbs["Living Room"].mesh,MyHome.bulbs["Kitchen"].mesh];
+	var intersects = raycaster.intersectObjects( bulbs_list, true );
 
 	if ( intersects.length > 0 ) {
-
-		_selected = intersects[ 0 ].object;
-
-		if ( _raycaster.ray.intersectPlane( _plane, _intersection ) ) {
-
-			_inverseMatrix.getInverse( _selected.parent.matrixWorld );
-			_offset.copy( _intersection ).sub( _worldPosition.setFromMatrixPosition( _selected.matrixWorld ) );
-
-		}
-
-		_domElement.style.cursor = 'move';
-
-		scope.dispatchEvent( { type: 'dragstart', object: _selected } );
-
+		alert("Touched");
+		//selected = intersects[ 0 ].object;
 	}
-}*/
+}
 
 function world_init() {
 
@@ -344,6 +324,8 @@ function world_init() {
 	MyHome.add_nodes();
 	MyHome.add_lights();
 
+	raycaster = new Raycaster();
+
 
 	renderer = new THREE.WebGLRenderer( { antialias: true,alpha:true } );
 	renderer.setSize( w, h );
@@ -355,7 +337,7 @@ function world_init() {
 
 	window.addEventListener( 'resize', onWindowResize, false );
 	window.addEventListener( 'mqtt_received', onWindowMqtt, false );
-	//window.addEventListener( 'mousedown', onMouseDown, false );
+	window.addEventListener( 'mousedown', onMouseDown, false );
 
 }
 
