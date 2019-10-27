@@ -1,7 +1,6 @@
 
 import * as MyMQTT from './mqtt_app.js';
-import {MyHome} from './three_app.js';
+import {load} from './three_app.js';
 
+load();
 MyMQTT.init();
-
-MyMQTT.setup_buttons();

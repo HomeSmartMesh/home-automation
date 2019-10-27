@@ -1,9 +1,9 @@
 
-var client,textBox;
+var client;
 
 var mqtt_port = 1884;
 
-import {MyHome} from './three_app.js';
+//import {MyHome} from './three_app.js';
 
 // called when the client connects
 function onConnect() {
@@ -24,24 +24,8 @@ function onConnectionLost(responseObject) {
 
 // called when a message arrives
 function onMessageArrived(message) {
-  //console.log(message.destinationName	+ " : "+message.payloadString);
-  MyHome.on_message(message.destinationName);
-  textBox.value = message.destinationName	+ " : "+message.payloadString+"\r\n"
-                  +textBox.value;
-  //document.getElementById("meshlog").value += message.destinationName	+ " : "+message.payloadString;
-  
-}
-
-function setup_buttons(){
-  var inNodeId = document.getElementById("inNodeId");
-  var btnPing = document.getElementById("btnPing");
-  var btnGetChannel = document.getElementById("btnGetChannel");
-  var btnGetNodeId = document.getElementById("btnGetNodeId");
-  var btnRemGetChannel = document.getElementById("btnRemGetChannel");
-  btnPing.onclick = function()          { client.send("Nodes/"+inNodeId.value+"/ping","");  }
-  btnGetChannel.onclick = function()    { client.send("cmd/request/get_channel","");  }
-  btnGetNodeId.onclick = function()    { client.send("cmd/request/get_node_id","");  }
-  btnRemGetChannel.onclick = function() { client.send("remote_cmd/request/get_channel",'{"remote":'+inNodeId.value+'}');  }
+  var event = new CustomEvent('mqtt_msg', {detail:{ topic: message.destinationName, payload:message.payloadString }});
+  window.dispatchEvent(event);
 }
 
 function init(){
@@ -51,7 +35,6 @@ function init(){
   client.onConnectionLost = onConnectionLost;
   client.onMessageArrived = onMessageArrived;
 
-  textBox = document.getElementById("meshlog");
   // connect the client
   client.connect({onSuccess:onConnect});
 }
@@ -62,4 +45,4 @@ function init(){
 
 //setup_buttons();
 
-export{init,setup_buttons}
+export{init}

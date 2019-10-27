@@ -12,18 +12,20 @@ var house;
 import {NodesTable} from './nodes_table.js';
 import { STLLoader } from '../js/STLLoader.js';
 
-$.getJSON("nodes.json", function(json) {
-	nodes_config = json;
-	console.log("loaded sensors config");
-	$.getJSON("house.json", function(house_json) {
-		house = house_json;
-		console.log("loaded house config");
-		init();
-		animate();
-	
-	
+function load(){
+	$.getJSON("nodes.json", function(json) {
+		nodes_config = json;
+		console.log("loaded sensors config");
+		$.getJSON("house.json", function(house_json) {
+			house = house_json;
+			console.log("loaded house config");
+			init();
+			animate();
+		
+		
+		});
 	});
-});
+}
 
 function swap_yz(pos){
 	return new THREE.Vector3(pos.x,pos.z,-pos.y);
@@ -53,23 +55,30 @@ class Node{
 
 		
 		var pos;
-		if("position" in nodes_config[id])
+		if(id in nodes_config)
 		{
-			pos = nodes_config[id].position;
-			pos = swap_yz(pos);
-			console.log("nodeid "+id+" has position : "+pos.x,pos.y,pos.z);
+			if("position" in nodes_config[id])
+			{
+				pos = nodes_config[id].position;
+				pos = swap_yz(pos);
+				console.log("nodeid "+id+" has position : "+pos.x,pos.y,pos.z);
+			}
+			else
+			{
+				pos = {"x":0,"y":0,"z":0}
+				console.log("nodeid "+id+" has no position");
+			}
+
+			this.mesh.position.set(pos.x,pos.y,pos.z);
+			this.wiremesh.position.set(pos.x,pos.y,pos.z);
+
+			//scene.add( this.wiremesh );
+			scene.add( this.mesh );
 		}
 		else
 		{
-			pos = {"x":0,"y":0,"z":0}
-			console.log("nodeid "+id+" has no position");
+			console.log("Node(): node id not available:",id);
 		}
-
-		this.mesh.position.set(pos.x,pos.y,pos.z);
-		this.wiremesh.position.set(pos.x,pos.y,pos.z);
-
-		//scene.add( this.wiremesh );
-		scene.add( this.mesh );
 	}
 }
 
@@ -85,11 +94,18 @@ class Home {
 		}
 		else
 		{
-			var node = new Node(id);
-			this.nodes.push(id);
-			console.log(this.nodes);
-			NodesTable.addNodeToTable(nodes_config[id].name,id);
-			console.log("On Home Added Node id > "+id);
+			if(id in nodes_config)
+			{
+				var node = new Node(id);
+				this.nodes.push(id);
+				console.log(this.nodes);
+				NodesTable.addNodeToTable(nodes_config[id].name,id);
+				console.log("On Home Added Node id > "+id);
+			}
+			else
+			{
+				console.log("add_node(): node id not available:",id);
+			}
 		}
 	}
 
@@ -150,7 +166,7 @@ class STLModel{
 		var material = new THREE.MeshPhongMaterial( { color: 0xFFFFFF, specular: 0x111111, shininess: 10 } );
 
 		var loader = new STLLoader();
-		loader.load( '../models/Valery_Open.stl', function ( geometry ) {
+		loader.load( 'Valery_Open.stl', function ( geometry ) {
 			var mesh = new THREE.Mesh( geometry, material );
 			center_mesh(mesh);
 			mesh.castShadow = true;
@@ -223,6 +239,14 @@ function onWindowResize() {
 
 }
 
+function onWindowMessage(e){
+	console.log("window message on three_app> topic:",e.detail.topic," payload: ",e.detail.payload);
+	MyHome.on_message(e.detail.topic);
+}
+
+function eventHandler(e) {
+	console.log('The time is: ' + e.detail);
+  }
 
 function init() {
 
@@ -260,6 +284,7 @@ function init() {
 	add_controls();
 
 	window.addEventListener( 'resize', onWindowResize, false );
+	window.addEventListener( 'mqtt_msg', onWindowMessage, false );
 
 }
 
@@ -273,5 +298,5 @@ function animate() {
 
 }
 
-export {MyHome};
-//export{init}
+//export {MyHome,load};
+export{load};
