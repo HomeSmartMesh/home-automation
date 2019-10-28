@@ -206,6 +206,14 @@ class Home {
 		this.lights[room_name] = light;
 		this.bulbs[room_name] = new LightBulb(room_name,pos);
 	}
+
+	add_light_pos(pos,name){
+		var light = new THREE.PointLight( 0xffffff, 1, 800, 2 );
+		light.position.set( pos.x,pos.y,pos.z );
+		scene.add( light );
+		this.lights[name] = light;
+		this.bulbs[name] = new LightBulb(name,pos);
+	}
 	
 	add_lights(){
 		this.lights = {};
@@ -273,6 +281,18 @@ function add_controls(){
 
 }
 
+function onHueLights(e){
+	for (const [light_id,light] of Object.entries(e.detail)) {
+		console.log("id : ",light_id," name = ",light.name);
+		MyHome.lights = {};
+		MyHome.bulbs = {};
+		if(light.name in house_config.lights){
+			var pos = house_config.lights[light.name].pos;
+			MyHome.add_light_pos(pos,light.name);
+		}
+	}	
+}
+
 function onWindowResize() {
 	var w = container.clientWidth;
 	var h = container.clientHeight;
@@ -295,7 +315,8 @@ function onMouseDown(event){
 	camera.projectionMatrixInverse.getInverse(camera.projectionMatrix);
 	raycaster.setFromCamera( mouse, camera );
 
-	var bulbs_list = [MyHome.bulbs["Living Room"].mesh,MyHome.bulbs["Kitchen"].mesh];
+	//var bulbs_list = [MyHome.bulbs["Living Room"].mesh,MyHome.bulbs["Kitchen"].mesh];
+	var bulbs_list = [];
 	var intersects = raycaster.intersectObjects( bulbs_list, true );
 
 	if ( intersects.length > 0 ) {
@@ -322,7 +343,7 @@ function world_init() {
 	MyHome = new Home();
 	MyHome.add_room_names();
 	MyHome.add_nodes();
-	MyHome.add_lights();
+	//MyHome.add_lights();
 
 	raycaster = new Raycaster();
 
@@ -338,6 +359,7 @@ function world_init() {
 	window.addEventListener( 'resize', onWindowResize, false );
 	window.addEventListener( 'mqtt_received', onWindowMqtt, false );
 	window.addEventListener( 'mousedown', onMouseDown, false );
+	window.addEventListener( 'hue_lights', onHueLights, false );
 
 }
 
