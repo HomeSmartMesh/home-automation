@@ -15,15 +15,21 @@ var nodes_config;
 var house_config;
 var raycaster;
 
-function mqtt_send(topic,payload){
-	var event = new CustomEvent('mqtt_received', {detail:{ topic: topic, payload:payload }});
+function send_custom_event(event_name,data){
+	var event = new CustomEvent(event_name, {detail:data});
 	window.dispatchEvent(event);
+}
+
+function mqtt_send(topic,payload){
+	send_custom_event('mqtt_received',{ topic: topic, payload:payload });
 }
 
 function onWindowMqtt(e){
 	console.log("window message on three_app> topic:",e.detail.topic," payload: ",e.detail.payload);
 	MyHome.on_message(e.detail.topic);
 }
+
+
 
 function init(){
 	$.getJSON("nodes.json", function(json) {
@@ -111,15 +117,8 @@ class LightBulb{
 		});
 
 		this.mesh = new THREE.Mesh( geometry, material );
-
-		var wiregeom = new THREE.SphereBufferGeometry( size, 6, 5 );
-		//material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-		var wirematerial = new THREE.MeshBasicMaterial( {wireframe:true, color:0x000000} );
-
-		this.wiremesh = new THREE.Mesh( wiregeom, wirematerial );
-		
+		this.mesh.name = name;
 		this.mesh.position.set(pos.x,pos.y,pos.z);
-		this.wiremesh.position.set(pos.x,pos.y,pos.z);
 		scene.add( this.mesh );
 		
 		}
@@ -210,6 +209,11 @@ class Home {
 	add_light_pos(pos,name){
 		var light = new THREE.PointLight( 0xffffff, 1, 800, 2 );
 		light.position.set( pos.x,pos.y,pos.z );
+		light.castShadow = true;
+		light.shadow.mapSize.width = 512;  // default
+		light.shadow.mapSize.height = 512; // default
+		light.shadow.camera.near = 20;       // default
+		light.shadow.camera.far = 1000      // default
 		scene.add( light );
 		this.lights[name] = light;
 		this.bulbs[name] = new LightBulb(name,pos);
@@ -282,10 +286,10 @@ function add_controls(){
 }
 
 function onHueLights(e){
+	MyHome.lights = {};
+	MyHome.bulbs = {};
 	for (const [light_id,light] of Object.entries(e.detail)) {
 		console.log("id : ",light_id," name = ",light.name);
-		MyHome.lights = {};
-		MyHome.bulbs = {};
 		if(light.name in house_config.lights){
 			var pos = house_config.lights[light.name].pos;
 			MyHome.add_light_pos(pos,light.name);
@@ -315,13 +319,11 @@ function onMouseDown(event){
 	camera.projectionMatrixInverse.getInverse(camera.projectionMatrix);
 	raycaster.setFromCamera( mouse, camera );
 
-	//var bulbs_list = [MyHome.bulbs["Living Room"].mesh,MyHome.bulbs["Kitchen"].mesh];
-	var bulbs_list = [];
+	var bulbs_list = [MyHome.bulbs["Office main"].mesh];
 	var intersects = raycaster.intersectObjects( bulbs_list, true );
 
 	if ( intersects.length > 0 ) {
-		alert("Touched");
-		//selected = intersects[ 0 ].object;
+		send_custom_event('mesh_mousedown',{ type: "light", name: intersects[ 0 ].object.name});
 	}
 }
 
@@ -351,6 +353,9 @@ function world_init() {
 	renderer = new THREE.WebGLRenderer( { antialias: true,alpha:true } );
 	renderer.setSize( w, h );
 	renderer.setClearColor( 0x000000, 0.0 );
+
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap	
 
 	container.appendChild(renderer.domElement);
 

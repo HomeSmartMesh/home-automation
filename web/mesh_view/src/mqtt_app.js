@@ -7,10 +7,7 @@ var mqtt_port = 1884;
 function onConnect() {
   // Once a connection has been made, make a subscription and send a message.
   console.log("onConnect");
-  client.subscribe("Nodes/#");
-  client.subscribe("jNodes/#");
-  client.subscribe("cmd/#");
-  client.subscribe("remote_cmd/#");
+  //client.subscribe("Nodes/#");
 }
 
 // called when the client loses its connection
