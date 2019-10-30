@@ -49,23 +49,25 @@ function create_user(){
 }
 
 function onMeshMouseDown(event){
-    console.log("Mesh Mouse Down Event !! for ",event.detail.name);
-    var l_id = light_ids[event.detail.name];
-    user.getLight(l_id).then(data => {
-        console.log("getLight ",data);
-        if(data.state.reachable == true) {
-            var light_set_state;
-            if(data.state.on == true){
-                light_set_state = false;
+    if(event.detail.type == "light"){
+        console.log("Mesh Light Mouse Down Event !! for ",event.detail.name);
+        var l_id = light_ids[event.detail.name];
+        user.getLight(l_id).then(data => {
+            console.log("getLight ",data);
+            if(data.state.reachable == true) {
+                var light_set_state;
+                if(data.state.on == true){
+                    light_set_state = false;
+                }
+                else{
+                    light_set_state = true;
+                }
+                user.setLightState(l_id, { on: light_set_state }).then(data => {
+                    console.log("SetLightState ",data);
+                });
             }
-            else{
-                light_set_state = true;
-            }
-            user.setLightState(l_id, { on: light_set_state }).then(data => {
-                console.log("SetLightState ",data);
-            });
-        }
-    });
+        });
+    }
 }
 //----------------------------------------------------------------------------------
 export{init,create_user};

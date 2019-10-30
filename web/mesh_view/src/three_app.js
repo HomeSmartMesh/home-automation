@@ -217,11 +217,13 @@ class Home {
 		scene.add( light );
 		this.lights[name] = light;
 		this.bulbs[name] = new LightBulb(name,pos);
+		this.light_meshes.push(this.bulbs[name].mesh);
 	}
 	
 	add_lights(){
 		this.lights = {};
 		this.bulbs = {};
+		this.light_meshes = [];
 		for (const [room_name,room_config] of Object.entries(house_config.Rooms)) {
 			this.add_light(room_name,room_config)
 		}
@@ -288,6 +290,7 @@ function add_controls(){
 function onHueLights(e){
 	MyHome.lights = {};
 	MyHome.bulbs = {};
+	MyHome.light_meshes = [];
 	for (const [light_id,light] of Object.entries(e.detail)) {
 		console.log("id : ",light_id," name = ",light.name);
 		if(light.name in house_config.lights){
@@ -320,7 +323,7 @@ function onMouseDown(event){
 	raycaster.setFromCamera( mouse, camera );
 
 	var bulbs_list = [MyHome.bulbs["Office main"].mesh];
-	var intersects = raycaster.intersectObjects( bulbs_list, true );
+	var intersects = raycaster.intersectObjects( MyHome.light_meshes, true );
 
 	if ( intersects.length > 0 ) {
 		send_custom_event('mesh_mousedown',{ type: "light", name: intersects[ 0 ].object.name});
