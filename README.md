@@ -8,3 +8,16 @@ raspberry pi home server scripts and configuration files of different frameworks
 - wemo : sockets electrical power consumption to mqtt logging
 - grafana : config and dashboards
 - zigbee2mqtt : config and devices
+
+## slider editing web page
+- http://danielstern.ca/range.css/#/
+
+## slider css docu
+- https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/
+
+## events
+Range input supports standard properties and events
+- https://www.w3schools.com/jsref/dom_obj_event.asp
+- https://www.w3schools.com/jsref/dom_obj_all.asp
+- https://patrickhlauke.github.io/touch/
+- on release working : https://codepen.io/mhartington/pen/HKGno

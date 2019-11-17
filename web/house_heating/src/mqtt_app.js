@@ -89,12 +89,20 @@ var house = {
       minh:document.getElementById("btn_r5_minh")
     }
   },
+  ranges:{
+    "livingroom":document.getElementById("range_r1"),
+    "bedroom":document.getElementById("range_r2"),
+    "kitchen":document.getElementById("range_r3"),
+    "bathroom":document.getElementById("range_r4"),
+    "office":document.getElementById("range_r5")
+  }
+  ,
   topics:{
-    "livingroom":"lzig/living heat",
-    "bedroom":"lzig/bedroom heat",
-    "kitchen":"lzig/kitchen heat",
-    "bathroom":"lzig/bathroom heat",
-    "office":"lzig/office heat"
+    "livingroom"  :"lzig/living heat",
+    "bedroom"     :"lzig/bedroom heat",
+    "kitchen"     :"lzig/kitchen heat",
+    "bathroom"    :"lzig/bathroom heat",
+    "office"      :"lzig/office heat"
   }
 }
 
@@ -134,9 +142,10 @@ function update_last_seen(room,sensor){
   }
 }
 
-function update_room(room,sensor){
+function update_room_with_msg(room,sensor){
   house.labels[room].target.innerHTML = "Target "+sensor["current_heating_setpoint"] + " °";
   house.labels[room].current.innerHTML = sensor["local_temperature"] + " °";
+  house.ranges[room].value = sensor["current_heating_setpoint"];
   let system_mode = sensor["eurotronic_system_mode"]
   if(system_mode & 0x10)    {
     house.labels[room].window.innerHTML = "Window Open";
@@ -159,53 +168,55 @@ function update_room(room,sensor){
 // called when a message arrives
 function onMessageArrived(message) {
   console.log(message.destinationName	+ " : "+message.payloadString);
-  if(message.destinationName == house.topics["livingroom"]){       update_room("livingroom",JSON.parse(message.payloadString));  }
-  else if(message.destinationName == house.topics["bedroom"]){ update_room("bedroom",JSON.parse(message.payloadString));  }
-  else if(message.destinationName == house.topics["kitchen"]){ update_room("kitchen",JSON.parse(message.payloadString));  }
-  else if(message.destinationName == house.topics["bathroom"]){update_room("bathroom",JSON.parse(message.payloadString));  }
-  else if(message.destinationName == house.topics["office"]){update_room("office",JSON.parse(message.payloadString));  }
+  if(message.destinationName == house.topics["livingroom"]){   update_room_with_msg("livingroom",JSON.parse(message.payloadString));  }
+  else if(message.destinationName == house.topics["bedroom"]){ update_room_with_msg("bedroom",JSON.parse(message.payloadString));  }
+  else if(message.destinationName == house.topics["kitchen"]){ update_room_with_msg("kitchen",JSON.parse(message.payloadString));  }
+  else if(message.destinationName == house.topics["bathroom"]){update_room_with_msg("bathroom",JSON.parse(message.payloadString));  }
+  else if(message.destinationName == house.topics["office"]){  update_room_with_msg("office",JSON.parse(message.payloadString));  }
 }
 
-function set_room_temp(room,new_temp){
+function send_room_temp(room,new_temp){
   house.sensors[room]["current_heating_setpoint"] = new_temp;
   house.labels[room].target.innerHTML = "Target "+new_temp + " °";
+  house.ranges[room].value = new_temp;
   var payload = '{"current_heating_setpoint":'+new_temp+'}';
   client.send(house.topics[room]+"/set",payload);
   console.log("room "+room+" set to : payload = "+payload);
 }
 
+function show_room_temp(room,new_temp){
+  house.labels[room].target.innerHTML = "Target "+new_temp + " °";
+}
+
 function set_all_rooms_temp(temp){
-  set_room_temp("livingroom",temp);
-  set_room_temp("bedroom",temp);
-  set_room_temp("kitchen",temp);
-  set_room_temp("bathroom",temp);
-  set_room_temp("office",temp);
+  send_room_temp("livingroom",temp);
+  send_room_temp("bedroom",temp);
+  send_room_temp("kitchen",temp);
+  send_room_temp("bathroom",temp);
+  send_room_temp("office",temp);
 }
 
 function temp_add(room,temp_add){
   var old_heating_setpoint = house.sensors[room]["current_heating_setpoint"];
   var new_heating_setpoint = old_heating_setpoint+temp_add;
-  set_room_temp(room,new_heating_setpoint);
+  send_room_temp(room,new_heating_setpoint);
 }
 
-function setup_on_click(room_name){
-  house.buttons[room_name].plus2.onclick = function() { temp_add(room_name,2); }
-  house.buttons[room_name].plush.onclick = function() { temp_add(room_name,0.5); }
-  house.buttons[room_name].min2.onclick =  function() { temp_add(room_name,-2); }
-  house.buttons[room_name].minh.onclick =  function() { temp_add(room_name,-0.5); }
+function setup_events(room_name){
+  house.ranges[room_name].oninput = function() { show_room_temp(room_name,this.value)}
+  house.ranges[room_name].onchange = function() { send_room_temp(room_name,this.value)}
 }
 
 function setup_buttons(){
 
-  setup_on_click("livingroom");
-  setup_on_click("bedroom");
-  setup_on_click("kitchen");
-  setup_on_click("bathroom");
-  setup_on_click("office");
-  
-  btn_cosy.onclick    = function(){ set_all_rooms_temp(21); }
-  btn_active.onclick  = function(){ set_all_rooms_temp(18); }
+  setup_events("livingroom");
+  setup_events("bedroom");
+  setup_events("kitchen");
+  setup_events("bathroom");
+  setup_events("office");
+
   btn_defrost.onclick = function(){ set_all_rooms_temp(5); }
+  
 }
 
 function init(){
