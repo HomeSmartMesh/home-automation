@@ -13,7 +13,14 @@
                             "+/bathroom heat",
                             "+/balcony weather",
                             "miflora/Flora1",
-                            "nrf/#"
+                            "nrf/Livingroom window tag",
+                            "nrf/Hallway tag",
+                            "nrf/Balcony tag",
+                            "nrf/Bathroom tag",
+                            "nrf/Livingroom tag",
+                            "nrf/Office tag",
+                            "nrf/Bedroom tag",
+                            "nrf/Kitchen tag"
                                     ],
         "publish" :false,
         "subscribe" :true,
