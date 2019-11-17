@@ -6,16 +6,14 @@
         "client_id":"raspy_influx",
         "subscriptions":[   "+/living heat",
                             "+/kitchen heat",
-                            "+/bedroom weather",
+                            "+/bed weather",
                             "+/bedroom heat",
                             "+/office weather",
                             "+/office heat",
                             "+/bathroom heat",
                             "+/balcony weather",
                             "miflora/Flora1",
-                            "nrf/blue tag desk",
-                            "nrf/white trio tag",
-                            "nrf/squary too"
+                            "nrf/#"
                                     ],
         "publish" :false,
         "subscribe" :true,
