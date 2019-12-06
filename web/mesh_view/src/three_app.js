@@ -14,6 +14,10 @@ var MyHome;
 var nodes_config;
 var house_config;
 var raycaster;
+var mouse = {
+	"is_inside_object":false,
+	"object":""
+};
 
 function send_custom_event(event_name,data){
 	var event = new CustomEvent(event_name, {detail:data});
@@ -37,6 +41,7 @@ function init(){
 		console.log("loaded sensors config");
 		$.getJSON("house.json", function(house_json) {
 			house_config = house_json;
+			//send_custom_event('house_config',house_config);
 			console.log("loaded house config");
 			world_init();
 			animate();
@@ -122,6 +127,33 @@ class LightBulb{
 		scene.add( this.mesh );
 		
 		}
+	setReachState(is_reachable){
+		if(is_reachable){
+			var material = new THREE.MeshPhongMaterial( {
+				color: 0xf5f2f9,
+				emissive: 0xf7f5f4,
+				side: THREE.FrontSide,
+				flatShading: true
+			});
+			}
+		else{
+			var material = new THREE.MeshPhongMaterial( {
+				color: 0xf5f2f9,
+				emissive: 0x272524,
+				side: THREE.FrontSide,
+				flatShading: true
+			});
+			}
+
+		this.mesh.material = material;
+
+	}
+	switch_on(){
+		this.mesh.material.emissive = 0xf7f5f4;
+	}
+	switch_off(){
+		this.mesh.material.emissive = 0x272524;
+	}
 }
 
 function center_mesh(mesh){
@@ -136,7 +168,7 @@ class STLModel{
 		var material = new THREE.MeshPhongMaterial( { color: 0xFFFFFF, specular: 0x111111, shininess: 10 } );
 
 		var loader = new STLLoader();
-		loader.load( 'Valery_Open.stl', function ( geometry ) {
+		loader.load( house_config.stl_model, function ( geometry ) {
 			var mesh = new THREE.Mesh( geometry, material );
 			center_mesh(mesh);
 			mesh.castShadow = true;
@@ -192,7 +224,7 @@ class Home {
 	add_room_names(){
 		for (const [room_name,room] of Object.entries(house_config.Rooms)) {
 			console.log("Added Room name : ",room_name);
-			RoomName.add(room_name,room.center.x,room.center.y);
+			RoomName.add(room_name,room.text.x,room.text.y);
 		}
 	}
 
@@ -300,6 +332,10 @@ function onHueLights(e){
 	}	
 }
 
+function onHueReach(e){
+	MyHome.bulbs[e.detail.name].setReachState(e.detail.reachable)
+}
+
 function onWindowResize() {
 	var w = container.clientWidth;
 	var h = container.clientHeight;
@@ -309,25 +345,53 @@ function onWindowResize() {
 	renderer.setSize( w, h );
 }
 
-function onMouseDown(event){
+function process_mouse_event(event_name, event){
 	event.preventDefault();
 
 	var rect = container.getBoundingClientRect();
-	var mouse = new Vector2();
-	mouse.x = ( ( event.clientX - rect.left ) / rect.width ) * 2 - 1;
-	mouse.y = - ( ( event.clientY - rect.top ) / rect.height ) * 2 + 1;
+	var l_mouse = new Vector2();
+	l_mouse.x = ( ( event.clientX - rect.left ) / rect.width ) * 2 - 1;
+	l_mouse.y = - ( ( event.clientY - rect.top ) / rect.height ) * 2 + 1;
 
 	//the projectionMatrixInverse is required but not automatically updated !!!
 	camera.projectionMatrixInverse = new THREE.Matrix4();
 	camera.projectionMatrixInverse.getInverse(camera.projectionMatrix);
-	raycaster.setFromCamera( mouse, camera );
+	raycaster.setFromCamera( l_mouse, camera );
 
-	var bulbs_list = [MyHome.bulbs["Office main"].mesh];
+	//var bulbs_list = [MyHome.bulbs["Office main"].mesh];
+	var bulbs_list = Object.keys(house_config.lights);
 	var intersects = raycaster.intersectObjects( MyHome.light_meshes, true );
 
 	if ( intersects.length > 0 ) {
-		send_custom_event('mesh_mousedown',{ type: "light", name: intersects[ 0 ].object.name});
+		mouse.object = intersects[ 0 ].object.name;
+		if(!mouse.is_inside_object){
+			send_custom_event("mesh_mouse_enter",{ type: "light", name: mouse.object});
+		}
+		mouse.is_inside_object = true;
+		send_custom_event(event_name,{ type: "light", name: mouse.object});
 	}
+	else{
+		if(mouse.is_inside_object){
+			mouse.is_inside_object = false;
+			send_custom_event("mesh_mouse_exit",{ type: "light", name: mouse.object});
+		}
+	}
+}
+
+function onMouseDown(event){
+	process_mouse_event("mesh_mouse_down",event)
+}
+
+function onMouseMove(event){
+	process_mouse_event("mesh_mouse_move",event)
+}
+
+function onMeshMouseEnter(e){
+	console.log(`Mesh Mouse Enter : ${e.detail.name}`)
+}
+
+function onMeshMouseExit(e){
+	console.log(`Mesh Mouse Exit : ${e.detail.name}`)
 }
 
 function world_init() {
@@ -347,7 +411,7 @@ function world_init() {
 
 	MyHome = new Home();
 	MyHome.add_room_names();
-	MyHome.add_nodes();
+	//MyHome.add_nodes();
 	//MyHome.add_lights();
 
 	raycaster = new Raycaster();
@@ -366,8 +430,13 @@ function world_init() {
 
 	window.addEventListener( 'resize', onWindowResize, false );
 	window.addEventListener( 'mqtt_received', onWindowMqtt, false );
+	window.addEventListener( 'mousemove', onMouseMove, false );
 	window.addEventListener( 'mousedown', onMouseDown, false );
 	window.addEventListener( 'hue_lights', onHueLights, false );
+	window.addEventListener( 'hue_reach', onHueReach, false );
+	//window.addEventListener( 'mesh_mouse_move', onMeshMouseMove, false );
+	window.addEventListener( 'mesh_mouse_enter', onMeshMouseEnter, false );
+	window.addEventListener( 'mesh_mouse_exit', onMeshMouseExit, false );
 
 }
 

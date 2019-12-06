@@ -3,6 +3,7 @@ var hue = jsHue();
 var user;
 var lights;
 var light_ids;
+var house_config;
 
 function send_custom_event(event_name,data){
 	var event = new CustomEvent(event_name, {detail:data});
@@ -11,6 +12,7 @@ function send_custom_event(event_name,data){
 
 function init(){
     $.getJSON("house.json", function(house_json) {
+        house_config = house_json;
         console.log("hue_app>loaded house config");
         var bridge = hue.bridge(house_json.hue.ip);
         $.getJSON("user.json", function(user_data) {
@@ -24,10 +26,26 @@ function init(){
                 for (const [light_id,light] of Object.entries(lights)) {
                     light_ids[light.name] = light_id;
                     }
+                check_lights_states();
             });
         });
     });
-    window.addEventListener( 'mesh_mousedown', onMeshMouseDown, false );
+    window.addEventListener( 'mesh_mouse_down', onMeshMouseDown, false );
+
+}
+
+function check_lights_states(){
+    console.log("===>> check_lights_states()")
+    for(let l_name in house_config.lights){
+        console.log(l_name)
+        let l_id = light_ids[l_name];
+        user.getLight(l_id).then(data => {
+            console.log(`getLight(${l_id} ${l_name})`);
+            console.log(data);
+            send_custom_event("hue_reach",{name:l_name,reachable:data.state.reachable})
+        });
+    }
+    
 
 }
 

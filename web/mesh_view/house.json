@@ -1,68 +1,65 @@
 {
+    "stl_model":"Separate Rooms v8.stl",
     "Rooms":{
         "Living Room":{
-            "center":{
-                "x":-500,
+            "text":{
+                "x":-400,
                 "y":150
             },
-            "light":{
-                "x":-500,
-                "y":150
-            }
+            "lights":[  
+                "LivRoom Spot 1 Innr",
+                "LivRoom Spot 2 Innr",
+                "LivRoom Spot 3 Innr",
+                "LivRoom Spot 4 Innr",
+                "LivRoom Spot 5 Innr",
+                "malms 1",
+                "malms 2",
+                "malms 3"
+            ]
         },
         "Kitchen":{
-            "center":{
-            "x":-520,
-            "y":-200},
-            "light":{
-                "x":-520,
-                "y":-200}
-            },
+            "text":{"x":-420,"y":-200},
+             "lights":[
+                 "Kitchen"
+             ]
+        },
         "Office":{
-            "center":{
-            "x":360,
-            "y":200},
-            "light":{
-                "x":360,
-                "y":200}
-            },
+            "text":{"x":460,"y":200},
+            "lights":[
+                "Office"
+            ]
+        },
         "Bedroom":{
-            "center":{
-            "x":320,
-            "y":-200},
-            "light":{
-                "x":320,
-                "y":-200}
-            },
+            "text":{"x":420,"y":-200},
+            "lights":[
+                "Bedroom Was Malm",
+                "Bedroom Nic Malm",
+                "Berdoom Nic Night"
+            ]
+        },
         "Bathroom":{
-            "center":{
-            "x":-35,
-            "y":240},
-            "light":{
-                "x":-35,
-                "y":240}
-            },
+            "text":{"x":75,"y":240},
+            "lights":[
+                "Bathroom main"
+            ]
+        },
         "Balcony":{
-            "center":{
-            "x":-820,
-            "y":240},
-            "light":{
-                "x":-820,
-                "y":240}
-            }
+            "text":{"x":-720,"y":240},
+            "lights":[]
+        }
     },
     "hue":{
         "ip":"10.0.0.38"
     },
     "lights":{
-        "Office main":{
-            "pos":{"x":430,"y":200,"z":80}
+        "Office":{
+            "pos":{"x":530,"y":200,"z":80}
         },
         "Bathroom main":{
-            "pos":{"x":50,"y":200,"z":230}
+            "pos":{"x":150,"y":200,"z":230}
         },
         "Kitchen":{
-            "pos":{"x":-440,"y":200,"z":-220}
+            "pos":{"x":-340,"y":200,"z":-220}
         }
     },
     "Sensors":[76,77,78,79,80,82,91,92]
