@@ -83,6 +83,7 @@ function onMeshMouseDown(event){
                 user.setLightState(l_id, { on: light_set_state }).then(data => {
                     console.log("SetLightState ",data);
                 });
+                send_custom_event("hue_light_state",{name:event.detail.name,on:light_set_state})
             }
         });
     }

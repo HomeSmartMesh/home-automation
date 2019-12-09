@@ -115,8 +115,9 @@ class LightBulb{
 		
 		//material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
 		var material = new THREE.MeshPhongMaterial( {
-			color: 0xf5f2f9,
-			emissive: 0xf7f5f4,
+			color: 0xb5b2b9,
+			emissive: 0x272524,
+			specular:0x000000,
 			side: THREE.FrontSide,
 			flatShading: true
 		});
@@ -129,30 +130,54 @@ class LightBulb{
 		}
 	setReachState(is_reachable){
 		if(is_reachable){
-			var material = new THREE.MeshPhongMaterial( {
-				color: 0xf5f2f9,
-				emissive: 0xf7f5f4,
-				side: THREE.FrontSide,
-				flatShading: true
-			});
-			}
+			var emit = 0x877564;
+		}
 		else{
-			var material = new THREE.MeshPhongMaterial( {
-				color: 0xf5f2f9,
-				emissive: 0x272524,
-				side: THREE.FrontSide,
-				flatShading: true
-			});
+			var emit = 0x171514;
 			}
-
+		var material = new THREE.MeshPhongMaterial( {
+			color: this.mesh.material.color,
+			emissive: emit,
+			specular: this.mesh.material.specular,
+			side: this.mesh.material.side,
+			flatShading: this.mesh.material.flatShading
+		});
 		this.mesh.material = material;
 
 	}
-	switch_on(){
-		this.mesh.material.emissive = 0xf7f5f4;
+	setMouseState(is_inside){
+		if(is_inside){
+			var spec = 0xaa0000;
+		}
+		else{
+			var spec = 0x000000;
+		}
+		var material = new THREE.MeshPhongMaterial( {
+			color: this.mesh.material.color,
+			emissive: this.mesh.material.emissive,
+			specular: spec,
+			side: this.mesh.material.side,
+			flatShading: this.mesh.material.flatShading
+		});
+		this.mesh.material = material;
+		console.log("specular = ",this.mesh.material.specular);
 	}
-	switch_off(){
-		this.mesh.material.emissive = 0x272524;
+	setLightState(is_on){
+		if(is_on){
+			var emit = 0xb5b3b0;
+		}
+		else{
+			var emit = 0x877564;
+		}
+		var material = new THREE.MeshPhongMaterial( {
+			color: this.mesh.material.color,
+			emissive: emit,
+			specular: this.mesh.material.specular,
+			side: this.mesh.material.side,
+			flatShading: this.mesh.material.flatShading
+		});
+		this.mesh.material = material;
+		console.log("specular = ",this.mesh.material.specular);
 	}
 }
 
@@ -229,7 +254,7 @@ class Home {
 	}
 
 	add_light(room_name,room_config){
-		var light = new THREE.PointLight( 0xffffff, 1, 800, 2 );
+		var light = new THREE.PointLight( 0xffffff, 0.6, 800, 2 );
 		var pos = {"x":room_config.light.x,"y":200,"z":room_config.light.y}
 		light.position.set( pos.x,pos.y,pos.z );
 		console.log("light set in ",room_name," at ",pos.x,",",pos.z);
@@ -239,7 +264,7 @@ class Home {
 	}
 
 	add_light_pos(pos,name){
-		var light = new THREE.PointLight( 0xffffff, 1, 800, 2 );
+		var light = new THREE.PointLight( 0xffffff, 0.6, 800, 2 );
 		light.position.set( pos.x,pos.y,pos.z );
 		light.castShadow = true;
 		light.shadow.mapSize.width = 512;  // default
@@ -252,6 +277,33 @@ class Home {
 		this.light_meshes.push(this.bulbs[name].mesh);
 	}
 	
+	add_ambient_light(){
+		//var a_light = new THREE.AmbientLight( 0x303030 ); // soft white light
+		//scene.add( a_light );		
+		var h_light = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.2 );
+		//h_light.color.setHSL( 0.6, 0.6, 0.6 );
+		//h_light.groundColor.setHSL( 1, 1, 0.75 );
+		h_light.position.set( 0, 500, 0 );
+		scene.add( h_light );	
+
+		var dirLight = new THREE.DirectionalLight( 0xffffff, 0.05 );
+		dirLight.color.setHSL( 0.1, 1, 0.95 );
+		dirLight.position.set( 0, 300, 0 );
+		scene.add( dirLight );
+		dirLight.castShadow = true;
+
+		dirLight.shadow.mapSize.width = 2048;
+		dirLight.shadow.mapSize.height = 2048;
+
+		var d = 600;
+		dirLight.shadow.camera.left = - d;
+		dirLight.shadow.camera.right = d;
+		dirLight.shadow.camera.top = d;
+		dirLight.shadow.camera.bottom = - d;
+		dirLight.shadow.camera.far = 700;
+		dirLight.shadow.bias = - 0.0001;
+	}
+
 	add_lights(){
 		this.lights = {};
 		this.bulbs = {};
@@ -319,7 +371,7 @@ function add_controls(){
 
 }
 
-function onHueLights(e){
+function onHueGetLights(e){
 	MyHome.lights = {};
 	MyHome.bulbs = {};
 	MyHome.light_meshes = [];
@@ -334,6 +386,10 @@ function onHueLights(e){
 
 function onHueReach(e){
 	MyHome.bulbs[e.detail.name].setReachState(e.detail.reachable)
+}
+
+function onHueLightState(e){
+	MyHome.bulbs[e.detail.name].setLightState(e.detail.on)
 }
 
 function onWindowResize() {
@@ -387,11 +443,18 @@ function onMouseMove(event){
 }
 
 function onMeshMouseEnter(e){
-	console.log(`Mesh Mouse Enter : ${e.detail.name}`)
+	container.style.cursor = "pointer";
+	//document.getElementById('viewer').style.cursor = "pointer";
+	//document.body.style.cursor = "pointer";
+	//$('html,body').css('cursor', 'pointer');
+	MyHome.bulbs[e.detail.name].setMouseState(true);
+	console.log(`Mesh Mouse Enter : ${e.detail.name} : cursor=${container.style.cursor}`);
 }
 
 function onMeshMouseExit(e){
-	console.log(`Mesh Mouse Exit : ${e.detail.name}`)
+	container.style.cursor = "default";
+	MyHome.bulbs[e.detail.name].setMouseState(false);
+	console.log(`Mesh Mouse Exit : ${e.detail.name} : cursor=${container.style.cursor}`)
 }
 
 function world_init() {
@@ -413,6 +476,7 @@ function world_init() {
 	MyHome.add_room_names();
 	//MyHome.add_nodes();
 	//MyHome.add_lights();
+	MyHome.add_ambient_light();
 
 	raycaster = new Raycaster();
 
@@ -432,8 +496,10 @@ function world_init() {
 	window.addEventListener( 'mqtt_received', onWindowMqtt, false );
 	window.addEventListener( 'mousemove', onMouseMove, false );
 	window.addEventListener( 'mousedown', onMouseDown, false );
-	window.addEventListener( 'hue_lights', onHueLights, false );
+	window.addEventListener( 'hue_lights', onHueGetLights, false );
 	window.addEventListener( 'hue_reach', onHueReach, false );
+	window.addEventListener( 'hue_light_state', onHueLightState, false );
+	
 	//window.addEventListener( 'mesh_mouse_move', onMeshMouseMove, false );
 	window.addEventListener( 'mesh_mouse_enter', onMeshMouseEnter, false );
 	window.addEventListener( 'mesh_mouse_exit', onMeshMouseExit, false );
