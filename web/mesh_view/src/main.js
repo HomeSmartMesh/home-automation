@@ -1,7 +1,10 @@
 
-import * as MyMQTT from './mqtt_app.js';
-import {MyHome} from './three_app.js';
+import * as three from './three_app.js';
+import * as mqtt from './mqtt_app.js';
+import * as hue from './hue_app.js';
 
-MyMQTT.init();
+three.init();
+mqtt.init();
+hue.init();
 
-MyMQTT.setup_buttons();
+//hue.create_user();

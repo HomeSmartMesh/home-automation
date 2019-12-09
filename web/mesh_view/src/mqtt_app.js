@@ -1,18 +1,13 @@
 
-var client,textBox;
+var client;
 
 var mqtt_port = 1884;
-
-import {MyHome} from './three_app.js';
 
 // called when the client connects
 function onConnect() {
   // Once a connection has been made, make a subscription and send a message.
   console.log("onConnect");
-  client.subscribe("Nodes/#");
-  client.subscribe("jNodes/#");
-  client.subscribe("cmd/#");
-  client.subscribe("remote_cmd/#");
+  //client.subscribe("Nodes/#");
 }
 
 // called when the client loses its connection
@@ -24,24 +19,13 @@ function onConnectionLost(responseObject) {
 
 // called when a message arrives
 function onMessageArrived(message) {
-  //console.log(message.destinationName	+ " : "+message.payloadString);
-  MyHome.on_message(message.destinationName);
-  textBox.value = message.destinationName	+ " : "+message.payloadString+"\r\n"
-                  +textBox.value;
-  //document.getElementById("meshlog").value += message.destinationName	+ " : "+message.payloadString;
-  
+  var event = new CustomEvent('mqtt_received', {detail:{ topic: message.destinationName, payload:message.payloadString }});
+  window.dispatchEvent(event);
 }
 
-function setup_buttons(){
-  var inNodeId = document.getElementById("inNodeId");
-  var btnPing = document.getElementById("btnPing");
-  var btnGetChannel = document.getElementById("btnGetChannel");
-  var btnGetNodeId = document.getElementById("btnGetNodeId");
-  var btnRemGetChannel = document.getElementById("btnRemGetChannel");
-  btnPing.onclick = function()          { client.send("Nodes/"+inNodeId.value+"/ping","");  }
-  btnGetChannel.onclick = function()    { client.send("cmd/request/get_channel","");  }
-  btnGetNodeId.onclick = function()    { client.send("cmd/request/get_node_id","");  }
-  btnRemGetChannel.onclick = function() { client.send("remote_cmd/request/get_channel",'{"remote":'+inNodeId.value+'}');  }
+function onMqttSendRequest(e){
+	//console.log("window message on three_app> topic:",e.detail.topic," payload: ",e.detail.payload);
+  client.send(e.detail.topic,e.detail.payload);
 }
 
 function init(){
@@ -51,15 +35,11 @@ function init(){
   client.onConnectionLost = onConnectionLost;
   client.onMessageArrived = onMessageArrived;
 
-  textBox = document.getElementById("meshlog");
   // connect the client
   client.connect({onSuccess:onConnect});
+	window.addEventListener( 'mqtt_send', onMqttSendRequest, false );
+
 }
 
 //----------------------------------------------------------------------------------
-
-//main();
-
-//setup_buttons();
-
-export{init,setup_buttons}
+export{init}
