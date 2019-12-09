@@ -31,6 +31,7 @@ function init(){
         });
     });
     window.addEventListener( 'mesh_mouse_down', onMeshMouseDown, false );
+    window.addEventListener( 'mesh_touch_start', onMeshMouseDown, false );
 
 }
 

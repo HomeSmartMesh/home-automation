@@ -401,25 +401,30 @@ function onWindowResize() {
 	renderer.setSize( w, h );
 }
 
+function get_mesh_intersect(l_x,l_y){
+	var rect = container.getBoundingClientRect();
+	var vect2 = new Vector2();
+	vect2.x = ( ( l_x - rect.left ) / rect.width ) * 2 - 1;
+	vect2.y = - ( ( l_y - rect.top ) / rect.height ) * 2 + 1;
+
+	let result = "";
+	camera.projectionMatrixInverse = new THREE.Matrix4();
+	camera.projectionMatrixInverse.getInverse(camera.projectionMatrix);
+	raycaster.setFromCamera( vect2, camera );
+	var intersects = raycaster.intersectObjects( MyHome.light_meshes, true );
+	if(intersects.length > 0){
+		result = intersects[ 0 ].object.name;
+	}
+	return result;
+}
+
 function process_mouse_event(event_name, event){
 	event.preventDefault();
 
-	var rect = container.getBoundingClientRect();
-	var l_mouse = new Vector2();
-	l_mouse.x = ( ( event.clientX - rect.left ) / rect.width ) * 2 - 1;
-	l_mouse.y = - ( ( event.clientY - rect.top ) / rect.height ) * 2 + 1;
+	var obj_name = get_mesh_intersect(event.clientX,event.clientY);
 
-	//the projectionMatrixInverse is required but not automatically updated !!!
-	camera.projectionMatrixInverse = new THREE.Matrix4();
-	camera.projectionMatrixInverse.getInverse(camera.projectionMatrix);
-	raycaster.setFromCamera( l_mouse, camera );
-
-	//var bulbs_list = [MyHome.bulbs["Office main"].mesh];
-	var bulbs_list = Object.keys(house_config.lights);
-	var intersects = raycaster.intersectObjects( MyHome.light_meshes, true );
-
-	if ( intersects.length > 0 ) {
-		mouse.object = intersects[ 0 ].object.name;
+	if ( obj_name != "") {
+		mouse.object = obj_name;
 		if(!mouse.is_inside_object){
 			send_custom_event("mesh_mouse_enter",{ type: "light", name: mouse.object});
 		}
@@ -434,6 +439,17 @@ function process_mouse_event(event_name, event){
 	}
 }
 
+function onTouch(event){
+	event.preventDefault();
+	console.log("onTouch",event);
+	if(event.type == "touchstart"){
+		var obj_name = get_mesh_intersect(event.targetTouches[0].clientX,event.targetTouches[0].clientY);
+		if ( obj_name != "") {
+			send_custom_event("mesh_touch_start",{ type: "light", name: obj_name});
+		}
+	}
+}
+
 function onMouseDown(event){
 	process_mouse_event("mesh_mouse_down",event)
 }
@@ -441,6 +457,7 @@ function onMouseDown(event){
 function onMouseMove(event){
 	process_mouse_event("mesh_mouse_move",event)
 }
+
 
 function onMeshMouseEnter(e){
 	container.style.cursor = "pointer";
@@ -494,8 +511,9 @@ function world_init() {
 
 	window.addEventListener( 'resize', onWindowResize, false );
 	window.addEventListener( 'mqtt_received', onWindowMqtt, false );
-	window.addEventListener( 'mousemove', onMouseMove, false );
-	window.addEventListener( 'mousedown', onMouseDown, false );
+	container.addEventListener( 'mousemove', onMouseMove, false );
+	container.addEventListener( 'mousedown', onMouseDown, false );
+	container.addEventListener( 'touchstart', onTouch, false );
 	window.addEventListener( 'hue_lights', onHueGetLights, false );
 	window.addEventListener( 'hue_reach', onHueReach, false );
 	window.addEventListener( 'hue_light_state', onHueLightState, false );
