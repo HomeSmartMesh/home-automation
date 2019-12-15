@@ -31,6 +31,8 @@
   <!-- ---------------------------- Control buttons --------------------------------------------- -->
 
   <div class="btn-group" role="group" aria-label="Basic example"  style="margin:10px" >
+    <input type="text" id="host_ip" value="10.0.0.42" placeholder="host...">
+    <input type="text" id="host_port" value="1884" placeholder="port...">
     <button id="btn_engine_dot"  class="btn btn-danger" type="button">dot</button>
     <button id="btn_engine_circo"  class="btn btn-danger" type="button">circo</button>
     <button id="btn_engine_fdp"  class="btn btn-danger" type="button">fdp</button>
@@ -39,10 +41,12 @@
   </div>
 
   <div id="config" class="row" style="margin:10px">
-    <button id="btn_lifo" class="btn btn-primary btn-lg btn-block" type="button" >lifo</button>
+    <input type="text" id="z2mqtt_1" value="lzig" placeholder="zigbee2mqtt">
+    <button id="btn_lifo" class="btn btn-primary btn-lg" type="button" style="width:60%" >lifo</button>
   </div>
   <div id="config" class="row" style="margin:10px">
-    <button id="btn_mano" class="btn btn-primary btn-lg btn-block" type="button" >mano</button>
+    <input type="text" id="z2mqtt_2" value="mzig" placeholder="zigbee2mqtt">
+    <button id="btn_mano" class="btn btn-primary btn-lg btn-block" type="button"  style="width:60%" >mano</button>
   </div>
   <div id="graph" style="text-align: center;"></div>
  

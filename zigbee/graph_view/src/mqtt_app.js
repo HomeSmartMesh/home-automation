@@ -2,9 +2,6 @@
 
 var client,textBox;
 
-var mqtt_host = "10.0.0.42";
-var mqtt_port = 1884;
-
 var btn_lifo = document.getElementById("btn_lifo");
 var btn_mano = document.getElementById("btn_mano");
 
@@ -14,13 +11,19 @@ var btn_engine_fdp = document.getElementById("btn_engine_fdp");
 var btn_engine_neato = document.getElementById("btn_engine_neato");
 var btn_engine_osage = document.getElementById("btn_engine_osage");
 
+var host_ip = document.getElementById("host_ip");
+var host_port = document.getElementById("host_port");
+
+var z2mqtt_1 = document.getElementById("z2mqtt_1");
+var z2mqtt_2 = document.getElementById("z2mqtt_2");
+
 const engines = ["circo", "dot", "fdp", "neato", "osage", "patchwork", "twopi"];
 
 var graph_text = "";
 
 var topics = {
-  lifo:"lzig/bridge/networkmap",
-  mano:"mzig/bridge/networkmap",
+  lifo:"/bridge/networkmap",
+  mano:"/bridge/networkmap",
   response:"+/bridge/networkmap/graphviz"
 }
 
@@ -77,10 +80,10 @@ function render(algo){
 function onMessageArrived(message) {
   //console.log(message.destinationName	+ " : "+message.payloadString);
   graph_text = replace_all(message.payloadString);
-  if(message.destinationName.split('/')[0] == "lzig"){
+  if(message.destinationName.split('/')[0] == z2mqtt_1.value){
     render("fdp");
   }
-  else if(message.destinationName.split('/')[0] == "mzig"){
+  else if(message.destinationName.split('/')[0] == z2mqtt_2.value){
     render("circo");
   }
   else{
@@ -89,8 +92,16 @@ function onMessageArrived(message) {
 }
 
 function setup_buttons(){
-  btn_lifo.onclick = function() { client.send(topics.lifo,"graphviz"); }
-  btn_mano.onclick = function() { client.send(topics.mano,"graphviz"); }
+  btn_lifo.onclick = function() { 
+    const topic = z2mqtt_1.value + topics.lifo;
+    console.log(`request from : ${topic}`);
+    client.send(topic,"graphviz"); 
+  }
+  btn_mano.onclick = function() { 
+    const topic = z2mqtt_2.value + topics.mano;
+    console.log(`request from : ${topic}`);
+    client.send(topic,"graphviz"); 
+  }
 
   btn_engine_dot.onclick    = function(){render("dot");}
   btn_engine_circo.onclick  = function(){render("circo");}
@@ -99,7 +110,10 @@ function setup_buttons(){
   btn_engine_osage.onclick  = function(){render("osage");}
 }
 
-function init(){
+function start_mqtt(){
+  var mqtt_host = host_ip.value;
+  var mqtt_port = host_port.value;
+  console.log(`creating client connection to ${mqtt_host}:${mqtt_port}`);
   // Create a client instance
   client = new Paho.MQTT.Client(mqtt_host, Number(mqtt_port), "zigbee_graph_webapp");
   // set callback handlers
@@ -108,7 +122,14 @@ function init(){
 
   // connect the client
   client.connect({onSuccess:onConnect});
+}
 
+function init(){
+  
+    start_mqtt();
+
+    host_ip.oninput = function(){start_mqtt()}
+    host_ip.oninput = function(){start_mqtt()}
 }
 
 //----------------------------------------------------------------------------------
