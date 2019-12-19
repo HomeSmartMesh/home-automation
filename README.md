@@ -7,7 +7,40 @@ raspberry pi home server scripts and configuration files of different frameworks
 - py/nrf_mesh : nRF52832 low power sensors (temp,hum,press,light) and repeater dongles to mqtt
 - zigbee/graphview : zigbee2mqtt graphviz web viewer
 
+# nrf mesh
+
+## nRF52 Mesh Dongle required
+* see details in hackaday project [nRF5 Custom Mesh Network](https://hackaday.io/project/124114-nrf5-custom-mesh-network/details)
+
+* [nRF 52 Dongle Firmware - github](https://github.com/nRFMesh/nRF52_Mesh)
+  
+  * [uart dongle firmware - gihub directory](https://github.com/nRFMesh/nRF52_Mesh/tree/master/applications/04_uart_dongle)
+  * [usb dongle firmware - gihub directory](https://github.com/nRFMesh/nRF52_Mesh/tree/master/applications/08_usb_dongle)
+
+## running the scripts
+
+[py/nrf_mesh](./py/nrf_mesh/)
+
+    cu -l /dev/ttyACM0 -s 460800 
+
+<img src="./py/nrf_mesh/doc/nrf_serial.gif">
+
+subscribe to topic
+
+    mosquitto_sub -t 'nrf/#' -v | ts
+
+start nrf_mesh
+
+    python3 py/nrf_mesh/nrf_mesh.py
+
+<img src="./py/nrf_mesh/doc/nrf_mqtt.gif">
+
 # zigbee/graphview
+
+[zigbee/graph_view](./zigbee/graph_view/)
+
+<img src="./zigbee/graph_view/../images/demo.gif">
+
 ## Features
 * configurable ip, port and mqtt base name
 * multiple hosts for those using mulitple zigbee2mqtt instances.
@@ -24,9 +57,6 @@ In order to use this script, it is required to host it locally on local raspberr
 
 Why is this inactive live demo then here ? Because github makes it easy to deploy websites in one click, and it might help to see how the page would show before running your own deployment.
 
-## Gif Demo
-
-<img src="./zigbee/graph_view/../images/demo.gif">
 
 ## docu references
 
