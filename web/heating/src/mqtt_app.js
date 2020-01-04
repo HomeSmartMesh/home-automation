@@ -102,7 +102,7 @@ var house = {
     "bedroom"     :"lzig/bedroom heat",
     "kitchen"     :"lzig/kitchen heat",
     "bathroom"    :"lzig/bathroom heat",
-    "office"      :"lzig/office heat"
+    "office"      :"mzig/office heat"
   }
 }
 

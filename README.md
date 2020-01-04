@@ -35,6 +35,10 @@ start nrf_mesh
 
 <img src="./py/nrf_mesh/doc/nrf_mqtt.gif">
 
+## use as a service
+
+see [install_services.sh](install_services.sh)
+
 # zigbee/graphview
 
 [zigbee/graph_view](./zigbee/graph_view/)
@@ -51,12 +55,51 @@ Note that the following viewer is hosted on github and has therefore a secure co
 
 ## Inactive hosted page
 
-[link to inactive viewer](./zigbee/graph_view/index.html)
+[link to inactive viewer](https://homesmartmesh.github.io/raspi/zigbee/graph_view/index.html)
 
-In order to use this script, it is required to host it locally on local raspberry py, see [deploy](zigbee/graph_view/deploy.sh) script for deployment convenience.
+In order to use this script, it is required to host it locally on local raspberry py, see [deploy](zigbee/graph_view/deploy.sh) script for deployment convenience. Direct usage from the link would require to authorise cross origin on chrome symbol on right of the adress bar.
 
-Why is this inactive live demo then here ? Because github makes it easy to deploy websites in one click, and it might help to see how the page would show before running your own deployment.
+# heating
 
+## web heat control
+
+<img src="./web/heating/media/demo.gif" width="600">
+
+The control of the heating has a feedback that ensures the execution of the command. The green displayed numbers represent the time since the last status of the zigbee device. Once a slider is modified and a command is sent, a feedback shall be received within few seconds and the time since last message should drop to `0 mn`
+
+## python heat windows monitor
+
+1. adjust your mqtt configuration in [config.json](raspi/heat/config.json)
+2. adjust the eurotronic heater topic and apertures (apertures are the contact sensors list)
+```json
+    "heatings":{
+        "living heat":{
+            "topic":"lzig/living heat/set",
+            "Apertures":[
+                "balcony door",
+                "balcony window right",
+                "balcony window left"
+            ]
+        }
+    }
+``` 
+3. add the contact sensors to the mqtt subscriptions as well
+4. run the script `python raspi/heat.py`
+
+example eurotronic mqtt payload
+```json
+zig/living heat {
+    "current_heating_setpoint":17,
+    "eurotronic_system_mode":1,
+    "local_temperature":18.49,
+    "occupied_heating_setpoint":21,
+    "unoccupied_heating_setpoint":16,
+    "eurotronic_error_status":0,
+    "pi_heating_demand":0,
+    "battery":100,
+    "linkquality":44
+}
+```
 
 ## docu references
 
