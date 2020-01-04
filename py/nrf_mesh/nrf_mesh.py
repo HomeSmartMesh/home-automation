@@ -19,6 +19,9 @@ from mqtt import mqtt_start
 import mesh as mesh
 import cfg
 
+import datetime
+from tzlocal import get_localzone
+
 #%%
 def mesh_do_action(cmd,remote,params):
     control = 0x71
@@ -98,6 +101,10 @@ def mqtt_on_message(client, userdata, msg):
             mesh_do_action(cmd,topics[1],params)
     return
 
+def get_last_seen_now():
+    time_now = datetime.datetime.now()
+    return str(time_now.astimezone(local_zone))
+
 '''It's important to provide the msg dictionnary here as it might be used in a multitude of ways
    by other modules
 '''
@@ -107,10 +114,17 @@ def mesh_on_broadcast(msg):
     log.info(f"mesh> {msg['src']} as {node_name} => {sensor_name}")
     if(config["mqtt"]["enable"] and config["mqtt"]["publish"]):
         publishing = mesh.publish(msg)
+        use_last_seen = False
+        if("last_seen" in config["mqtt"]):
+            if(config["mqtt"]["last_seen"] == True):
+                last_seen = get_last_seen_now()
+                use_last_seen = True
         for topic,payload in publishing.items():
             if(config["mqtt"]["base_topic"]):
                 topic = config["mqtt"]["base_topic"]+ "/" + topic
-            clientMQTT.publish(topic,payload)
+            if(use_last_seen):
+                payload["last_seen"] = last_seen
+            clientMQTT.publish(topic,json.dumps(payload),mqtt_qos,mqtt_retain)
     return
 
 def mesh_on_message(msg):
@@ -198,6 +212,17 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-f","--function",default="x")
 args = parser.parse_args()
 
+local_zone = get_localzone()
+mqtt_qos = 0
+if("qos" in config["mqtt"]):
+    mqtt_qos = config["mqtt"]["qos"]
+if(mqtt_qos == 2):
+    print("qos 2 not supported")
+    sys.exit(1)
+mqtt_retain = False
+if("retain" in config["mqtt"]):
+    mqtt_retain = config["mqtt"]["qos"]
+
 #will not start a separate thread for looping
 clientMQTT = mqtt_start(config,mqtt_on_message,start_looping=False)
 
@@ -207,6 +232,8 @@ set_channel(config["mesh"]["channel"])
 
 this_node_id = 0
 get_node_id()
+
+
 
 try:
     loop_forever()
