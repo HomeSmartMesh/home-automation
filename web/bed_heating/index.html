@@ -29,20 +29,42 @@
   
   <!-- ---------------------------- Control buttons --------------------------------------------- -->
   <h2>
-    <label id="label_r1_name" style="margin:10px;text-align:center;">Heat</label>
-    <label id="label_r1_level" style="margin:10px;text-align:center;">Level</label>
-    <label id="label_r1_current" style="margin:10px;text-align:center;">?&deg</label>
-    <label id="label_r1_remain" style="margin:10px;text-align:center;">left ? mn</label>
+    <label style="margin:10px;">Bed Temperature</label>
+    <label id="label_r1_current" style="margin:10px">?&deg</label>
+    <br>
+    <!--
+      <label style="margin:10px;">Heater</label>
+      <span id="badge_status" class="badge badge-dark">Offline</span>
+      <br>
+    -->
+    <label style="margin:10px;">Heat level</label>
+    <label id="label_r1_level" >?</label>
   </h2>
-  <div style="margin-left:20px;margin-right:20px">
-      <input type="range" min="0" max="10" value="5" id="range_r1" steps=1>
+  <div style="margin:20px">
+    <input type="range" min="0" max="10" value="5" id="bed_power" steps=1>
+</div>
+<h2>
+    <label style="margin:10px">Heating time left</label>
+    <label id="label_r1_remain" style="margin:10px">? mn</label>
+  </h2>
+  <div class="progress" style="margin:20px;">
+    <div id="bed_time" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
   </div>
   <hr>
-
+  <h2>
+    <label style="margin:10px;">Relay</label>
+    <span id="badge_relay" class="badge badge-light">?</span>
+    <br>
+    <label style="margin:10px;">Instant Power</label>
+    <label id="label_relay_power" style="margin:10px">? W</label>
+  </h2>
   <hr>
   <div id="config" class="row" style="margin:10px">
-    <button id="btn_off" class="btn btn-primary btn-lg btn-block" type="button" >Switch off</button>
+    <button id="btn_on" class="btn btn-success btn-lg btn-block" type="button" >Power On</button>
   </div>
-  <script src="src/main.js" type="module"></script>
+  <div id="config" class="row" style="margin:10px">
+    <button id="btn_off" class="btn btn-dark btn-lg btn-block" type="button" >Power Off</button>
+  </div>
+  <script src="src/main.js?v=dc512" type="module"></script>
 </body>
 </html>

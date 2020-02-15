@@ -1,4 +1,4 @@
 #!/bin/bash
-sudo rm -rf /var/www/html/heat
-sudo cp -r . /var/www/html/heat
-sudo rm /var/www/html/heat/deploy.sh
+sudo rm -rf /var/www/html/bed
+sudo cp -r . /var/www/html/bed
+sudo rm /var/www/html/bed/deploy.sh
