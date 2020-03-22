@@ -1,0 +1,27 @@
+{  
+    "mqtt":{
+        "host":"10.0.0.42",
+        "port":1883,
+        "keepalive":60,
+        "client_id":"hover_control",
+        "subscriptions":[   "+/hover button"
+                            ],
+        "actions"   :[],
+        "publish" :true,
+        "subscribe" :true
+    },
+    "control":{
+        "start":{
+            "topic":"valetudo/rockrobo/command",
+            "message":"start"
+        },
+        "home":{
+            "topic":"valetudo/rockrobo/command",
+            "message":"return_to_base"
+        }
+    },
+    "log":{
+        "logfile":"./hover_status.log",
+        "level":"Debug"
+    }
+}

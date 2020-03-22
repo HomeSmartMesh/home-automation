@@ -164,7 +164,7 @@ def publish(msg):
             path_entry["nodeid"]    = txpow_rssi_nid[2]
             json_payload["path"].append(path_entry)
         json_payload["rssi"] = int(last_rssi)
-        pub[topic] = json.dumps(json_payload)
+        pub[topic] = json_payload
     elif(inv_pid[int(msg["pid"])] == "bme280"):
         if("temp" in msg):
             json_payload["temperature"] = float(msg["temp"])
@@ -184,7 +184,7 @@ def publish(msg):
             json_payload["x"] = float(msg["accx"])
             json_payload["y"] = float(msg["accy"])
             json_payload["z"] = float(msg["accz"])
-            pub[topic] = json.dumps(json_payload)
+            pub[topic] = json_payload
     elif(inv_pid[int(msg["pid"])] == "button"):
         if(int(msg["button"]) == 1):
             json_payload["button"] = "down"
@@ -192,7 +192,7 @@ def publish(msg):
             json_payload["button"] = "up"
     elif(inv_pid[int(msg["pid"])] == "reset"):
         json_payload["reset"] = float(msg["reset"])
-    pub[topic] = json.dumps(json_payload)
+    pub[topic] = json_payload
     return pub
 
 def line2dict(line):

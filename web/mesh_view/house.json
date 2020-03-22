@@ -1,0 +1,66 @@
+{
+    "stl_model":"Separate Rooms v8.stl",
+    "Rooms":{
+        "Living Room":{
+            "text":{
+                "x":-400,
+                "y":150
+            },
+            "lights":[  
+                "Living Top 1",
+                "Living Top 2",
+                "Living Top 3",
+                "Living Top 4",
+                "Living Top 5",
+                "malms 1",
+                "malms 2",
+                "malms 3"
+            ]
+        },
+        "Kitchen":{
+            "text":{"x":-420,"y":-200},
+             "lights":[
+                 "Kitchen"
+             ]
+        },
+        "Office":{
+            "text":{"x":460,"y":200},
+            "lights":[
+                "Office"
+            ]
+        },
+        "Bedroom":{
+            "text":{"x":420,"y":-200},
+            "lights":[
+                "Bedroom Was Malm",
+                "Bedroom Nic Malm",
+                "Berdoom Nic Night"
+            ]
+        },
+        "Bathroom":{
+            "text":{"x":75,"y":240},
+            "lights":[
+                "Bathroom main"
+            ]
+        },
+        "Balcony":{
+            "text":{"x":-720,"y":240},
+            "lights":[]
+        }
+    },
+    "hue":{
+        "ip":"10.0.0.38"
+    },
+    "lights":{
+        "Office":{
+            "pos":{"x":530,"y":200,"z":80}
+        },
+        "Bathroom main":{
+            "pos":{"x":150,"y":200,"z":230}
+        },
+        "Kitchen":{
+            "pos":{"x":-340,"y":200,"z":-220}
+        }
+    },
+    "Sensors":[76,77,78,79,80,82,91,92]
+}

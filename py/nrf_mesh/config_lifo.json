@@ -13,6 +13,9 @@
         "subscribe" :false,
         "publish" :true,
         "base_topic" : "nrf",
+        "last_seen":true,
+        "retain":true,
+        "qos":1,
         "host":"10.0.0.42",
         "port":1883,
         "keepalive":60,
@@ -22,6 +25,6 @@
     },
     "log":{
         "logfile":"/home/pi/share/log_nrf_mesh.log",
-        "level":"Debug"
+        "level":"Info"
     }
 }

@@ -1,0 +1,70 @@
+<html>
+<head>
+  <title>bed Heat</title>
+  <link rel="shortcut icon" href="">
+  <style>
+    body {       margin: 0;     }
+    canvas { width: 100%; height: 100% }
+  </style>
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<script src="js/mqttws31.min.js" type="text/javascript"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="css/slider.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/background.css">
+<link rel="manifest" href="/manifest.json">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+<body>
+    
+  
+  <!-- ---------------------------- Control buttons --------------------------------------------- -->
+  <h2>
+    <label style="margin:10px;">Bed Temperature</label>
+    <label id="label_r1_current" style="margin:10px">?&deg</label>
+    <br>
+    <!--
+      <label style="margin:10px;">Heater</label>
+      <span id="badge_status" class="badge badge-dark">Offline</span>
+      <br>
+    -->
+    <label style="margin:10px;">Heat level</label>
+    <label id="label_r1_level" >?</label>
+  </h2>
+  <div style="margin:20px">
+    <input type="range" min="0" max="10" value="5" id="bed_power" steps=1>
+</div>
+<h2>
+    <label style="margin:10px">Heating time left</label>
+    <label id="label_r1_remain" style="margin:10px">? mn</label>
+  </h2>
+  <div class="progress" style="margin:20px;">
+    <div id="bed_time" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+  <hr>
+  <h2>
+    <label style="margin:10px;">Relay</label>
+    <span id="badge_relay" class="badge badge-light">?</span>
+    <br>
+    <label style="margin:10px;">Instant Power</label>
+    <label id="label_relay_power" style="margin:10px">? W</label>
+  </h2>
+  <hr>
+  <div id="config" class="row" style="margin:10px">
+    <button id="btn_on" class="btn btn-success btn-lg btn-block" type="button" >Power On</button>
+  </div>
+  <div id="config" class="row" style="margin:10px">
+    <button id="btn_off" class="btn btn-dark btn-lg btn-block" type="button" >Power Off</button>
+  </div>
+  <script src="src/main.js?v=dc512" type="module"></script>
+</body>
+</html>
