@@ -4,6 +4,7 @@
     "description": "retrive and render graph",
     "license": "BSD-3-Clause",
     "dependencies": {
+        "d3": "^5.12.0",
         "d3-graphviz": "^2.6.1"
     }
 }
