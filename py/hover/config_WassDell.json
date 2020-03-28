@@ -10,14 +10,26 @@
         "publish" :true,
         "subscribe" :true
     },
-    "control":{
+    "commands":{
         "start":{
-            "topic":"valetudo/rockrobo/command",
+            "type":"command",
             "message":"start"
         },
-        "home":{
-            "topic":"valetudo/rockrobo/command",
+        "charge":{
+            "type":"command",
             "message":"return_to_base"
+        },
+        "kitchen":{
+            "type":"custom",
+            "zone":"Kitchen"
+        },
+        "bedroom":{
+            "type":"custom",
+            "zone":"Bedroom"
+        },
+        "daily":{
+            "type":"custom",
+            "zones":["Livingroom","Kitchen","Bedroom"]
         }
     },
     "log":{

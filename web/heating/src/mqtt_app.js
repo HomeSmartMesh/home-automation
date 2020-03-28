@@ -146,7 +146,7 @@ function update_room_with_msg(room,sensor){
   house.labels[room].target.innerHTML = "Target "+sensor["current_heating_setpoint"] + " °";
   house.labels[room].current.innerHTML = sensor["local_temperature"] + " °";
   house.ranges[room].value = sensor["current_heating_setpoint"];
-  let system_mode = sensor["eurotronic_system_mode"]
+  let system_mode = parseInt(sensor["eurotronic_system_mode"]);
   if(system_mode & 0x10)    {
     house.labels[room].window.innerHTML = "Window Open";
   }

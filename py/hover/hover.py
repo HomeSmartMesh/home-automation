@@ -12,8 +12,20 @@ from mqtt import mqtt_start
 import requests
 
 def hover_command(command):
-    topic = config["control"][command]["topic"]
-    text_msg = config["control"][command]["message"]
+    cmd = config["control"][command]
+    if(cmd["type"] == "command"):
+        topic = "valetudo/rockrobo/command"
+        text_msg = cmd["message"]
+    elif(cmd["type"] == "custom"):
+        topic = "valetudo/rockrobo/custom_command"
+        json_msg = {}
+        json_msg["command"] = "zoned_cleanup",
+        if("zone" in cmd):
+            json_msg["zone_ids"] = []
+            json_msg["zone_ids"].append(cmd["zone"])
+        elif("zones" in cmd):
+            json_msg["zone_ids"] = cmd["zones"]
+        text_msg = json.dumps(json_msg)
     clientMQTT.publish(topic,text_msg)
     return
 
@@ -24,8 +36,8 @@ def hover_control(payload):
         hover_command("start")
         log.info(f"hover_control> start")
     else:
-        hover_command("home")
-        log.info(f"hover_control> home")
+        hover_command("charge")
+        log.info(f"hover_control> going back to charge")
     return
 
 
