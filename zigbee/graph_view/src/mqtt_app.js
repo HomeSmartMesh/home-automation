@@ -129,7 +129,6 @@ function init(){
     start_mqtt();
 
     host_ip.oninput = function(){start_mqtt()}
-    host_ip.oninput = function(){start_mqtt()}
 }
 
 //----------------------------------------------------------------------------------
