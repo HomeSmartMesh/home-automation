@@ -7,7 +7,7 @@ def hello(update, context):
         'Hello {}'.format(update.message.from_user.first_name))
 
 
-token = json.load(open("token.json"))["smart_hover_bot"]["token"]
+token = json.load(open("secret.json"))["bots"]["smart_hover_bot"]["token"]
 
 updater = Updater(token, use_context=True)
 updater.dispatcher.add_handler(CommandHandler('hello', hello))
