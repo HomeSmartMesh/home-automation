@@ -1,4 +1,7 @@
+const fs = require('fs');
 const {transports,createLogger, format} = require('winston');
+
+const config = JSON.parse(fs.readFileSync(__dirname+'\\config.json'))
 
 var logger = createLogger({
     format: format.combine(
@@ -7,10 +10,10 @@ var logger = createLogger({
     ),
     transports: [
       new transports.Console({level:'debug'}),
-      new transports.File({ filename: 'log_hover.log' })
+      new transports.File({ filename: config.log.logfile })
     ],
     exceptionHandlers: [
-      new transports.File({ filename: 'log_exceptions.log' })
+      new transports.File({ filename: 'log_exceptions.log' ,level:config.log.level})
     ]
   });
 

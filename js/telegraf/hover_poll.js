@@ -1,16 +1,17 @@
 const fs = require('fs');
 const Telegraf = require('telegraf')
 const {logger} = require('./logger.js')
+const mqtt = require('./mqtt.js')
 const Markup = require('telegraf/markup')
 
-const config = JSON.parse(fs.readFileSync('secret.json'))
-const token = config.bots.smart_hover_bot.token
+const secret = JSON.parse(fs.readFileSync(__dirname+'\\secret.json'))
+const token = secret.bots.smart_hover_bot.token
 
 logger.info('smart_hover_bot started')
 
 function start(ctx){
     logger.info({user:ctx.from})
-    if(config.users.includes(ctx.from.id)){
+    if(secret.users.includes(ctx.from.id)){
         ctx.reply(`Hello! ${ctx.message.from.first_name}`)
         logger.debug({message:ctx.message})
     }else{
@@ -18,6 +19,8 @@ function start(ctx){
         logger.warn({unauthorised_user:ctx.from})
     }
 }
+
+mqtt.start()
 
 const bot = new Telegraf(token)
 bot.start(start)

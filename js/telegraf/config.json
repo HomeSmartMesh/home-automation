@@ -1,0 +1,15 @@
+{  
+    "mqtt":{
+        "host":"10.0.0.42",
+        "port":1883,
+        "keepalive":60,
+        "client_id":"telegraf_bots_client",
+        "subscriptions":[  "lzig/hover button" ],
+        "publish" :true,
+        "subscribe" :true
+    },
+    "log":{
+        "logfile":"log_hover.log",
+        "level":"Info"
+    }
+}
