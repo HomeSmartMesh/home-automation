@@ -1,6 +1,8 @@
-const fs = require('fs');
+const fs = require('fs')
 const mqtt = require('mqtt')
 const {logger} = require('./logger.js')
+const events = require('events')
+const Emitter = new events.EventEmitter()
 
 const config = JSON.parse(fs.readFileSync(__dirname+'\\config.json'))
 var client;
@@ -19,7 +21,8 @@ function onConnectionLost(responseObject) {
 }
 
 function onMessageArrived(topic,message) {
-  logger.debug(`${topic} : ${message}`);
+  logger.debug(`mqtt> ${topic} : ${message}`);
+  Emitter.emit('mqtt',{topic:topic,msg:JSON.parse(message)});
 }
 
 function start(){
@@ -32,4 +35,4 @@ function start(){
 }
 
 //----------------------------------------------------------------------------------
-module.exports = {start}
+module.exports = {start,Emitter}

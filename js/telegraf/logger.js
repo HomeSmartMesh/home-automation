@@ -9,7 +9,7 @@ var logger = createLogger({
         format.json()
     ),
     transports: [
-      new transports.Console({level:'debug'}),
+      new transports.Console({level:'verbose'}),
       new transports.File({ filename: config.log.logfile })
     ],
     exceptionHandlers: [
