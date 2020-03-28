@@ -8,9 +8,7 @@
         "mqtt sensors data"
     ],
     "author": "wassfila",
-    "dependencies": {
-        "plotly": "^1.0.6"
-    },
+    "dependencies": {},
     "repository": "https://github.com/HomeSmartMesh/raspi.git",
     "main": "main.js",
     "version": "0.0.1",

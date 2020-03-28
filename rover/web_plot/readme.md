@@ -13,4 +13,7 @@
 * https://plot.ly/javascript/plotlyjs-function-reference/
 * https://plot.ly/javascript/time-series/
 
+# install
+npm i plotly
+removed due to vulnerability
 
