@@ -4,7 +4,7 @@
   "description": "telegraf bots for chating with the home",
   "main": "hover_poll.js",
   "dependencies": {
-    "paho-mqtt": "^1.1.0",
+    "mqtt": "^3.0.0",
     "telegraf": "^3.36.0",
     "winston": "^3.2.1"
   },

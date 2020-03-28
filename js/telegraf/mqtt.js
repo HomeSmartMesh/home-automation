@@ -1,18 +1,11 @@
 const fs = require('fs');
-const Paho = require('paho-mqtt')
+const mqtt = require('mqtt')
 const {logger} = require('./logger.js')
 
 const config = JSON.parse(fs.readFileSync(__dirname+'\\config.json'))
 var client;
 
-var topics = {
-  lifo:"/bridge/networkmap",
-  mano:"/bridge/networkmap",
-  response:"+/bridge/networkmap/graphviz"
-}
-
 function onConnect() {
-  // Once a connection has been made, make a subscription and send a message.
   config.mqtt.subscriptions.forEach((topic)=>{
     client.subscribe(topic)
   })
@@ -25,17 +18,17 @@ function onConnectionLost(responseObject) {
   }
 }
 
-function onMessageArrived(message) {
-  logger.debug(`${message.destinationName} : ${message.payloadString}`);
+function onMessageArrived(topic,message) {
+  logger.debug(`${topic} : ${message}`);
 }
 
 function start(){
   logger.info(`creating client connection to ${config.mqtt.host}:${config.mqtt.port}`);
-  client = new Paho.Client(config.mqtt.host, Number(config.mqtt.port), config.mqtt.clien_id);
-  client.onConnectionLost = onConnectionLost;
-  client.onMessageArrived = onMessageArrived;
+  client = mqtt.connect(`mqtt://${config.mqtt.host}:${config.mqtt.port}`);//unused config.mqtt.clien_id
+  client.on('connect',onConnect);
+  //client.onConnectionLost = onConnectionLost;
+  client.on('message',onMessageArrived);
 
-  client.connect({onSuccess:onConnect});
 }
 
 //----------------------------------------------------------------------------------
