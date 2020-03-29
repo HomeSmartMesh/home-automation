@@ -1,0 +1,11 @@
+[Unit]
+Description=service used to power on a pc smart socket and an ethernet repeater
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=node /home/pi/raspi/js/pc_control/pc.js
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
