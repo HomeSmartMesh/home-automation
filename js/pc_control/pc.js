@@ -1,7 +1,7 @@
 const fs = require('fs');
 const {logger} = require('./logger.js')
 const mqtt = require('./mqtt.js')
-const config = JSON.parse(fs.readFileSync(__dirname+'\\config.json'))
+const config = JSON.parse(fs.readFileSync(__dirname+'/config.json'))
 
 //------------------ main ------------------
 logger.info('pc control started')

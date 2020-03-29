@@ -1,7 +1,7 @@
 const fs = require('fs');
 const {transports,createLogger, format} = require('winston');
 
-const config = JSON.parse(fs.readFileSync(__dirname+'\\config.json'))
+const config = JSON.parse(fs.readFileSync(__dirname+'/config.json'))
 
 var logger = createLogger({
     format: format.combine(
