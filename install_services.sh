@@ -12,7 +12,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable hover.service
 sudo systemctl start hover.service
 
-sudo cp py/hover/pc_power.service /lib/systemd/system/
+sudo cp js/pc_control/pc_power.service /lib/systemd/system/
 sudo chmod 644 /lib/systemd/system/pc_power.service
 sudo chmod +x js/pc_control/pc.js
 sudo systemctl daemon-reload

@@ -24,7 +24,7 @@ function onConnectionLost(responseObject) {
 
 function onMessageArrived(topic,message) {
   logger.debug(`mqtt> ${topic} : ${message}`);
-  Emitter.emit('mqtt',{topic:topic,msg:JSON.parse(message)});
+  Emitter.emit('mqtt',{topic:topic,msg:message});
 }
 
 function start(){

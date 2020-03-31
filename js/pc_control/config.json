@@ -4,7 +4,12 @@
         "port":1883,
         "keepalive":60,
         "client_id":"telegraf_pc_client",
-        "subscriptions":[  "mzig/pc button" ],
+        "subscriptions":[  
+            "mzig/pc button",
+            "mzig/office chair vibration",
+            "shellies/shellyplug-s-6A6375/relay/0",
+            "shellies/shellyplug-s-6A6375/relay/0/power"
+         ],
         "publish" :true,
         "subscribe" :true
     },
@@ -14,6 +19,8 @@
     },
     "log":{
         "logfile":"pc_control.log",
+        "exceptions":"pc_control_exceptions.log",
+        "share":"/home/pi/share/",
         "level":"Info"
     }
 }
