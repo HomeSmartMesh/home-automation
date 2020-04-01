@@ -1,10 +1,12 @@
 const fs = require('fs');
 const {logger} = require('./logger.js')
 const mqtt = require('./mqtt.js')
+const http = require('http')
 const config = JSON.parse(fs.readFileSync(__dirname+'/config.json'))
 
 let count_low = 0
 let pc_reley_status = "nothing"
+let auto_off = false
 
 function pc_shutdown(){
   logger.info(`pc> shutting down`)
@@ -35,11 +37,13 @@ mqtt.start()
 
 mqtt.Emitter.on('mqtt',(data)=>{
   if(data.topic == "shellies/shellyplug-s-6A6375/relay/0/power"){
-    const power = parseFloat(data.msg)
-    if(power <10){
-      call_low()
-    }else{
-      call_high()
+    if(auto_off){
+      const power = parseFloat(data.msg)
+      if(power <10){
+        call_low()
+      }else{
+        call_high()
+      }
     }
   }else if(data.topic == "shellies/shellyplug-s-6A6375/relay/0"){
     pc_reley_status = data.msg
@@ -56,6 +60,13 @@ mqtt.Emitter.on('mqtt',(data)=>{
           logger.info(`pc> is off and click => turning on`)
           mqtt.publish(config.control.pc,"on")
           mqtt.publish(config.control.repeater,"on")
+        }
+      }else if(message.click == "double"){
+        auto_off = !auto_off
+        if(auto_off){
+          http.request(config.control.led.on).end()
+        }else{
+          http.request(config.control.led.off).end()
         }
       }
     }else if(message.hasOwnProperty("action")){
@@ -77,6 +88,9 @@ mqtt.Emitter.on('mqtt',(data)=>{
     }
   }
 })
+
+//auto_off starts false
+http.request(config.control.led.off).end()
 
 //winston has it
 //process.on('uncaughtException', (err) => {
