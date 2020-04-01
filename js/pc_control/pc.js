@@ -42,17 +42,31 @@ mqtt.Emitter.on('mqtt',(data)=>{
     }
   }else if(data.topic == "shellies/shellyplug-s-6A6375/relay/0"){
     pc_reley_status = data.msg
-  }else{
+  }else if(data.topic == "mzig/pc button"){
     const message = JSON.parse(data.msg)
     if(message.hasOwnProperty("click")){
       logger.verbose(`pc> ${data.topic} : click = ${message.click}`)
       if(message.click == "single"){
-        logger.info(`pc> button control click control on`)
-        mqtt.publish(config.control.pc,"on")
+        if(pc_reley_status = "on"){
+          logger.info(`pc> is on and click => shutting off`)
+          mqtt.publish(config.control.pc,"off")
+          mqtt.publish(config.control.repeater,"off")
+        }else if(pc_reley_status = "off"){
+          logger.info(`pc> is off and click => turning on`)
+          mqtt.publish(config.control.pc,"on")
+          mqtt.publish(config.control.repeater,"on")
+        }
+      }
+    }else if(message.hasOwnProperty("action")){
+      if(message.action == "hold"){
+        mqtt.publish(config.control.repeater,"off")
+      }else if(message.action == "release"){
         mqtt.publish(config.control.repeater,"on")
       }
     }
-    else if(message.hasOwnProperty("action")){
+  }else if(data.topic == "mzig/office chair vibration"){
+    const message = JSON.parse(data.msg)
+    if(message.hasOwnProperty("action")){
       logger.verbose(`pc> ${data.topic} : action = ${message.action}`)
       if((message.action == "tilt") || (message.action == "vibration")){
         logger.info(`pc> chair moved`)
