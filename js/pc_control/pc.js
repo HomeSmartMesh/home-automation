@@ -17,8 +17,9 @@ function call_low(){
     count_low++
     logger.debug(`pc> count down ${count_low}`)
   }else{
-    if(pc_reley_status = "on"){
+    if(pc_reley_status == "on"){
       pc_shutdown()
+      count_low = 0
     }
     //else do nothing skip counting the off time, as it might be long - saving energy
   }
