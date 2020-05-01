@@ -24,3 +24,6 @@ subscription {
 ```javascript
 query{sensors{name}}
 ```
+
+# Issues & Limitations
+The sensors send alternatively different measures, how to make graphql send the existing data in the schema only without throwing an error and without having to fill unavailable vauels with 0.
