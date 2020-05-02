@@ -37,19 +37,18 @@ mqtt.start()
 
 function tv_button(topic,message){
   if(message.hasOwnProperty("click")){
-    logger.info(`tv> ${topic} : click = ${message.click}`)
+    logger.verbose(`tv> ${topic} : click = ${message.click}`)
     if(message.click == "on"){
         logger.info(`tv> switching on`)
         mqtt.publish(config.control.tv_play_sonos,"on")
         mqtt.publish(config.control.sonos_rear,"on")
-      }
     }else if(message.click == "off"){
       logger.info(`tv> switching off`)
       mqtt.publish(config.control.tv_play_sonos,"off")
       mqtt.publish(config.control.sonos_rear,"off")
+    }
   }
 }
-
 function pc_button(topic,message){
   if(message.hasOwnProperty("click")){
     logger.verbose(`pc> ${topic} : click = ${message.click}`)
