@@ -104,11 +104,11 @@ mqtt.Emitter.on('mqtt',(data)=>{
   }else if(data.topic == "shellies/shellyplug-s-6A6375/relay/0"){
     pc_reley_status = data.msg
   }else if(data.topic == "mzig/pc button"){
-    pc_button(JSON.parse(data.msg))
+    pc_button(data.topic,JSON.parse(data.msg))
   }else if(data.topic == "lzig/tv button"){
-    tv_button(JSON.parse(data.msg))
+    tv_button(data.topic,JSON.parse(data.msg))
   }else if(data.topic == "mzig/office chair vibration"){
-    office_chair_vibration(JSON.parse(data.msg))
+    office_chair_vibration(data.topic,JSON.parse(data.msg))
   }
 })
 
