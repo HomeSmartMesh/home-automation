@@ -6,6 +6,7 @@
         "client_id":"telegraf_pc_client",
         "subscriptions":[  
             "mzig/pc button",
+            "lzig/tv button",
             "mzig/office chair vibration",
             "shellies/shellyplug-s-6A6375/relay/0",
             "shellies/shellyplug-s-6A6375/relay/0/power"
@@ -14,8 +15,10 @@
         "subscribe" :true
     },
     "control":{
-        "pc":"shellies/shellyplug-s-6A6375/relay/0/command",
-        "repeater":"shellies/shellyplug-s-6A5DCF/relay/0/command",
+        "pc":           "shellies/shellyplug-s-6A6375/relay/0/command",
+        "repeater":     "shellies/shellyplug-s-6A5DCF/relay/0/command",
+        "tv_play_sonos":"shellies/shellyplug-s-6A5CE5/relay/0/command",
+        "sonos_rear":   "shellies/shellyplug-s-B85D90/relay/0/command",
         "led":{
             "on":"http://10.0.0.50/settings/?led_status_disable=false",
             "off":"http://10.0.0.50/settings/?led_status_disable=true"

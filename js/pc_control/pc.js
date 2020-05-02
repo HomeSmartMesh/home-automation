@@ -35,6 +35,62 @@ function call_high(){
 logger.info('pc control with shutdown capability started')
 mqtt.start()
 
+function tv_button(message){
+  if(message.hasOwnProperty("click")){
+    logger.verbose(`tv> ${data.topic} : click = ${message.click}`)
+    if(message.click == "on"){
+        logger.info(`tv> switching on`)
+        mqtt.publish(config.control.tv_play_sonos,"off")
+        mqtt.publish(config.control.sonos_rear,"off")
+      }
+    }else if(message.click == "off"){
+      logger.info(`tv> switching off`)
+      mqtt.publish(config.control.tv_play_sonos,"on")
+      mqtt.publish(config.control.sonos_rear,"on")
+  }
+}
+
+function pc_button(message){
+  if(message.hasOwnProperty("click")){
+    logger.verbose(`pc> ${data.topic} : click = ${message.click}`)
+    if(message.click == "single"){
+      if(pc_reley_status = "on"){
+        logger.info(`pc> is on and click => shutting off`)
+        mqtt.publish(config.control.pc,"off")
+        mqtt.publish(config.control.repeater,"off")
+      }else if(pc_reley_status = "off"){
+        logger.info(`pc> is off and click => turning on`)
+        mqtt.publish(config.control.pc,"on")
+        mqtt.publish(config.control.repeater,"on")
+      }
+    }else if(message.click == "double"){
+      auto_off = !auto_off
+      if(auto_off){
+        http.request(config.control.led.on).end()
+      }else{
+        http.request(config.control.led.off).end()
+      }
+    }
+  }else if(message.hasOwnProperty("action")){
+    if(message.action == "hold"){
+      mqtt.publish(config.control.repeater,"off")
+    }else if(message.action == "release"){
+      mqtt.publish(config.control.repeater,"on")
+    }
+  }
+}
+
+function office_chair_vibration(message){
+  if(message.hasOwnProperty("action")){
+    logger.verbose(`pc> ${data.topic} : action = ${message.action}`)
+    if((message.action == "tilt") || (message.action == "vibration")){
+      logger.info(`pc> chair moved`)
+      mqtt.publish(config.control.pc,"on")
+      mqtt.publish(config.control.repeater,"on")
+    }
+  }
+}
+
 mqtt.Emitter.on('mqtt',(data)=>{
   if(data.topic == "shellies/shellyplug-s-6A6375/relay/0/power"){
     if(auto_off){
@@ -48,44 +104,11 @@ mqtt.Emitter.on('mqtt',(data)=>{
   }else if(data.topic == "shellies/shellyplug-s-6A6375/relay/0"){
     pc_reley_status = data.msg
   }else if(data.topic == "mzig/pc button"){
-    const message = JSON.parse(data.msg)
-    if(message.hasOwnProperty("click")){
-      logger.verbose(`pc> ${data.topic} : click = ${message.click}`)
-      if(message.click == "single"){
-        if(pc_reley_status = "on"){
-          logger.info(`pc> is on and click => shutting off`)
-          mqtt.publish(config.control.pc,"off")
-          mqtt.publish(config.control.repeater,"off")
-        }else if(pc_reley_status = "off"){
-          logger.info(`pc> is off and click => turning on`)
-          mqtt.publish(config.control.pc,"on")
-          mqtt.publish(config.control.repeater,"on")
-        }
-      }else if(message.click == "double"){
-        auto_off = !auto_off
-        if(auto_off){
-          http.request(config.control.led.on).end()
-        }else{
-          http.request(config.control.led.off).end()
-        }
-      }
-    }else if(message.hasOwnProperty("action")){
-      if(message.action == "hold"){
-        mqtt.publish(config.control.repeater,"off")
-      }else if(message.action == "release"){
-        mqtt.publish(config.control.repeater,"on")
-      }
-    }
+    pc_button(JSON.parse(data.msg))
+  }else if(data.topic == "lzig/tv button"){
+    tv_button(JSON.parse(data.msg))
   }else if(data.topic == "mzig/office chair vibration"){
-    const message = JSON.parse(data.msg)
-    if(message.hasOwnProperty("action")){
-      logger.verbose(`pc> ${data.topic} : action = ${message.action}`)
-      if((message.action == "tilt") || (message.action == "vibration")){
-        logger.info(`pc> chair moved`)
-        mqtt.publish(config.control.pc,"on")
-        mqtt.publish(config.control.repeater,"on")
-      }
-    }
+    office_chair_vibration(JSON.parse(data.msg))
   }
 })
 
