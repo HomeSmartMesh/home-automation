@@ -35,9 +35,9 @@ function call_high(){
 logger.info('pc control with shutdown capability started')
 mqtt.start()
 
-function tv_button(message){
+function tv_button(topic,message){
   if(message.hasOwnProperty("click")){
-    logger.verbose(`tv> ${data.topic} : click = ${message.click}`)
+    logger.verbose(`tv> ${topic} : click = ${message.click}`)
     if(message.click == "on"){
         logger.info(`tv> switching on`)
         mqtt.publish(config.control.tv_play_sonos,"off")
@@ -50,9 +50,9 @@ function tv_button(message){
   }
 }
 
-function pc_button(message){
+function pc_button(topic,message){
   if(message.hasOwnProperty("click")){
-    logger.verbose(`pc> ${data.topic} : click = ${message.click}`)
+    logger.verbose(`pc> ${topic} : click = ${message.click}`)
     if(message.click == "single"){
       if(pc_reley_status = "on"){
         logger.info(`pc> is on and click => shutting off`)
@@ -80,9 +80,9 @@ function pc_button(message){
   }
 }
 
-function office_chair_vibration(message){
+function office_chair_vibration(topic,message){
   if(message.hasOwnProperty("action")){
-    logger.verbose(`pc> ${data.topic} : action = ${message.action}`)
+    logger.verbose(`pc> ${topic} : action = ${message.action}`)
     if((message.action == "tilt") || (message.action == "vibration")){
       logger.info(`pc> chair moved`)
       mqtt.publish(config.control.pc,"on")
