@@ -23,7 +23,7 @@ This Fremwork is a lightweight mqtt interconnect between devices (HW), services 
   * Mosquitto : https://mosquitto.org/
   * influxDB : https://www.influxdata.com/products/influxdb-overview/
   * mqtt2influx : [py/influx](./py/influx)
-  * Grafan : https://grafana.com/
+  * Grafana : https://grafana.com/
   * graphql sensors : [js/graphql](./js/graphql)
 * x to mqtt
   * Zigbee2mqtt : https://www.zigbee2mqtt.io/
