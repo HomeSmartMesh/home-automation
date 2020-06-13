@@ -67,6 +67,8 @@
         "publish" :false,
         "subscribe" :true,
         "types":{
+            "energy"      :"int",
+            "power"      :"float",
             "pressure"      :"float",
             "temperature"   :"float",
             "humidity"      :"float",
