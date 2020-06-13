@@ -1,4 +1,5 @@
 const http = require('http')
+const {logger} = require('./logger.js')
 
 //------------------ main ------------------
 logger.info('rebooting devices started')
