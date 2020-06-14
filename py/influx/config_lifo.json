@@ -72,6 +72,7 @@
             "pressure"      :"float",
             "temperature"   :"float",
             "humidity"      :"float",
+            "voltage"       :"float",
             "battery"       :"int",
             "moisture"      :"int",
             "conductivity"  :"int",

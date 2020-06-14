@@ -38,7 +38,7 @@ pid = {
     "pressure"      : 0x12,
     "acceleration"  : 0x13,
     "light_n"       : 0x14,
-    "battery"       : 0x15,
+    "voltage"       : 0x15,
     "text"          : 0x16,
     "test_rf_resp"  : 0x30
 }
@@ -100,9 +100,9 @@ def parse_payload(data):
         accel_y = float(int.from_bytes(bytearray(data[6:8]),'big',signed=True)) / 16384
         accel_z = float(int.from_bytes(bytearray(data[8:10]),'big',signed=True)) / 16384
         res = '(g) X {:02.2f} ; Y {:02.2f} ; Z {:02.2f}'.format(accel_x,accel_y,accel_z)
-    elif(data[2] == pid["battery"]):
+    elif(data[2] == pid["voltage"]):
         bat_v = float(int.from_bytes(bytearray(data[4:6]),'big',signed=True)) / 1000
-        res = 'battery {:02.3f} V'.format(bat_v)
+        res = 'voltage {:02.3f} V'.format(bat_v)
     elif(data[2] == pid["button"]):
         if(data[4] == 0):
             res = 'release'
@@ -176,8 +176,8 @@ def publish(msg):
     elif(inv_pid[int(msg["pid"])] == "light"):
         if("light" in msg):
             json_payload["light"] = float(msg["light"])
-    elif(inv_pid[int(msg["pid"])] == "battery"):
-        json_payload["battery"] = float(msg["battery"])
+    elif(inv_pid[int(msg["pid"])] == "voltage"):
+        json_payload["voltage"] = float(msg["voltage"])
     elif(inv_pid[int(msg["pid"])] == "acceleration"):
         if("accx" in msg):  #check accx is enough as some have size error logs
             json_payload = {}
