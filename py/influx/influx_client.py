@@ -10,6 +10,7 @@ import socket
 import json
 from mqtt import mqtt_start
 import dateutil.parser
+import sys
 
 def set_type(fields,param,set_type):
     if(param in fields):
@@ -58,12 +59,10 @@ def mqtt_on_message(client, userdata, msg):
         elif( len(topic_parts) == 2 ):
             sensor = topic_parts[1]
             fields = json.loads(msg.payload)
-            
             if("voltage" in fields):
                 fields["voltage"] = float(fields["voltage"])/1000 #convert voltage from milivolts to Volts
             check_all_types(fields)
             check_discards(fields)
-                
             is_last_seen_relevant = False
             if("last_seen" in fields):
                 is_last_seen_relevant = True
@@ -84,7 +83,7 @@ def mqtt_on_message(client, userdata, msg):
             if(msg.topic in config["mqtt"]["names"]):
                 measurement = config["mqtt"]["names"][msg.topic]
                 sensor = topic_parts[4]
-                value = float(str(msg.payload))
+                value = float(msg.payload)
                 post = [
                     {
                         "measurement": measurement,
@@ -104,9 +103,9 @@ def mqtt_on_message(client, userdata, msg):
                 log.error("InfluxDBServerError sample skipped "+msg.topic)
             except influxdb.exceptions.InfluxDBClientError as e:
                 log.error("InfluxDBClientError with "+msg.topic+" : " +str(msg.payload)+" >>> "+str(e) )
-    except ValueError:
-        log.error(" ValueError with : "+msg.topic+" "+str(msg.payload))
-
+    except:
+        e = sys.exc_info()[0]
+        log.info( "<p>Error: %s</p>" % e )
 # -------------------- main -------------------- 
 config = cfg.configure_log(__file__)
 
