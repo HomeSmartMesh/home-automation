@@ -177,7 +177,10 @@ def publish(msg):
         if("light" in msg):
             json_payload["light"] = float(msg["light"])
     elif(inv_pid[int(msg["pid"])] == "voltage"):
-        json_payload["voltage"] = float(msg["voltage"])
+        if("battery" in msg):
+            json_payload["voltage"] = float(msg["battery"])
+        elif("voltage" in msg):
+            json_payload["voltage"] = float(msg["voltage"])
     elif(inv_pid[int(msg["pid"])] == "acceleration"):
         if("accx" in msg):  #check accx is enough as some have size error logs
             json_payload = {}
