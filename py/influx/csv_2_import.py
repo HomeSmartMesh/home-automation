@@ -1,6 +1,3 @@
-from influxdb import InfluxDBClient
-import influxdb
-import requests
 import sys
 import os
 
