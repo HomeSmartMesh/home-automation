@@ -6,9 +6,9 @@
         "root_topic":"zig"
     },
     "influxdb":{
-        "host":"10.0.0.12",
+        "host":"10.0.0.3",
         "port":8086,
-        "db":"meshNodes",
+        "db":"test",
         "mqtt_client_id":"py_influx"
     },
     "log":{

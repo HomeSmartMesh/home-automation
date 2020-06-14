@@ -15,3 +15,5 @@ influx -execute 'SELECT * INTO mqtt.."kitchen heat" FROM nrf_mesh.."kitchen heat
 influx -execute 'SELECT * INTO mqtt.."living heat" FROM nrf_mesh.."living heat"'
 influx -execute 'SELECT * INTO mqtt.."office heat" FROM nrf_mesh.."office heat"'
 influx -execute 'SELECT * INTO mqtt.."office weather" FROM nrf_mesh.."office weather"'
+
+influx -execute 'SELECT * INTO test.."kitchen tag" FROM mqtt.."kitchen tag"'

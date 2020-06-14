@@ -8,11 +8,11 @@
     "influxdb":{
         "host":"localhost",
         "port":8086,
-        "db":"meshNodes",
+        "db":"mqtt",
         "mqtt_client_id":"py_influx"
     },
     "log":{
-        "logfile":"/home/pi/share/influx_client.log",
+        "logfile":"./influx_client.log",
         "level":"Debug"
     }
 }
