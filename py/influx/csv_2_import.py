@@ -66,7 +66,7 @@ def export_txt(posts,fileName,dbName):
             line = f"{name} "
             for filed_name,field_val in post["fields"].items():
                 line = line + f"{filed_name}={field_val} "
-            line = line + post["time"]
+            line = line + str(post["time"])
             efile.write(line+'\n')
     return
 
