@@ -30,6 +30,8 @@ def import_csv(data):
             else:
                 cells = line.split(',')
                 fields = {}
+                measurement = ""
+                time = 0
                 for index,cell in enumerate(cells):
                     col_name = columns[index]
                     if(col_name == "name"):
