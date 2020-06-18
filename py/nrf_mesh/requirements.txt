@@ -1,2 +1,4 @@
 paho-mqtt
 pyserial
+requests
+tzlocal

@@ -4,6 +4,7 @@ from serial.tools import list_ports
 import binascii
 import cfg
 import logging as log
+import sys
 
 config = cfg.configure_log(__file__)
 ser = Serial()
@@ -51,6 +52,9 @@ def serial_start(config,serial_on_line):
     dev = None
     if("ID" in config["serial"]):
         dev = get_device(config["serial"]["ID"])
+        if(dev is None):
+            log.error(f"device {config['serial']['ID']} not available")
+            sys.exit(1)
     else:
         dev = config["serial"]["port"]
     ser = serial.Serial(dev,

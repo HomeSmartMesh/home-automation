@@ -6,6 +6,7 @@ import cfg
 import rf_uart as ser
 import json
 import logging as log
+import requests
 
 on_broadcast = None
 on_message = None
@@ -13,8 +14,14 @@ on_cmd_response = None
 
 config = cfg.configure_log(__file__)
 nodes_config_file = os.getenv('NODES_CONFIG','/home/pi/nRF52_Mesh/raspi/mesh_wizard/nodes.json')
+if("config" in config["mesh"]):
+    nodes_config_file = config["mesh"]["config"]
 log.info("mesh> using NODES_CONFIG : %s",nodes_config_file)
-nodes = cfg.get_local_nodes(nodes_config_file)
+if(nodes_config_file.startswith("http")):
+    response = requests.get(nodes_config_file)
+    nodes = response.json()
+else:
+    nodes = cfg.get_local_nodes(nodes_config_file)
 
 pid = {
     "exec_cmd"      : 0xEC,
