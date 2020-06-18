@@ -1,11 +1,24 @@
 import serial
+from serial import Serial
+from serial.tools import list_ports
 import binascii
 import cfg
 import logging as log
 
 config = cfg.configure_log(__file__)
-ser = serial.Serial()
+ser = Serial()
 on_line_function = None
+
+def get_device(id):
+    dev = None
+    devices = list_ports.comports()
+    for device in devices:
+        if(device.vid is not None) and (device.pid is not None):
+            current_id = f"{hex(device.vid)}:{hex(device.pid)}"
+            if(current_id == id):
+                dev = device.device
+                log.info(f"uart> device {id} found at {dev}")
+    return dev
 
 def run():
     res = None
@@ -35,7 +48,12 @@ def serial_start(config,serial_on_line):
     global on_line_function
     on_line_function = serial_on_line
     global ser
-    ser = serial.Serial(config["serial"]["port"],
+    dev = None
+    if("ID" in config["serial"]):
+        dev = get_device(config["serial"]["ID"])
+    else:
+        dev = config["serial"]["port"]
+    ser = serial.Serial(dev,
                         config["serial"]["baud"],
                         timeout=0.1)
     ser.reset_input_buffer()
