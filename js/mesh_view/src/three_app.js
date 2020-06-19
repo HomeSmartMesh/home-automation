@@ -36,7 +36,8 @@ function onWindowMqtt(e){
 
 
 function init(){
-	$.getJSON("nodes.json", function(json) {
+	//https://raw.githubusercontent.com/nRFMesh/nRF52_Mesh/master/nodes.json
+	$.getJSON("http://10.0.0.31:8080/nodes.json", function(json) {
 		nodes_config = json;
 		console.log("loaded sensors config");
 		$.getJSON("house.json", function(house_json) {

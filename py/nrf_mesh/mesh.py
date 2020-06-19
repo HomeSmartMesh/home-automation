@@ -13,7 +13,7 @@ on_message = None
 on_cmd_response = None
 
 config = cfg.configure_log(__file__)
-nodes_config_file = os.getenv('NODES_CONFIG','/home/pi/nRF52_Mesh/raspi/mesh_wizard/nodes.json')
+nodes_config_file = '/home/pi/nRF52_Mesh/nodes.json'
 if("config" in config["mesh"]):
     nodes_config_file = config["mesh"]["config"]
 log.info("mesh> using NODES_CONFIG : %s",nodes_config_file)
