@@ -20,6 +20,7 @@ log.info("mesh> using NODES_CONFIG : %s",nodes_config_file)
 if(nodes_config_file.startswith("http")):
     response = requests.get(nodes_config_file)
     nodes = response.json()
+    log.info(f" => {len(nodes)} nodes")
 else:
     nodes = cfg.get_local_nodes(nodes_config_file)
 

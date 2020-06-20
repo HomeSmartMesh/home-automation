@@ -6,7 +6,7 @@
     },
     "mesh":{
         "channel":2,
-        "config":"http://10.0.0.42/nodes.json",
+        "config":"http://10.0.0.31:8080/nodes.json",
         "whitelist":[],
         "blacklist":[]
     },

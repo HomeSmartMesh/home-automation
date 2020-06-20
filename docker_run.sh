@@ -1,4 +1,4 @@
-docker run --name webapps -p 8008:80 \
+docker run --name webapps -p 80:80 \
 -d --restart unless-stopped \
 -v /home/pi/raspi/zigbee/graph_view:/usr/share/nginx/html/zigbee:ro \
 -v /home/pi/raspi/js/bed_heating:/usr/share/nginx/html/bed:ro \
