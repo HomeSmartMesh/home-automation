@@ -13,6 +13,10 @@ services:
       - "8086:8086"
     volumes:
       - ${PWD}/influxdb:/var/lib/influxdb
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
   webapps:
     image: nginx
     ports:
