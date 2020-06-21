@@ -1,3 +1,9 @@
+docker-compose up -d
+docker-compose stop
+
+docker exec -it <name> bash
+docker exec -it <name> influx
+
 docker run --name webapps -p 80:80 \
 -d --restart unless-stopped \
 -v /home/pi/raspi/zigbee/graph_view:/usr/share/nginx/html/zigbee:ro \
@@ -11,7 +17,7 @@ docker run --name mos -it -p 1883:1883 -p 1884:1884 -v /home/pi/mosquitto/mosqui
 
 docker run --name webapps -p 80:80 \
 -d --restart unless-stopped \
--v /home/pi/raspi/nginx.conf:/etc/nginx/nginx.conf:ro \
+-v /home/pi/raspi/nginx/nginx.conf:/etc/nginx/nginx.conf:ro \
 nginx
 
 docker run --name webtest -p 8080:80 \
@@ -26,5 +32,5 @@ nginx
 
 docker run --name zigbee -p 80:80 \
 -v /home/pi/raspi/zigbee/graph_view:/usr/share/nginx/html/zigbee:ro \
--v /home/pi/raspi/nginx.conf:/etc/nginx/nginx.conf:ro \
+-v /home/pi/raspi/nginx/nginx.conf:/etc/nginx/nginx.conf:ro \
 nginx

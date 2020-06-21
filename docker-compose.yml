@@ -1,9 +1,25 @@
 version: "3.8"
 services:
-  mos:
+  mosquitto:
     image: eclipse-mosquitto
     ports:
-      - "1883"
-      - "1884"
+      - "1883:1883"
+      - "1884:1883"
     volumes:
-      - /home/pi/raspi/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ${PWD}/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+  influx:
+    image: influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      - ${PWD}/influxdb:/var/lib/influxdb
+  webapps:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ${PWD}/zigbee/graph_view:/usr/share/nginx/html/zigbee:ro
+      - ${PWD}/js/bed_heating:/usr/share/nginx/html/bed:ro
+      - ${PWD}/js/heating:/usr/share/nginx/html/heat:ro
+      - ${PWD}/js/leds_panel:/usr/share/nginx/html/leds:ro
+      - ${PWD}/../smart_home_3d_webapp:/usr/share/nginx/html/3d:ro
