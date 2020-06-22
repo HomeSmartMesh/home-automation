@@ -17,6 +17,12 @@ services:
     image: grafana/grafana
     ports:
       - "3000:3000"
+  nrf_mesh:
+    build:
+      context: ./py/nrf_mesh
+    network_mode: "host"
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
   webapps:
     image: nginx
     ports:
@@ -27,3 +33,4 @@ services:
       - ${PWD}/js/heating:/usr/share/nginx/html/heat:ro
       - ${PWD}/js/leds_panel:/usr/share/nginx/html/leds:ro
       - ${PWD}/../smart_home_3d_webapp:/usr/share/nginx/html/3d:ro
+      - ${PWD}/../nRF52_Mesh/nodes.json:/usr/share/nginx/html/nodes.json:ro

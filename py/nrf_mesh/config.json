@@ -1,12 +1,12 @@
 {
     "serial":{
         "ID":"0x1915:0x520f",
-        "port":"/dev/ttyUSB1",
+        "port":"/dev/ttyACM0",
         "baud":460800
     },
     "mesh":{
         "channel":2,
-        "config":"http://10.0.0.31:8080/nodes.json",
+        "config":"http://localhost/nodes.json",
         "whitelist":[],
         "blacklist":[]
     },
@@ -14,8 +14,8 @@
         "enable":true,
         "subscribe" :false,
         "publish" :true,
-        "base_topic" : "test_nrf",
-        "host":"10.0.0.42",
+        "base_topic" : "nrf",
+        "host":"localhost",
         "port":1883,
         "keepalive":60,
         "client_id":"nrf_mesh",
@@ -27,7 +27,7 @@
         "actions"   :["dimmer","heat","ping"]
     },
     "log":{
-        "logfile":"test_nrf_mesh.log",
+        "logfile":"nrf_mesh.log",
         "level":"Debug"
     }
 }

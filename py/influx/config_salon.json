@@ -3,10 +3,8 @@
         "host":"localhost",
         "port":1883,
         "keepalive":60,
-        "subscriptions":[   
-            "nrf/#"
-        ]
-},
+        "root_topic":"zig"
+    },
     "influxdb":{
         "host":"localhost",
         "port":8086,
