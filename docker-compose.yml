@@ -17,12 +17,27 @@ services:
     image: grafana/grafana
     ports:
       - "3000:3000"
-  nrf_mesh:
+    volumes:
+      - ${PWD}/grafana/data:/var/lib/grafana
+      - ${PWD}/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
+    depends_on:
+      - "influx"
+  nrf2mqtt:
     build:
       context: ./py/nrf_mesh
     network_mode: "host"
     devices:
       - "/dev/ttyACM0:/dev/ttyACM0"
+    depends_on:
+      - "webapps"
+      - "mosquitto"
+  mqtt2influx:
+    build:
+      context: ./py/influx
+    network_mode: "host"
+    depends_on:
+      - "mosquitto"
+      - "influx"
   webapps:
     image: nginx
     ports:

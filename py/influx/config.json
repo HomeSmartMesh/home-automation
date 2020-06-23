@@ -3,18 +3,20 @@
         "host":"localhost",
         "port":1883,
         "keepalive":60,
+        "client_id":"py_influx",
         "subscriptions":[   
             "nrf/#"
-        ]
+        ],
+        "publish" :false,
+        "subscribe" :true
 },
     "influxdb":{
         "host":"localhost",
         "port":8086,
-        "db":"mqtt",
-        "mqtt_client_id":"py_influx"
+        "db":"mqtt"
     },
     "log":{
         "logfile":"./influx_client.log",
-        "level":"Debug"
+        "level":"Info"
     }
 }
