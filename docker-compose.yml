@@ -13,10 +13,13 @@ services:
       - "8086:8086"
     volumes:
       - ${PWD}/influxdb:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB:=mqtt
   grafana:
     image: grafana/grafana
     ports:
       - "3000:3000"
+    network_mode: "host"
     volumes:
       - ${PWD}/grafana/data:/var/lib/grafana
       - ${PWD}/grafana/grafana.ini:/etc/grafana/grafana.ini:ro

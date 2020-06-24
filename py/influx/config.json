@@ -8,8 +8,27 @@
             "nrf/#"
         ],
         "publish" :false,
-        "subscribe" :true
-},
+        "subscribe" :true,
+        "types":{
+            "energy"      :"int",
+            "power"      :"float",
+            "pressure"      :"float",
+            "temperature"   :"float",
+            "humidity"      :"float",
+            "voltage"       :"float",
+            "battery"       :"int",
+            "moisture"      :"int",
+            "conductivity"  :"int",
+            "current_heating_setpoint"  :"float",
+            "occupied_heating_setpoint":"float",
+            "unoccupied_heating_setpoint":"float",
+            "pi_heating_demand" :"int"
+        },
+        "discard":[
+            "path",
+            "eurotronic_host_flags"
+        ]              
+    },
     "influxdb":{
         "host":"localhost",
         "port":8086,
