@@ -83,7 +83,7 @@ def mqtt_on_message(client, userdata, msg):
             if(msg.topic in config["mqtt"]["names"]):
                 measurement = config["mqtt"]["names"][msg.topic]
                 sensor = topic_parts[4]
-                value = float(msg.payload)
+                value = float(str(msg.payload))
                 post = [
                     {
                         "measurement": measurement,
