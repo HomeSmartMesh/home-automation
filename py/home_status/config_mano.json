@@ -1,6 +1,6 @@
 {  
     "mqtt":{
-        "host":"10.0.0.42",
+        "host":"mano",
         "port":1883,
         "keepalive":60,
         "client_id":"home_status_client",
@@ -39,12 +39,12 @@
     ],
     "status":{
         "red":{
-            "on":"http://192.168.0.109/settings/?led_power_disable=false",
-            "off":"http://192.168.0.109/settings/?led_power_disable=true"
+            "on":"http://entrance.shelly/settings/?led_power_disable=false",
+            "off":"http://entrance.shelly/settings/?led_power_disable=true"
         },
         "blue":{
-            "on":"http://192.168.0.109/settings/?led_status_disable=false",
-            "off":"http://192.168.0.109/settings/?led_status_disable=true"
+            "on":"http://entrance.shelly/settings/?led_status_disable=false",
+            "off":"http://entrance.shelly/settings/?led_status_disable=true"
         }
     },
     "log":{

@@ -1,0 +1,22 @@
+10.0.0.42       mqtt_broquer
+
+10.0.0.3        salon
+10.0.0.13       strong.shelly
+10.0.0.32       lifo
+10.0.0.38       hue
+10.0.0.40       bathroom.shelly
+10.0.0.42       mano
+10.0.0.49       sonos_sat.shelly
+10.0.0.50       dell_pc.shelly
+10.0.0.53       metal
+192.168.0.100   dryer.shelly
+192.168.0.101   fridge.shelly
+192.168.0.102   freezer.shelly
+192.168.0.103   waching_machine.shelly
+192.168.0.104   micro_wave.shelly
+192.168.0.105   dish_washer.shelly
+192.168.0.106   bed.shelly
+192.168.0.107   tv_set.shelly
+192.168.0.108   routers.shelly
+192.168.0.109   entrance.shelly
+192.168.0.111   eth_rep.shelly

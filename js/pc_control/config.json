@@ -1,9 +1,9 @@
 {  
     "mqtt":{
-        "host":"10.0.0.42",
+        "host":"mqtt_broquer",
         "port":1883,
         "keepalive":60,
-        "client_id":"telegraf_pc_client",
+        "client_id":"pc_power_client",
         "subscriptions":[  
             "mzig/pc button",
             "lzig/tv button",
@@ -20,14 +20,14 @@
         "tv_play_sonos":"shellies/shellyplug-s-6A5CE5/relay/0/command",
         "sonos_rear":   "shellies/shellyplug-s-B85D90/relay/0/command",
         "led":{
-            "on":"http://10.0.0.50/settings/?led_status_disable=false",
-            "off":"http://10.0.0.50/settings/?led_status_disable=true"
+            "on":"http://dell_pc.shelly/settings/?led_status_disable=false",
+            "off":"http://dell_pc.shelly/settings/?led_status_disable=true"
         }
     },
     "log":{
         "logfile":"pc_control.log",
         "exceptions":"pc_control_exceptions.log",
-        "share":"/home/pi/share/",
+        "share":"~/",
         "level":"Info"
     }
 }
