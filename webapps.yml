@@ -15,7 +15,7 @@ services:
   zigAssMano:
       image: carldebilly/zigbee2mqttassistant
       environment:
-          - Z2MA_SETTINGS__MQTTSERVER=mano
+          - Z2MA_SETTINGS__MQTTSERVER=10.0.0.42
           - Z2MA_SETTINGS__BASETOPIC=mzig
           - TZ=Europe/Berlin
       ports:
@@ -24,7 +24,7 @@ services:
   zigAssLifo:
       image: carldebilly/zigbee2mqttassistant
       environment:
-          - Z2MA_SETTINGS__MQTTSERVER=mano
+          - Z2MA_SETTINGS__MQTTSERVER=10.0.0.42
           - Z2MA_SETTINGS__BASETOPIC=lzig
           - TZ=Europe/Berlin
       ports:
