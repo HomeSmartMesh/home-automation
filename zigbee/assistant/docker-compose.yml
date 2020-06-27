@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+    zigbee2mqttAssistant:
+        image: carldebilly/zigbee2mqttassistant
+        container_name: zigbee2mqttAssistant
+        environment:
+            - Z2MA_SETTINGS__MQTTSERVER=10.0.0.42
+            - Z2MA_SETTINGS__BASETOPIC=mzig
+            - Z2MA_SETTINGS__MQTTPORT=1883
+            # Set to your TimeZone when using on Linux https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+            # Won't work if you're using the Windows version of the container
+            - TZ=Europe/Copenhagen
+        ports:
+            - 8880:80
+        restart: unless-stopped
+        network_mode: "host"
