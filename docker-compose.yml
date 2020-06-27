@@ -52,3 +52,23 @@ services:
       - ${PWD}/js/leds_panel:/usr/share/nginx/html/leds:ro
       - ${PWD}/../smart_home_3d_webapp:/usr/share/nginx/html/3d:ro
       - ${PWD}/../nRF52_Mesh/nodes.json:/usr/share/nginx/html/nodes.json:ro
+  zigAssistMano:
+      image: carldebilly/zigbee2mqttassistant
+      container_name: zigmano
+      environment:
+          - Z2MA_SETTINGS__MQTTSERVER=mano
+          - Z2MA_SETTINGS__BASETOPIC=mzig
+          - TZ=Europe/Berlin
+      ports:
+          - 8080:80
+      restart: unless-stopped
+  zigAssistLifo:
+      image: carldebilly/zigbee2mqttassistant
+      container_name: ziglifo
+      environment:
+          - Z2MA_SETTINGS__MQTTSERVER=mano
+          - Z2MA_SETTINGS__BASETOPIC=lzig
+          - TZ=Europe/Berlin
+      ports:
+          - 8090:80
+      restart: unless-stopped
