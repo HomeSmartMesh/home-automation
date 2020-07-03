@@ -8,6 +8,7 @@ influx -execute 'SELECT * INTO mqtt.."Livingroom tag" FROM nrf_mesh.."Livingroom
 influx -execute 'SELECT * INTO mqtt.."Livingroom window tag" FROM nrf_mesh.."Livingroom window tag"'
 influx -execute 'SELECT * INTO mqtt.."Office tag" FROM nrf_mesh.."Office tag"'
 influx -execute 'SELECT * INTO mqtt.."balcony weather" FROM nrf_mesh.."balcony weather"'
+influx -execute 'SELECT * INTO mqtt.."fridge weather" FROM nrf_mesh.."fridge weather"'
 influx -execute 'SELECT * INTO mqtt.."bathroom heat" FROM nrf_mesh.."bathroom heat"'
 influx -execute 'SELECT * INTO mqtt.."bed weather" FROM nrf_mesh.."bed weather"'
 influx -execute 'SELECT * INTO mqtt.."bedroom heat" FROM nrf_mesh.."bedroom heat"'
