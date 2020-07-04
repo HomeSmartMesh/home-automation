@@ -226,8 +226,11 @@ Note that the following viewer is hosted on github and has therefore a secure co
 
 In order to use this script, it is required to host it locally on local raspberry py, see [deploy](zigbee/graph_view/deploy.sh) script for deployment convenience. Direct usage from the link would require to authorise cross origin on chrome symbol on right of the adress bar.
 
-## Log.io
+## Logging
+### Log.io
 * exposing log files to webapps :
 * `js/log.io/server.json`
 * https://github.com/NarrativeScience/log.io
 
+## trnasport-browserconsole
+* https://www.npmjs.com/package/winston-transport-browserconsole

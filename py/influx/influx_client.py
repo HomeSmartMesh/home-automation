@@ -83,7 +83,7 @@ def mqtt_on_message(client, userdata, msg):
             if(msg.topic in config["mqtt"]["names"]):
                 measurement = config["mqtt"]["names"][msg.topic]
                 sensor = topic_parts[4]
-                value = float(str(msg.payload))
+                value = float(msg.payload)
                 post = [
                     {
                         "measurement": measurement,
@@ -104,8 +104,7 @@ def mqtt_on_message(client, userdata, msg):
             except influxdb.exceptions.InfluxDBClientError as e:
                 log.error("InfluxDBClientError with "+msg.topic+" : " +str(msg.payload)+" >>> "+str(e) )
     except:
-        e = sys.exc_info()[0]
-        log.info( "<p>Error: %s</p>" % e )
+        log.exception("message")
 # -------------------- main -------------------- 
 config = cfg.configure_log(__file__)
 
