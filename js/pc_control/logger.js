@@ -12,14 +12,15 @@ var logger = createLogger({
         format.json()
     ),
     transports: [
-      new transports.Console({level:'verbose'}),
-      new transports.File({ filename: log_filename })
+      new transports.Console({level:config.log.level}),
+      new transports.File({ filename: log_filename ,level:config.log.level})
     ],
     exceptionHandlers: [
       new transports.File({ filename: exc_filename ,level:config.log.level})
     ]
   });
 
-logger.info("logger started")
+console.log(`logger ${config.log.level} started at ${log_filename}`)
+logger.info(`logger ${config.log.level} started at ${log_filename}`)
 
 module.exports = {logger:logger};

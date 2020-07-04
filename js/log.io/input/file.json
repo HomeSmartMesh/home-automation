@@ -1,0 +1,23 @@
+{
+  "messageServer": {
+    "host": "10.0.0.31",
+    "port": 6689
+  },
+  "inputs": [
+    {
+      "source": "lifo",
+      "stream": "pc_control",
+      "config": {
+        "path": "/home/pi/share/pc_control.log"
+      }
+    },
+    {
+      "source": "lifo",
+      "stream": "zigbee",
+      "config": {
+        "path": "/home/pi/share/zigbee/log.txt"
+      }
+    }
+
+  ]
+}

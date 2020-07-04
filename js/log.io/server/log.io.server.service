@@ -1,0 +1,12 @@
+[Unit]
+Description=log service for mapping files to webapp viewing
+After=multi-user.target
+
+[Service]
+Environment="LOGIO_SERVER_CONFIG_PATH=/home/pi/raspi/js/log.io/server/server.json"
+Type=simple
+ExecStart=log.io-server
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

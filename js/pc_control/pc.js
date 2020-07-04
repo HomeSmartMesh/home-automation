@@ -33,6 +33,10 @@ function call_high(){
 
 //------------------ main ------------------
 logger.info('pc control with shutdown capability started')
+logger.info('test info')
+logger.verbose('test verbose')
+logger.debug('test debug')
+logger.silly('test silly')
 mqtt.start()
 
 function tv_button(topic,message){
