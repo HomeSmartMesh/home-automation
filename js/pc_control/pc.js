@@ -55,13 +55,13 @@ function tv_button(topic,message){
 }
 function pc_button(topic,message){
   if(message.hasOwnProperty("click")){
-    logger.verbose(`pc> ${topic} : click = ${message.click}`)
+    logger.verbose(`pc> ${topic} : click = (${message.click})`)
     if(message.click == "single"){
-      if(pc_reley_status = "on"){
+      if(pc_reley_status == "on"){
         logger.info(`pc> is on and click => shutting off`)
         mqtt.publish(config.control.pc,"off")
         mqtt.publish(config.control.repeater,"off")
-      }else if(pc_reley_status = "off"){
+      }else if(pc_reley_status == "off"){
         logger.info(`pc> is off and click => turning on`)
         mqtt.publish(config.control.pc,"on")
         mqtt.publish(config.control.repeater,"on")
