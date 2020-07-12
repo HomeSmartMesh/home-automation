@@ -84,7 +84,8 @@
         },
         "discard":[
             "path",
-            "eurotronic_host_flags"
+            "eurotronic_host_flags",
+            "occupancy"
         ]              
     },
     "influxdb":{
