@@ -6,7 +6,7 @@ const config = JSON.parse(fs.readFileSync(__dirname+'/config.json'))
 
 let count_low = 0
 let pc_reley_status = "nothing"
-let auto_off = false
+let auto_off = true
 
 function pc_shutdown(){
   logger.info(`pc> shutting down`)
@@ -115,8 +115,8 @@ mqtt.Emitter.on('mqtt',(data)=>{
   }
 })
 
-//auto_off starts false
-http.request(config.control.led.off).end()
+//auto_off starts true => on
+http.request(config.control.led.on).end()
 
 //winston has it
 //process.on('uncaughtException', (err) => {

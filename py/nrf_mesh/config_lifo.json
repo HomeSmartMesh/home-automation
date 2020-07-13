@@ -24,7 +24,7 @@
         "actions"   :[]
     },
     "log":{
-        "logfile":"/home/pi/share/log_nrf_mesh_2.log",
+        "logfile":"/home/pi/share/log_nrf_mesh_3.log",
         "level":"Info"
     }
 }
