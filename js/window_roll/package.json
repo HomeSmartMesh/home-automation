@@ -1,0 +1,16 @@
+{
+  "name": "pc_power_control",
+  "version": "1.0.0",
+  "description": "controlling smart socket for starting a PC and an ethernet repeater",
+  "main": "pc.js",
+  "dependencies": {
+    "mqtt": "^3.0.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "run": "node pc.js"
+  },
+  "author": "wassfila",
+  "license": "MIT"
+}

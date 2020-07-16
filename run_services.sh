@@ -19,3 +19,11 @@ sudo chmod +x js/pc_control/pc.js
 sudo systemctl daemon-reload
 sudo systemctl enable pc_power.service
 sudo systemctl start pc_power.service
+
+sudo cp js/window_roll/roll.service /lib/systemd/system/
+sudo chmod 644 /lib/systemd/system/roll.service
+sudo chmod +x js/window_roll/roll.js
+sudo systemctl daemon-reload
+sudo systemctl enable roll.service
+sudo systemctl start roll.service
+

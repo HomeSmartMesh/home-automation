@@ -1,0 +1,23 @@
+{  
+    "mqtt":{
+        "host":"mqtt_broquer",
+        "port":1883,
+        "keepalive":60,
+        "client_id":"window_roll_client",
+        "subscriptions":[  
+            "lzig/roll button 1/click",
+            "lzig/roll button 2/click"
+         ],
+        "publish" :true,
+        "subscribe" :true
+    },
+    "control":{
+        "roll":        "lzig/bedroom roll/set"
+    },
+    "log":{
+        "logfile":"roll.log",
+        "exceptions":"roll_exceptions.log",
+        "share":"/home/pi/share/",
+        "level":"debug"
+    }
+}

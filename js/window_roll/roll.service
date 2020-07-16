@@ -1,0 +1,11 @@
+[Unit]
+Description=service used to open close position ikea window roll blind
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=node /home/pi/raspi/js/window_roll/roll.js
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
