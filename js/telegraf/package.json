@@ -5,8 +5,8 @@
   "main": "hover_poll.js",
   "dependencies": {
     "mqtt": "^3.0.0",
-    "telegraf": "^3.36.0",
-    "winston": "^3.2.1"
+    "telegraf": "^3.38.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {},
   "scripts": {
