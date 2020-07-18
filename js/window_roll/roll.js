@@ -8,9 +8,25 @@ const config = JSON.parse(fs.readFileSync(__dirname+'/config.json'))
 let control = false
 let position = 50
 let target_position = 50
+let is_window_closed = false
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function roll_down_up(){
+  mqtt.publish(config.control.roll,JSON.stringify({position:97}))
+  await delay(1000)
+  mqtt.publish(config.control.roll,"open")
+}
 
 function roll_command(cmd){
-  mqtt.publish(config.control.roll,cmd)
+  if(is_window_closed){
+    mqtt.publish(config.control.roll,cmd)
+  }else{
+    //fake warning up then down
+    roll_down_up().then()
+  }
 }
 
 //------------------ main ------------------
@@ -50,7 +66,7 @@ function roll_volume_control(topic,msg){
     //logger.verbose(`volume control> stop`)
     control = true
   }else if(msg == "rotate_stop"){
-    logger.verbose(`requestion position> ${target_position}`)
+    logger.verbose(`requesting position> ${target_position}`)
     roll_command(JSON.stringify({position:target_position}))
     control = false
   }
@@ -66,6 +82,13 @@ function roll_position(topic,message){
   }
 }
 
+function window_state(topic,message){
+  console.log(`updating window state closed = ${message.contact}`)
+  if(is_window_closed != message.contact){
+    is_window_closed = message.contact
+  }
+}
+
 mqtt.Emitter.on('mqtt',(data)=>{
   if(data.topic == "lzig/roll button 1/click"){
     roll_buttons(data.topic,String(data.msg))
@@ -74,9 +97,11 @@ mqtt.Emitter.on('mqtt',(data)=>{
   }else if(data.topic == "lzig/volume white"){
     //roll_volume_move(data.topic,JSON.parse(data.msg))
   }else if(data.topic == "lzig/volume white/action"){
-    roll_volume_control(data.topic,String(data.msg))
+    //roll_volume_control(data.topic,String(data.msg))
   }else if(data.topic == "lzig/bedroom roll"){
-    roll_position(data.topic,JSON.parse(data.msg))
+    //roll_position(data.topic,JSON.parse(data.msg))
+  }else if(data.topic == "lzig/bedroom window"){
+    window_state(data.topic,JSON.parse(data.msg))
   }
 })
 
