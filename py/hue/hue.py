@@ -157,6 +157,40 @@ def office_switch(payload):
     #    log.debug("office_light>no click")
     return
 
+def office_dimm(payload):
+    #log.info(f"office_switch ===> {payload}")
+    volume = json.loads(payload)
+    if("action" in volume and volume["action"] == "play_pause"):
+            b.set_light("office desk", {'on' : True, 'bri' : 128})
+            log.info("office_dimm>(double)(X) => desk mid")
+    elif("action" in volume and volume["action"] == "skip_forward"):
+            lights["office desk"].on = False
+            log.info("office_dimm>(single)(X) => desk off")
+    elif("action" in volume and volume["action"] == "rotate_left"):
+            brightness = b.get_light("office desk")['state']['bri']
+            brightness = brightness-10
+            if(brightness < 0):
+                brightness = 0
+            if(brightness == 0):
+                lights["office desk"].on = False
+                log.info(f"office_dimm>(rotate lower)(0) => (Off)")
+            else:
+                b.set_light("office desk", {'on' : True, 'bri' : brightness})
+                log.info(f"office_dimm>(rotate lower) => ({brightness})")
+    elif("action" in volume and volume["action"] == "rotate_right"):
+            brightness = b.get_light("office desk")['state']['bri']
+            brightness = brightness+10
+            if(brightness > 254):
+                brightness = 254
+            if(brightness == 254):
+                b.set_light("office desk", {'on' : True, 'bri' : 0,'transitiontime':5})
+                b.set_light("office desk", {'on' : True, 'bri' : 254,'transitiontime':5})
+                log.info(f"office_dimm>(rotate higher)(X) => (blink MAX)")
+            else:
+                b.set_light("office desk", {'on' : True, 'bri' : brightness})
+                log.info(f"office_dimm>(rotate higher) => ({brightness})")
+    return
+
 def entrance_light(payload):
     jval = json.loads(payload)
     if("click" in jval and jval["click"] == "single"):
@@ -186,6 +220,8 @@ def mqtt_on_message(client, userdata, msg):
                 bed_light_button(msg.payload)
             elif(sensor_name == "office switch"):
                 office_switch(msg.payload)
+            elif(sensor_name == "volume white"):
+                office_dimm(msg.payload)
             elif(sensor_name == "tree button"):
                 bathroom_light_button(msg.payload)
             elif(sensor_name == "liv light 1 button"):
