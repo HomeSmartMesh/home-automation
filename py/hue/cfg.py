@@ -61,8 +61,7 @@ def configure_log(logger_name):
         "Critical"  :50
     }
     #if(os.path.isfile(config["logfile"])):
-    logfile = config["logfile"].replace("(date)",datetime.datetime.strftime('-%Y.%m.%d'))
-    print(f"logging in file '{logfile}'")
+    logfile = config["logfile"].replace("(date)",datetime.datetime.now().strftime('-%Y.%m.%d'))
     log.info(f"logging in file '{logfile}'")
     for handler in log.root.handlers[:]:
         log.root.removeHandler(handler)

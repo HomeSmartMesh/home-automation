@@ -49,18 +49,23 @@ def bed_light_button(payload):
                 lights["Bed N"].on = False
                 lights["Bed Malm"].on = False
                 lights["Bed W"].on = False
-                log.debug("bed_light_button> set light off")
+                log.info("bed_light_button>(click-single)(on) => set light off")
             else:
                 #switch on and brightness command together so that it does not go to previous level before adjusting the brightness
-                b.set_light("Bed Malm", {'on' : True, 'bri' : 254})
-                b.set_light("Bed N", {'on' : True, 'bri' : 254})
-                b.set_light("Bed W", {'on' : True, 'bri' : 254})
-                log.debug("bed_light_button> set light to MAX")
+                b.set_light("Bed Malm", {'on' : True, 'bri' : 128})
+                b.set_light("Bed N", {'on' : True, 'bri' : 128})
+                b.set_light("Bed W", {'on' : True, 'bri' : 128})
+                log.info("bed_light_button>(click-single)(off) set light to MID")
+        elif("click" in sensor and sensor["click"] == "double"):
+                b.set_light("Bed Malm", {'on' : True, 'bri' : 128})
+                b.set_light("Bed N", {'on' : True, 'bri' : 128})
+                b.set_light("Bed W", {'on' : True, 'bri' : 128})
+                log.info("bed_light_button>(click-double)(X) set light to MAX")
         elif("action" in sensor and sensor["action"] == "hold"):
             b.set_light("Bed Malm", {'on' : True, 'bri' : 1})
             lights["Bed N"].on = False
             lights["Bed W"].on = False
-            log.debug("bed_light_button> set light to min")
+            log.info("bed_light_button>(hold)(X) set light to min")
     #else:
         #log.debug("bed_light_button> debounced")
     return
@@ -184,15 +189,15 @@ def mqtt_on_message(client, userdata, msg):
     return
 
 # -------------------- main -------------------- 
-print(1)
 config = cfg.configure_log(__file__)
 
 # -------------------- Philips Hue Client -------------------- 
 log.info("Check Bridge Presence")
 
 if(cfg.ping(config["bridges"]["LivingRoom"])):
-    b = Bridge(config["bridges"]["LivingRoom"])
-    log.info("Bridge Connection")
+    file_path=config["bridges"]["username_config"]
+    log.info(f"Bridge Connection using config '{file_path}'")
+    b = Bridge(ip=config["bridges"]["LivingRoom"],config_file_path=file_path)
     b.connect()
     log.info("Light Objects retrieval")
     lights = b.get_light_objects('name')

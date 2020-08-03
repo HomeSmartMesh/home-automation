@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/python3.6 /home/pi/nRF52_Mesh/raspi/hue/hue.py
+ExecStart=/usr/bin/python3 /home/pi/raspi/py/hue/hue.py
 Restart=on-abort
 
 [Install]
