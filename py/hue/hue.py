@@ -134,18 +134,25 @@ def livroom_light_button(payload):
     return
 
 def office_switch(payload):
+    #log.info(f"office_switch ===> {payload}")
     switch = json.loads(payload)
     if("click" in switch and switch["click"] == "single"):
-        if(lights["Office main"].on):
-            lights["Office main"].on = False
-            log.debug("office_light> off")
+        if(lights["office main"].on):
+            lights["office main"].on = False
+            lights["office desk"].on = False
+            lights["office candle"].on = False
+            log.info("office_light>(click)(main on) => all off")
         else:
             #command so that it does not go to previous level before adjusting the brightness
-            b.set_light("Office main", {'on' : True, 'bri' : 255})
-            log.debug("office_light> on")
+            b.set_light("office main", {'on' : True, 'bri' : 255})
+            b.set_light("office desk", {'on' : True, 'bri' : 100})
+            b.set_light("office candle", {'on' : True, 'bri' : 20})
+            log.info("office_light>(click)(main off) => all on, some low")
     elif("action" in switch and switch["action"] == "hold"):
-            b.set_light("Office main", {'on' : True, 'bri' : 1})
-            log.debug("office_light> low")
+            b.set_light("office main", {'on' : True, 'bri' : 1})
+            lights["office desk"].on = False
+            lights["office candle"].on = False
+            log.info("office_light>(hold)(x) => main low, rest off")
     #else:
     #    log.debug("office_light>no click")
     return
@@ -170,18 +177,23 @@ def entrance_light(payload):
     return
 
 def mqtt_on_message(client, userdata, msg):
+    #log.info(f"{msg.topic} : {msg.payload}")
     try:
         topic_parts = msg.topic.split('/')
         if(len(topic_parts) == 2):
-            name = topic_parts[1]
-            if(name == "bed light button") or (name == "bed nic button") or (name == "bedroom switch"):
+            sensor_name = topic_parts[1]
+            if(sensor_name == "bed light button") or (sensor_name == "bed nic button") or (sensor_name == "bedroom switch"):
                 bed_light_button(msg.payload)
-            elif(name == "office switch"):
+            elif(sensor_name == "office switch"):
                 office_switch(msg.payload)
-            elif(name == "tree button"):
+            elif(sensor_name == "tree button"):
                 bathroom_light_button(msg.payload)
-            elif(name == "liv light 1 button"):
+            elif(sensor_name == "liv light 1 button"):
                 livroom_light_button(msg.payload)
+            #else:
+            #    for room_name,room in config["lightmap"].items():
+            #        if sensor_name in room["sensors"]:
+            #            getattr(light_actions,room_name)(b,msg.payload,room["lights"])
         else:
             log.error("topic: "+msg.topic + "size not matching")
     except Exception as e:

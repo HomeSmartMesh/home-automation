@@ -12,11 +12,21 @@
                             "mzig/bed light button",
                             "mzig/bed nic button",
                             "lzig/bedroom switch",
-                            "+/office switch"
+                            "lzig/office switch"
                         ],
         "actions"   :[],
         "publish" :true,
         "subscribe" :true
+    },
+    "lightmap":{
+        "office_switch":{
+            "sensors":[
+                "office switch"
+            ],
+            "lights":[
+                "office main"
+            ]
+        }
     },
     "log":{
         "logfile":"/home/pi/share/hue(date).log",
