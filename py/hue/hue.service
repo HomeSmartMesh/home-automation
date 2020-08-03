@@ -1,0 +1,11 @@
+[Unit]
+Description=manages hue lights through hue gateway from MQTT interaction buttons
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/python3.6 /home/pi/nRF52_Mesh/raspi/hue/hue.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

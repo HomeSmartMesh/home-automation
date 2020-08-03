@@ -27,3 +27,10 @@ sudo systemctl daemon-reload
 sudo systemctl enable roll.service
 sudo systemctl start roll.service
 
+sudo cp py/hue/hue.service /lib/systemd/system/
+sudo chmod 644 /lib/systemd/system/hue.service
+sudo chmod +x py/hue/hue.py
+sudo systemctl daemon-reload
+sudo systemctl enable hue.service
+sudo systemctl start hue.service
+
