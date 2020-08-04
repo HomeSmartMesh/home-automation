@@ -1,0 +1,21 @@
+{  
+    "mqtt":{
+        "host":"mqtt_broquer",
+        "port":1883,
+        "keepalive":60,
+        "client_id":"lifx_client",
+        "subscriptions":[  
+            "lzig/office switch",
+            "lzig/office window right",
+            "lzig/office window left"
+         ],
+        "publish" :true,
+        "subscribe" :true
+    },
+    "log":{
+        "logfile":"lifx.log",
+        "exceptions":"lifx_exceptions.log",
+        "share":"/home/pi/share/",
+        "level":"debug"
+    }
+}

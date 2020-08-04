@@ -1,0 +1,17 @@
+{
+  "name": "lifx_light_control",
+  "version": "1.0.0",
+  "description": "controlling lifx ambient light devices, Led strip and panel",
+  "main": "pc.js",
+  "dependencies": {
+    "mqtt": "^3.0.0",
+    "node-lifx-lan": "^0.4.2",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "run": "node run.js"
+  },
+  "author": "wassfila",
+  "license": "MIT"
+}
