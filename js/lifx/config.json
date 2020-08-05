@@ -1,16 +1,20 @@
 {  
     "mqtt":{
-        "host":"mqtt_broquer",
+        "host":"10.0.0.42",
         "port":1883,
         "keepalive":60,
         "client_id":"lifx_client",
         "subscriptions":[  
+            "lifx/tiles",
             "lzig/office switch",
             "lzig/office window right",
             "lzig/office window left"
          ],
         "publish" :true,
         "subscribe" :true
+    },
+    "control":{
+        "sim":"lifx/sim_tiles"
     },
     "log":{
         "logfile":"lifx.log",

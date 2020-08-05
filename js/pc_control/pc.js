@@ -6,7 +6,7 @@ const config = JSON.parse(fs.readFileSync(__dirname+'/config.json'))
 
 let count_low = 0
 let pc_reley_status = "nothing"
-let auto_off = true
+let auto_on_off = true
 
 function pc_shutdown(){
   logger.info(`pc> shutting down`)
@@ -67,8 +67,8 @@ function pc_button(topic,message){
         mqtt.publish(config.control.repeater,"on")
       }
     }else if(message.click == "double"){
-      auto_off = !auto_off
-      if(auto_off){
+      auto_on_off = !auto_on_off
+      if(auto_on_off){
         http.request(config.control.led.on).end()
       }else{
         http.request(config.control.led.off).end()
@@ -87,16 +87,20 @@ function office_chair_vibration(topic,message){
   if(message.hasOwnProperty("action")){
     logger.verbose(`pc> ${topic} : action = ${message.action}`)
     if((message.action == "tilt") || (message.action == "vibration")){
-      logger.info(`pc> chair moved`)
-      mqtt.publish(config.control.pc,"on")
-      mqtt.publish(config.control.repeater,"on")
+      if(auto_on_off){
+        logger.info(`pc> chair moved - auto_on_off => switching on`)
+        mqtt.publish(config.control.pc,"on")
+        mqtt.publish(config.control.repeater,"on")
+      }else{
+        logger.info(`pc> chair moved - but auto_on_off false => No action taken`)
+      }
     }
   }
 }
 
 mqtt.Emitter.on('mqtt',(data)=>{
   if(data.topic == "shellies/shellyplug-s-6A6375/relay/0/power"){
-    if(auto_off){
+    if(auto_on_off){
       const power = parseFloat(data.msg)
       if(power <10){
         call_low()
@@ -115,7 +119,7 @@ mqtt.Emitter.on('mqtt',(data)=>{
   }
 })
 
-//auto_off starts true => on
+//auto_on_off starts true => on
 http.request(config.control.led.on).end()
 
 //winston has it

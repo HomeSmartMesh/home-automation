@@ -1,5 +1,7 @@
 # Intro
-controlling ikea blind roll with buttons
+led panles effects
 
-# Install
-    npm install
+# sim test
+
+    pub 'lifx/sim_tiles' -m '{"colors":["green", "green", "red", "red", "blue"]}'
+

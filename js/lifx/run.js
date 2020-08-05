@@ -26,7 +26,7 @@ function window_state(topic,message){
   }
 }
 
-function discover(){
+function run_discover(){
   Lifx.discover().then((device_list) => {
     device_list.forEach((device) => {
       logger.debug([
@@ -43,7 +43,7 @@ function discover(){
   });
 }
 
-function create(){
+function run_create(){
   Lifx.createDevice({
     mac: 'D0:73:D5:25:36:B0',
     ip: '192.168.11.32'
@@ -58,19 +58,45 @@ function create(){
   });
 }
 
-//------------------ main ------------------
-logger.info('lifx led strip and panel service just started')
-logger.info('test info')
-logger.verbose('test verbose')
-logger.debug('test debug')
-logger.silly('test silly')
-mqtt.start()
-
-mqtt.Emitter.on('mqtt',(data)=>{
-  if(data.topic == "lzig/office switch"){
-    logger.info("click on office switch")
+function test_sim1(){
+  let payload = {
+    colors:[
+      "green", "green", "red", "red", "blue"
+    ]
   }
-})
+  mqtt.publish(config.control.sim,JSON.stringify(payload))
+}
 
-discover()
-//create()
+function test_sim(){
+  let colors = []
+  for(let i=0;i<64;i++){
+    let hex = ('00' + (i*4).toString(16).toUpperCase()).slice(-2);
+    colors.push(`#0088${hex}`)
+  }
+  let payload = {colors:colors}
+  mqtt.publish(config.control.sim,JSON.stringify(payload))
+}
+
+//------------------ main ------------------
+async function main(){
+  logger.info('lifx led strip and panel service just started')
+  logger.info('test info')
+  logger.verbose('test verbose')
+  logger.debug('test debug')
+  logger.silly('test silly')
+  mqtt.start()
+
+  mqtt.Emitter.on('mqtt',(data)=>{
+    if(data.topic == "lzig/office switch"){
+      logger.info("click on office switch")
+    }
+  })
+
+  //if mqtt start would have been async, you could simply await it
+  await delay(1000)
+  //run_discover()
+  //run_create()
+  test_sim()
+}
+
+main().then(console.log("main lunch done"))
