@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=simple
-ExecStart=node /home/pi/raspi/js/window_roll/roll.js
+ExecStart=node /home/pi/raspi/js/lifx/run.js
 Restart=on-abort
 
 [Install]

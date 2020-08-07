@@ -12,7 +12,6 @@
                             "mzig/bed light button",
                             "mzig/bed nic button",
                             "lzig/bedroom switch",
-                            "lzig/office switch",
                             "lzig/volume white"
                         ],
         "actions"   :[],

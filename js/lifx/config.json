@@ -5,7 +5,7 @@
         "keepalive":60,
         "client_id":"lifx_client",
         "subscriptions":[  
-            "lifx/tiles",
+            "lifx/home show/#",
             "lzig/office switch",
             "lzig/office window right",
             "lzig/office window left"
@@ -13,8 +13,12 @@
         "publish" :true,
         "subscribe" :true
     },
-    "control":{
-        "sim":"lifx/sim_tiles"
+    "lifx":{
+        "sim":"lifx/sim_tiles",
+        "curtain sun":{
+            "mac": "D0:73:D5:40:98:88",
+            "ip": "10.0.0.11"
+        }
     },
     "log":{
         "logfile":"lifx.log",

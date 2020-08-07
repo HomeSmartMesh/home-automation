@@ -218,8 +218,8 @@ def mqtt_on_message(client, userdata, msg):
             sensor_name = topic_parts[1]
             if(sensor_name == "bed light button") or (sensor_name == "bed nic button") or (sensor_name == "bedroom switch"):
                 bed_light_button(msg.payload)
-            elif(sensor_name == "office switch"):
-                office_switch(msg.payload)
+            #elif(sensor_name == "office switch"):
+                #office_switch(msg.payload)
             elif(sensor_name == "volume white"):
                 office_dimm(msg.payload)
             elif(sensor_name == "tree button"):

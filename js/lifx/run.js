@@ -7,7 +7,13 @@ const Lifx  = require('node-lifx-lan');
 const { discover } = require('node-lifx-lan/lib/lifx-lan-udp');
 const { create } = require('domain');
 
+function defined(obj){
+  return (typeof(obj) != "undefined")
+}
+
 let is_window_closed = false
+
+let lifx = null
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -43,19 +49,31 @@ function run_discover(){
   });
 }
 
-function run_create(){
-  Lifx.createDevice({
-    mac: 'D0:73:D5:25:36:B0',
-    ip: '192.168.11.32'
-  }).then((dev) => {
-    return dev.turnOn({
-      color: { css: 'red' }
-    });
-  }).then(() => {
-    console.log('Done!');
-  }).catch((error) => {
-    console.error(error);
-  });
+async function run_create(){
+  lifx = await Lifx.createDevice({mac: 'D0:73:D5:40:98:88',ip: '10.0.0.11'})
+}
+
+function css_array_to_objects(colors){
+  console.log(typeof colors)
+  console.log(colors)
+  let res = []
+  colors.forEach((color)=>{
+    res.push({css:color})
+  })
+  return res
+}
+
+function run_command(cmd,obj){
+
+  if(lifx==null){
+    console.error("lifx mqtt command before instance creation")
+    return
+  }
+  //avoiding eval and expansion
+  if(cmd == "tileSetTileState64"){
+    let colors = css_array_to_objects(obj.colors)
+    lifx.tileSetTileState64({tile_index:0,colors:colors})
+  }
 }
 
 function test_sim1(){
@@ -77,6 +95,20 @@ function test_sim(){
   mqtt.publish(config.control.sim,JSON.stringify(payload))
 }
 
+async function office_switch(msg){
+  let message = JSON.parse(msg)
+  if(defined(message.click) && (message.click == "single")){
+    let result = await lifx.lightGet()
+    if(result.power){
+      logger.info("office switch> (click)(power) => turning curtain off")
+      await lifx.turnOff({duration: 2000})
+    }else{
+      logger.info("office switch> (click)(no power) =>turning curtain on")
+      await lifx.turnOn({duration: 1000})
+    }
+  }
+}
+
 //------------------ main ------------------
 async function main(){
   logger.info('lifx led strip and panel service just started')
@@ -84,19 +116,18 @@ async function main(){
   logger.verbose('test verbose')
   logger.debug('test debug')
   logger.silly('test silly')
+  // !! start only, will be connected after callback
   mqtt.start()
 
   mqtt.Emitter.on('mqtt',(data)=>{
-    if(data.topic == "lzig/office switch"){
-      logger.info("click on office switch")
-    }
-  })
+      if(data.topic == "lzig/office switch"){
+        office_switch(data.msg).then()
+      }
+    })
 
   //if mqtt start would have been async, you could simply await it
-  await delay(1000)
-  //run_discover()
-  //run_create()
-  test_sim()
+  lifx = await Lifx.createDevice(config.lifx["curtain sun"])
+  
 }
 
 main().then(console.log("main lunch done"))

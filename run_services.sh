@@ -27,6 +27,13 @@ sudo systemctl daemon-reload
 sudo systemctl enable roll.service
 sudo systemctl start roll.service
 
+sudo cp js/lifx/lifx.service /lib/systemd/system/
+sudo chmod 644 /lib/systemd/system/lifx.service
+sudo chmod +x js/lifx/run.js
+sudo systemctl daemon-reload
+sudo systemctl enable lifx.service
+sudo systemctl start lifx.service
+
 sudo cp py/hue/hue.service /lib/systemd/system/
 sudo chmod 644 /lib/systemd/system/hue.service
 sudo chmod +x py/hue/hue.py
