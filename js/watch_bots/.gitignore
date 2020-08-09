@@ -1,0 +1,5 @@
+secrets.json
+node_modules
+*.log
+repo
+watch_bot.log

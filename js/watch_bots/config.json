@@ -1,0 +1,69 @@
+{  
+    "mqtt":{
+        "host":"10.0.0.42",
+        "port":1883,
+        "keepalive":60,
+        "client_id":"watch_bots",
+        "lists":{
+            "eurotronics":[
+                "lzig/living heat",
+                "lzig/kitchen heat",
+                "lzig/bedroom heat",
+                "lzig/office heat",
+                "lzig/bathroom heat"
+            ],
+            "nrf":[
+                "nrf/livingroom window tag",
+                "nrf/hallway tag",
+                "nrf/balcony tag",
+                "nrf/bathroom tag",
+                "nrf/livingroom tag",
+                "nrf/office tag",
+                "nrf/bedroom tag",
+                "nrf/kitchen tag"
+            ],
+            "aqara":[
+                "mzig/bed weather",
+                "lzig/bedroom window",
+                "lzig/kitchen window",
+                "+/office weather",
+                "lzig/office switch",
+                "lzig/fridge weather",
+                "mzig/balcony window left",
+                "mzig/balcony window right",
+                "mzig/balcony door",
+                "lzig/office window left",
+                "lzig/office window right"
+            ]
+        },
+        "publish" :true,
+        "subscribe" :true
+    },
+    "watch":{
+        "nrf":{
+            "voltage":{
+                "minimum":2.1
+            }
+        },
+        "aqara":{
+            "voltage":{
+                "minimum":1800
+            }
+        },
+        "eurotronics":{
+            "battery":{
+                "minimum":15
+            }
+        }
+    },
+    "alive_minutes":{
+        "nrf":15,
+        "aqara":30,
+        "eurotronics":60
+    },
+    "log":{
+        "logfile_test":"/home/pi/share/watch_bots(date).log",
+        "logfile":"watch_bots.log",
+        "level":"info"
+    }
+}
