@@ -1,5 +1,5 @@
 [Unit]
-Description=service used to open close position ikea window roll blind
+Description=control lifx light from mqtt buttons and switch events
 After=multi-user.target
 
 [Service]

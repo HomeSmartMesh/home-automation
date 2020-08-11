@@ -9,7 +9,7 @@
                 "lzig/living heat",
                 "lzig/kitchen heat",
                 "lzig/bedroom heat",
-                "lzig/office heat",
+                "mzig/office heat",
                 "lzig/bathroom heat"
             ],
             "nrf":[
@@ -64,8 +64,7 @@
         "nrf":1
     },
     "log":{
-        "logfile_test":"/home/pi/share/watch_bots(date).log",
-        "logfile":"watch_bots.log",
+        "logfile":"/home/pi/share/watch_bots(date).log",
         "level":"info"
     }
 }
