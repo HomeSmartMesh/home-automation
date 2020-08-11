@@ -4,7 +4,7 @@ const {logger} = require('./logger.js')
 const events = require('events')
 const Emitter = new events.EventEmitter()
 
-const config = JSON.parse(fs.readFileSync(__dirname+'\\config.json'))
+const config = JSON.parse(fs.readFileSync(__dirname+'/config.json'))
 var client;
 
 function onConnect() {

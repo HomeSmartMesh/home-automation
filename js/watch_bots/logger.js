@@ -1,7 +1,7 @@
 const fs = require('fs');
 const {transports,createLogger, format} = require('winston');
 
-const config = JSON.parse(fs.readFileSync(__dirname+'\\config.json'))
+const config = JSON.parse(fs.readFileSync(__dirname+'/config.json'))
 
 let date = new Date().toISOString()
 let date_day = date.split('T')[0]

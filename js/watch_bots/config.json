@@ -26,7 +26,6 @@
                 "mzig/bed weather",
                 "lzig/bedroom window",
                 "lzig/kitchen window",
-                "+/office weather",
                 "lzig/office switch",
                 "lzig/fridge weather",
                 "mzig/balcony window left",
@@ -56,10 +55,13 @@
             }
         }
     },
-    "alive_minutes":{
-        "nrf":15,
-        "aqara":30,
-        "eurotronics":60
+    "alive_minutes_sensor":{
+        "nrf":3,
+        "aqara":60,
+        "eurotronics":120
+    },
+    "alive_minutes_list":{
+        "nrf":1
     },
     "log":{
         "logfile_test":"/home/pi/share/watch_bots(date).log",

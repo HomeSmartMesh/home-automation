@@ -7,9 +7,11 @@ const Markup = require('telegraf/markup')
 //const Emitter = new events.EventEmitter()
 
 let sensor_bot = null
-const secrets = JSON.parse(fs.readFileSync(__dirname+'\\secrets.json'))
-const config = JSON.parse(fs.readFileSync(__dirname+'\\config.json'))
+const secrets = JSON.parse(fs.readFileSync(__dirname+'/secrets.json'))
+const config = JSON.parse(fs.readFileSync(__dirname+'/config.json'))
 const startup_time = Date.now()
+let last_nrf = Date.now()
+let nrf_alerted = false
 
 let topics_map = {}
 
@@ -90,36 +92,56 @@ function init_topics_map(){
 
 function check_topics_alive(){
   let now = Date.now()
+  let nrf_age_minutes = (now - last_nrf)/(60*1000)
+  
+  if(nrf_age_minutes > config.alive_minutes_list.nrf){
+    alert(` ⏳ nrf > not seen for ${(nrf_age_minutes).toFixed(0)} minutes`)
+    nrf_alerted = true
+  }else{
+    logger.verbose(`no alert: nrf age = ${nrf_age_minutes} minutes`)
+  }
+  logger.info(`----------- ages ---------------`)
   for(let [topic,params] of Object.entries(topics_map)){
     let age_ms =params.hasOwnProperty("last_seen")?now - params.last_seen:now - startup_time
-    let alive_ms = config.alive_minutes[params.list]*60*1000
-    if((age_ms > alive_ms)&&(params.status != "alerted")){
+    let cfg_alive_ms = config.alive_minutes_sensor[params.list]*60*1000
+    logger.verbose(`age:${(age_ms/(60*1000)).toFixed(1)} min ;config:${(cfg_alive_ms/(60*1000)).toFixed(1)}\tstatus:${params.status} ; list:${params.list} ; ${topic}`)
+    if((age_ms > cfg_alive_ms)&&(params.status != "alerted")){
       alert(` ⏳ ${topic}> not seen for ${(age_ms/(60*1000)).toFixed(0)} minutes`)
       params.status = "alerted"
     }
   }
 }
 
+
 function watch_topics(data){
   let list = topics_map[data.topic].list
-
+  if(list == "nrf"){
+    last_nrf = Date.now()
+    if(nrf_alerted){
+      info(` ⏳ nrf > back online `)
+      nrf_alerted = false
+    }else{
+      logger.debug(`nrf > upate`)
+    }
+  }
+  if(data.msg.hasOwnProperty("last_seen")){
+    let last_seen = new Date(Date.parse(data.msg.last_seen));
+    //no stats will be processed in the watch
+    topics_map[data.topic].last_seen = last_seen
+    if(!last_seen_fresh(last_seen)){
+      logger.debug(`last seen not fresh : ${data.topic}`)
+      //discard further processing for watch checks as the values is deprecated
+      return
+    }else{
+      logger.verbose(`last_seen update for '${data.topic}'`)
+      if(topics_map[data.topic].status == "alerted"){
+        topics_map[data.topic].status = "online"
+        info(`${data.topic}> back online`)
+      }
+    }
+  }
   for(let [sensor,watch_params] of Object.entries(config.watch[list])){
     if(data.msg.hasOwnProperty(sensor)){
-      if(data.msg.hasOwnProperty("last_seen")){
-        let last_seen = new Date(Date.parse(data.msg.last_seen));
-        //no stats will be processed in the watch
-        topics_map[data.topic].last_seen = last_seen
-        if(!last_seen_fresh(last_seen)){
-          logger.info(`last seen not fresh : ${data.topic} > ${sensor}`)
-          //discard further processing for watch checks as the values is deprecated
-          return
-        }else{
-          if(topics_map[data.topic].status == "alerted"){
-            topics_map[data.topic].status = "online"
-            info(`${data.topic}> back online`)
-          }
-        }
-      }
       let value = data.msg[sensor]
       if(watch_params.hasOwnProperty("minimum")){
         if (value < watch_params.minimum){
