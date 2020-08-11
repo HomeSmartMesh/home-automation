@@ -41,3 +41,10 @@ sudo systemctl daemon-reload
 sudo systemctl enable hue.service
 sudo systemctl start hue.service
 
+sudo cp py/influx/influx_mqtt.service /lib/systemd/system/
+sudo chmod 644 /lib/systemd/system/influx_mqtt.service
+sudo chmod +x py/influx/influx_client.py
+sudo systemctl daemon-reload
+sudo systemctl enable influx_mqtt.service
+sudo systemctl start influx_mqtt.service
+

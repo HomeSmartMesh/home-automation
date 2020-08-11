@@ -1,0 +1,11 @@
+[Unit]
+Description=collects MQTT sensors data and sends them to influx database
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/pi/raspi/py/influx/influx_client.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
