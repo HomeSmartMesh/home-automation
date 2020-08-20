@@ -56,15 +56,15 @@
         }
     },
     "alive_minutes_sensor":{
-        "nrf":3,
-        "aqara":60,
+        "nrf":10,
+        "aqara":65,
         "eurotronics":120
     },
     "alive_minutes_list":{
         "nrf":1
     },
     "log":{
-        "logfile":"/home/pi/share/watch_bots(date).log",
+        "logfile":"/home/pi/share/watch_bots (date).log",
         "level":"info"
     }
 }
