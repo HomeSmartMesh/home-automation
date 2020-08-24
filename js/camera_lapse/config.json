@@ -1,0 +1,22 @@
+{  
+    "mqtt":{
+        "host":"10.0.0.42",
+        "port":1883,
+        "keepalive":60,
+        "client_id":"camera_client",
+        "subscriptions":[  
+            "camera/#"
+         ],
+        "publish" :true,
+        "subscribe" :true
+    },
+    "camera":{
+        "record_path" : "/home/pi/share/camera/"
+    },
+    "log":{
+        "logfile":"camera.log",
+        "exceptions":"camera_exceptions.log",
+        "share":"/home/pi/share/",
+        "level":"verbose"
+    }
+}

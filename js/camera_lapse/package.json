@@ -1,0 +1,16 @@
+{
+  "name": "camera_lapse",
+  "version": "1.0.0",
+  "description": "time-lapse camera server that capture jpg images from mqtt",
+  "main": "lapse.js",
+  "dependencies": {
+    "mqtt": "^3.0.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "run": "node pc.js"
+  },
+  "author": "wassfila",
+  "license": "MIT"
+}
