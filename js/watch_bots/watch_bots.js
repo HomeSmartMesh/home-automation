@@ -100,7 +100,6 @@ function check_topics_alive(){
   }else{
     logger.verbose(`no alert: nrf age = ${nrf_age_minutes} minutes`)
   }
-  logger.info(`----------- ages ---------------`)
   for(let [topic,params] of Object.entries(topics_map)){
     let age_ms =params.hasOwnProperty("last_seen")?now - params.last_seen:now - startup_time
     let cfg_alive_ms = config.alive_minutes_sensor[params.list]*60*1000
@@ -186,10 +185,10 @@ function run_bot_sensors_watch(){
 
   bot.launch()
   logger.info('sensors_watch started')
-  logger.info("check info")
   logger.error("check error")
-  logger.verbose("check verbose")
+  logger.info("check info")
   logger.debug("check debug")
+  logger.verbose("check verbose")
   return bot
 }
 

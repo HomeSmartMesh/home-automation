@@ -9,7 +9,7 @@
                 "lzig/living heat",
                 "lzig/kitchen heat",
                 "lzig/bedroom heat",
-                "lzig/office heat",
+                "mzig/office heat",
                 "lzig/bathroom heat"
             ],
             "nrf":[
@@ -56,16 +56,15 @@
         }
     },
     "alive_minutes_sensor":{
-        "nrf":3,
-        "aqara":60,
+        "nrf":10,
+        "aqara":65,
         "eurotronics":120
     },
     "alive_minutes_list":{
         "nrf":1
     },
     "log":{
-        "logfile_test":"/home/pi/share/watch_bots(date).log",
-        "logfile":"watch_bots.log",
+        "logfile":"/home/pi/share/watch_bots (date).log",
         "level":"info"
     }
 }
