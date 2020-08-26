@@ -85,7 +85,7 @@ function init_topics_map(){
   let now = Date.now()
   for(let [key,list] of Object.entries(config.mqtt.lists)){
     list.forEach((topic)=>{
-      topics_map[topic] = {list:key,status:"initial"}
+      topics_map[topic] = {list:key,connection_status:"initial",battery_status:"initial"}
     })
   }
 }
@@ -103,10 +103,10 @@ function check_topics_alive(){
   for(let [topic,params] of Object.entries(topics_map)){
     let age_ms =params.hasOwnProperty("last_seen")?now - params.last_seen:now - startup_time
     let cfg_alive_ms = config.alive_minutes_sensor[params.list]*60*1000
-    logger.verbose(`age:${(age_ms/(60*1000)).toFixed(1)} min ;config:${(cfg_alive_ms/(60*1000)).toFixed(1)}\tstatus:${params.status} ; list:${params.list} ; ${topic}`)
-    if((age_ms > cfg_alive_ms)&&(params.status != "alerted")){
+    logger.verbose(`age:${(age_ms/(60*1000)).toFixed(1)} min ;config:${(cfg_alive_ms/(60*1000)).toFixed(1)}\tstatus:${params.connection_status} ; list:${params.list} ; ${topic}`)
+    if((age_ms > cfg_alive_ms)&&(params.connection_status != "alerted")){
       alert(` ⏳ ${topic}> not seen for ${(age_ms/(60*1000)).toFixed(0)} minutes`)
-      params.status = "alerted"
+      params.connection_status = "alerted"
     }
   }
 }
@@ -133,8 +133,8 @@ function watch_topics(data){
       return
     }else{
       logger.verbose(`last_seen update for '${data.topic}'`)
-      if(topics_map[data.topic].status == "alerted"){
-        topics_map[data.topic].status = "online"
+      if(topics_map[data.topic].connection_status == "alerted"){
+        topics_map[data.topic].connection_status = "online"
         info(`${data.topic}> back online`)
       }
     }
@@ -144,14 +144,14 @@ function watch_topics(data){
       let value = data.msg[sensor]
       if(watch_params.hasOwnProperty("minimum")){
         if (value < watch_params.minimum){
-          if(topics_map[data.topic].status != "alerted"){
+          if(topics_map[data.topic].battery_status != "alerted"){
             alert(`${data.topic}>🔋 ${sensor} = ${value} is below minimum ${watch_params.minimum}`)
-            topics_map[data.topic].status = "alerted"
+            topics_map[data.topic].battery_status = "alerted"
           }
         }else{
-          if(topics_map[data.topic].status == "alerted"){
+          if(topics_map[data.topic].battery_status == "alerted"){
             info(`${data.topic}> ${sensor} = ${value} back above minimum ${watch_params.minimum}`)
-            topics_map[data.topic].status = "healthy"
+            topics_map[data.topic].battery_status = "healthy"
           }
         }
       }
