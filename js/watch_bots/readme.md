@@ -22,7 +22,7 @@ Note : [pm2](https://pm2.keymetrics.io/docs/usage/quick-start/) is a one line to
 The idea is to configure as many sensors with as less declaration redunduncy as possible. You first declare lists of MQTT topics, then configure alert parameters for each list only once.
 
 * `mqtt.lists` is a map grouping sensors into lists
-* `watch` is a map where each list has a sensor name which matching a message field
+* `watch` is a map where each list has a sensor name which matching a message field. These fields names are completely generic and only have to match the MQTT json payload content. The unit is also defined by the gateway translating to MQTT and is generally the same for the same type of devices, therefore the lists can be grouping the devices that have the same field name using the same unit. Note in the example `nrf` list uses `voltage` as float while `aqara` has the same filed but in millivots. That is why this config places fields under a list and not absolute for all monitoring.
 * `minimum` will trigger a comparision check and an alert when below the given value
 * `alive_minutes_sensor` checks each sensor topic independently to be more lively than the given time
 * `alive_minutes_list` cheks all sensors together from the given list where any would keep it alive. This is more helpful to quicker findout if the gateway is down earlier than a single sensor alert latency.
