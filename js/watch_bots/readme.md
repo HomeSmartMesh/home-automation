@@ -1,19 +1,102 @@
 # Intro
-Telegram node.js client
-https://github.com/telegraf/telegraf
+Telegram [node.js client](https://github.com/telegraf/telegraf) to watch your MQTT sensors
+
+<img src="./watch_bots.png">
+
 
 # Install
-    npm init
 
-# steps
+    cd ./raspi/js/watch_bots
+    npm install
+    pm2 start watch_bots.js
+
+Note : [pm2](https://pm2.keymetrics.io/docs/usage/quick-start/) is a one line to turn a node.js file into a service
+
+# get bot token
 * chat with botfather /newbot
 * click on botfathers bot link to chet with it
 * send many messages required to trigger the api response
 * https://api.telegram.org/bot<YourBOTToken>/getUpdates
 
 # Config
-`mqtt.lists` is a map grouping sensors into lists
-`watch` is a map where each list has a sensor name which matching a message field
+The idea is to configure as many sensors with as less declaration redunduncy as possible. You first declare lists of MQTT topics, then configure alert parameters for each list only once.
+
+* `mqtt.lists` is a map grouping sensors into lists
+* `watch` is a map where each list has a sensor name which matching a message field
 * `minimum` will trigger a comparision check and an alert when below the given value
 * `alive_minutes_sensor` checks each sensor topic independently to be more lively than the given time
-* `alive_minutes_list` cheks all sensors together from the given list where any would keep it alive
+* `alive_minutes_list` cheks all sensors together from the given list where any would keep it alive. This is more helpful to quicker findout if the gateway is down earlier than a single sensor alert latency.
+
+## Config Example
+```json
+{  
+    "mqtt":{
+        "host":"10.0.0.42",
+        "port":1883,
+        "keepalive":60,
+        "client_id":"watch_bots",
+        "lists":{
+            "eurotronics":[
+                "lzig/living heat",
+                "lzig/kitchen heat",
+                "lzig/bedroom heat",
+                "mzig/office heat",
+                "lzig/bathroom heat"
+            ],
+            "nrf":[
+                "nrf/livingroom window tag",
+                "nrf/hallway tag",
+                "nrf/balcony tag",
+                "nrf/bathroom tag",
+                "nrf/livingroom tag",
+                "nrf/office tag",
+                "nrf/bedroom tag",
+                "nrf/kitchen tag"
+            ],
+            "aqara":[
+                "mzig/bed weather",
+                "lzig/bedroom window",
+                "lzig/kitchen window",
+                "lzig/office switch",
+                "lzig/fridge weather",
+                "mzig/balcony window left",
+                "mzig/balcony window right",
+                "mzig/balcony door",
+                "lzig/office window left",
+                "lzig/office window right"
+            ]
+        },
+        "publish" :true,
+        "subscribe" :true
+    },
+    "watch":{
+        "nrf":{
+            "voltage":{
+                "minimum":2.1
+            }
+        },
+        "aqara":{
+            "voltage":{
+                "minimum":1800
+            }
+        },
+        "eurotronics":{
+            "battery":{
+                "minimum":15
+            }
+        }
+    },
+    "alive_minutes_sensor":{
+        "nrf":10,
+        "aqara":65,
+        "eurotronics":120
+    },
+    "alive_minutes_list":{
+        "nrf":1
+    },
+    "log":{
+        "logfile":"/home/pi/share/watch_bots (date).log",
+        "level":"info"
+    }
+}
+```
