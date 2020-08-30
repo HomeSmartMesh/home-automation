@@ -28,6 +28,7 @@ The idea is to configure as many sensors with as less declaration redunduncy as 
 * `alive_minutes_list` cheks all sensors together from the given list where any would keep it alive. This is more helpful to quicker findout if the gateway is down earlier than a single sensor alert latency.
 
 ## Config Example
+`config.json`
 ```json
 {  
     "mqtt":{
@@ -98,5 +99,31 @@ The idea is to configure as many sensors with as less declaration redunduncy as 
         "logfile":"/home/pi/share/watch_bots (date).log",
         "level":"info"
     }
+}
+```
+
+Note about logfile `(data)`. That will be replaced by the date when the script is started. It is possible to give the path of a samba share so that it's easily accessible from the main desk PC.
+# Bots secret example
+a new file has to be created with the name `secret.json`. The reson it is not already in the repo is that it is ignored by git so it is safe to keep a secret in it without pushing it to a public repo. But the `secret_template.json` can be renamed and the example below can help.
+```json
+{
+    "bots":{
+        "smart_hover_bot":{
+            "token": "1234567891:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "chatId":"123456789"
+        },
+        "Grafana_hsm_bot":{
+            "token": "1234567891:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "chatId":"123456789"
+        },
+        "sensors_watch_bot":{
+            "token": "1234567891:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "chatId":"123456789"
+        }
+    },
+    "users":[
+        321654987,
+        321654988
+    ]
 }
 ```
