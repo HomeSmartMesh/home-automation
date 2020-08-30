@@ -1,5 +1,5 @@
 # Intro
-Telegram [node.js client](https://github.com/telegraf/telegraf) to watch your MQTT sensors
+Telegram [bot client](https://github.com/telegraf/telegraf) to watch all of your MQTT sensors for liveliness and low battery with a simple, non redundant, configuration.
 
 <img src="./watch_bots.png">
 
