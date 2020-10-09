@@ -6,7 +6,8 @@
   "dependencies": {
     "mqtt": "^3.0.0",
     "node-lifx-lan": "^0.4.2",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "bl": ">=1.2.3"
   },
   "devDependencies": {},
   "scripts": {
