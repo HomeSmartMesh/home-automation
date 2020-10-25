@@ -104,6 +104,85 @@ def bathroom_light_button(payload):
             log.debug("bathroom light> set light to min")
     return
 
+
+#right, left, right_long, both, both_long, right double
+def livroom_light_switch(payload):
+    #brightness 0-254
+    def living_top(brightness):
+        if(brightness != 0):
+            b.set_light("LivingTop1", {'on' : True, 'bri' : brightness})
+            b.set_light("LivingTop2", {'on' : True, 'bri' : brightness})
+            b.set_light("LivingTop3", {'on' : True, 'bri' : brightness})
+            b.set_light("LivingTop4", {'on' : True, 'bri' : brightness})
+            b.set_light("LivingTop5", {'on' : True, 'bri' : brightness})
+        else:
+            lights["LivingTop1"].on = False
+            lights["LivingTop2"].on = False
+            lights["LivingTop3"].on = False
+            lights["LivingTop4"].on = False
+            lights["LivingTop5"].on = False
+        return
+    def malms(brightness):
+        if(brightness != 0):
+            b.set_light("malms 1", {'on' : True, 'bri' : brightness})
+            b.set_light("malms 2", {'on' : True, 'bri' : brightness})
+            b.set_light("malms 3", {'on' : True, 'bri' : brightness})
+            b.set_light("malms 4", {'on' : True, 'bri' : brightness})
+        else:
+            lights["malms 1"].on = False
+            lights["malms 2"].on = False
+            lights["malms 3"].on = False
+            lights["malms 4"].on = False
+        return
+    sensor = json.loads(payload)
+    if("click" in sensor):
+        log.info(f"living room light switch double> {sensor['click']}")
+        if(sensor["click"] == "right"):
+            if(lights["LivingTop1"].on):
+                living_top(0)
+                log.info("living room light> set light off")
+            else:
+                living_top(180)
+                log.info("living room light> set light to mid")
+        elif(sensor["click"] == "right_long"):
+            living_top(1)
+            log.info("living room light> set light to min")
+        elif(sensor["click"] == "right_double"):
+            living_top(254)
+            log.info("living room light> set light to MAX")
+        elif(sensor["click"] == "left"):
+            if(lights["malms 1"].on):
+                malms(0)
+                log.info("malms light> set light off")
+            else:
+                malms(180)
+                log.info("malms light> set light to mid")
+        elif(sensor["click"] == "left_long"):
+            malms(1)
+            log.info("malms light> set light to min")
+        elif(sensor["click"] == "left_double"):
+            malms(254)
+            log.info("malms light> set light to MAX")
+        elif(sensor["click"] == "both"):
+            if(lights["LivingTop1"].on):
+                malms(0)
+                living_top(0)
+                log.info("all lights> set light off")
+            else:
+                malms(180)
+                living_top(180)
+                log.info("all lights> set light to mid")
+        elif(sensor["click"] == "both_long"):
+            malms(1)
+            living_top(1)
+            log.info("all lights> set light to min")
+        elif(sensor["click"] == "both_double"):
+            malms(254)
+            living_top(254)
+            log.info("all lights> set light to MAX")
+    return
+
+
 def livroom_light_button(payload):
     if(debounce_3()):
         log.debug("living room light> taken")
@@ -226,7 +305,9 @@ def mqtt_on_message(client, userdata, msg):
                 bathroom_light_button(msg.payload)
             elif(sensor_name == "liv light 1 button"):
                 livroom_light_button(msg.payload)
-            #else:
+            elif(sensor_name == "living double switch"):
+                livroom_light_switch(msg.payload)
+            #else: 
             #    for room_name,room in config["lightmap"].items():
             #        if sensor_name in room["sensors"]:
             #            getattr(light_actions,room_name)(b,msg.payload,room["lights"])

@@ -10,6 +10,7 @@
         "subscriptions":[
                             "mzig/bed light button",
                             "mzig/bed nic button",
+                            "mzig/living double switch",
                             "lzig/bedroom switch",
                             "+/office switch"
                         ],
