@@ -54,6 +54,8 @@ function tv_button(topic,message){
   }
 }
 function pc_button(topic,message){
+  //when user interacts, reset automation counter
+  count_low = 0
   if(message.hasOwnProperty("click")){
     logger.verbose(`pc> ${topic} : click = (${message.click})`)
     if(message.click == "single"){

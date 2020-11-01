@@ -9,7 +9,7 @@ const exc_filename = fs.existsSync(config.log.share)?config.log.share+config.log
 var logger = createLogger({
     format: format.combine(
         format.timestamp(),
-        format.json()
+        format.simple()
     ),
     transports: [
       new transports.Console({level:config.log.level}),
