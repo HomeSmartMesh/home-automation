@@ -101,7 +101,7 @@ function office_chair_vibration(topic,message){
 }
 
 mqtt.Emitter.on('mqtt',(data)=>{
-  if(data.topic == "shellies/shellyplug-s-6A6375/relay/0/power"){
+  if(data.topic == "shellies/shellyplug-s-B85CCA/relay/0/power"){
     if(auto_on_off){
       const power = parseFloat(data.msg)
       if(power <10){
@@ -110,7 +110,7 @@ mqtt.Emitter.on('mqtt',(data)=>{
         call_high()
       }
     }
-  }else if(data.topic == "shellies/shellyplug-s-6A6375/relay/0"){
+  }else if(data.topic == "shellies/shellyplug-s-B85CCA/relay/0"){
     pc_reley_status = data.msg
   }else if(data.topic == "mzig/pc button"){
     pc_button(data.topic,JSON.parse(data.msg))

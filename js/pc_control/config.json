@@ -8,14 +8,14 @@
             "mzig/pc button",
             "lzig/tv button",
             "mzig/office chair vibration",
-            "shellies/shellyplug-s-6A6375/relay/0",
-            "shellies/shellyplug-s-6A6375/relay/0/power"
+            "shellies/shellyplug-s-B85CCA/relay/0",
+            "shellies/shellyplug-s-B85CCA/relay/0/power"
          ],
         "publish" :true,
         "subscribe" :true
     },
     "control":{
-        "pc":           "shellies/shellyplug-s-6A6375/relay/0/command",
+        "pc":           "shellies/shellyplug-s-B85CCA/relay/0/command",
         "repeater":     "shellies/shellyplug-s-6A5DCF/relay/0/command",
         "tv_play_sonos":"shellies/shellyplug-s-6A5CE5/relay/0/command",
         "sonos_rear":   "shellies/shellyplug-s-B85D90/relay/0/command",
