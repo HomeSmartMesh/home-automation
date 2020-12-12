@@ -45,11 +45,11 @@ function sonos_button(topic,message){
     if(message.click == "single"){
         logger.info(`sonos> switching on`)
         mqtt.publish(config.control.sonos_front,"on")
-        mqtt.publish(config.control.sonos_rear,"on")
+        //mqtt.publish(config.control.sonos_rear,"on")
     }else if(message.click == "double"){
       logger.info(`sonos> switching off`)
       mqtt.publish(config.control.sonos_front,"off")
-      mqtt.publish(config.control.sonos_rear,"off")
+      //mqtt.publish(config.control.sonos_rear,"off")
     }
   }
 }
