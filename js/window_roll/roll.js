@@ -38,15 +38,17 @@ logger.silly('test silly')
 mqtt.start()
 
 function roll_buttons(topic,msg){
-  if(["on","open","brightness_up"].includes(msg)){
-    logger.info(`roll> ${topic}  '${msg}' => open`)
-    roll_command("open")
-  }else if(["off","close","brightness_down"].includes(msg)){
-    logger.info(`roll> ${topic}  '${msg}' => close`)
-    roll_command("close")
-  }else if(["release","brightness_stop"].includes(msg)){
-    logger.info(`roll> ${topic}  '${msg}' => stop`)
-    roll_command("stop")
+  if(msg.hasOwnProperty("click")){
+    if(["on","open","brightness_up"].includes(msg.click)){
+      logger.info(`roll> ${topic}  '${msg.click}' => open`)
+      roll_command("open")
+    }else if(["off","close","brightness_down"].includes(msg.click)){
+      logger.info(`roll> ${topic}  '${msg.click}' => close`)
+      roll_command("close")
+    }else if(["release","brightness_stop"].includes(msg.click)){
+      logger.info(`roll> ${topic}  '${msg.click}' => stop`)
+      roll_command("stop")
+    }
   }
 }
 
@@ -90,14 +92,10 @@ function window_state(topic,message){
 }
 
 mqtt.Emitter.on('mqtt',(data)=>{
-  if(data.topic == "mzig/roll button 1/click"){
-    roll_buttons(data.topic,String(data.msg))
-  }else if(data.topic == "lzig/roll button 2/click"){
-    roll_buttons(data.topic,String(data.msg))
-  }else if(data.topic == "lzig/volume white"){
-    //roll_volume_move(data.topic,JSON.parse(data.msg))
-  }else if(data.topic == "lzig/volume white/action"){
-    //roll_volume_control(data.topic,String(data.msg))
+  if(data.topic == "mzig/roll button 1"){
+    roll_buttons(data.topic,JSON.parse(data.msg))
+  }else if(data.topic == "lzig/roll button 2"){
+    roll_buttons(data.topic,JSON.parse(data.msg))
   }else if(data.topic == "lzig/bedroom roll"){
     //roll_position(data.topic,JSON.parse(data.msg))
   }else if(data.topic == "lzig/bedroom window"){
