@@ -1,6 +1,6 @@
 ---
-weight: 5
+weight: 10
 bookFlatSection: true
 bookCollapseSection: true
-title: "Zigbee"
+title: "Shellies"
 ---

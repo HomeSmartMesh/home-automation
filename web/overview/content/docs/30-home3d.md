@@ -1,5 +1,5 @@
 ---
-weight: 6
+weight: 30
 bookFlatSection: true
 bookCollapseSection: false
 title: "Home 3D"

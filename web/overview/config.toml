@@ -2,3 +2,12 @@ baseURL = "http://10.0.0.31/home/"
 languageCode = "en-us"
 title = "Home"
 theme = "book"
+[params]
+  # (Optional, default light) Sets color theme: light, dark or auto.
+  # Theme 'auto' switches between dark and light modes based on browser/os preferences
+  BookTheme = 'dark'
+
+[[menu.after]]
+  name = "Documentation Website"
+  url = "https://homesmartmesh.github.io/"
+  weight = 50
