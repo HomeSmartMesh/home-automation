@@ -39,17 +39,17 @@ logger.debug('test debug')
 logger.silly('test silly')
 mqtt.start()
 
-function tv_button(topic,message){
+function sonos_button(topic,message){
   if(message.hasOwnProperty("click")){
-    logger.verbose(`tv> ${topic} : click = ${message.click}`)
-    if(message.click == "on"){
-        logger.info(`tv> switching on`)
-        mqtt.publish(config.control.tv_play_sonos,"on")
-        mqtt.publish(config.control.sonos_rear,"on")
-    }else if(message.click == "off"){
-      logger.info(`tv> switching off`)
-      mqtt.publish(config.control.tv_play_sonos,"off")
-      mqtt.publish(config.control.sonos_rear,"off")
+    logger.verbose(`sonos> ${topic} : click = ${message.click}`)
+    if(message.click == "single"){
+        logger.info(`sonos> switching on`)
+        mqtt.publish(config.control.sonos_front,"on")
+        //mqtt.publish(config.control.sonos_rear,"on")
+    }else if(message.click == "double"){
+      logger.info(`sonos> switching off`)
+      mqtt.publish(config.control.sonos_front,"off")
+      //mqtt.publish(config.control.sonos_rear,"off")
     }
   }
 }
@@ -114,8 +114,8 @@ mqtt.Emitter.on('mqtt',(data)=>{
     pc_reley_status = data.msg
   }else if(data.topic == "mzig/pc button"){
     pc_button(data.topic,JSON.parse(data.msg))
-  }else if(data.topic == "lzig/tv button"){
-    tv_button(data.topic,JSON.parse(data.msg))
+  }else if(data.topic == "mzig/sonos button"){
+    sonos_button(data.topic,JSON.parse(data.msg))
   }else if(data.topic == "mzig/office chair vibration"){
     office_chair_vibration(data.topic,JSON.parse(data.msg))
   }
