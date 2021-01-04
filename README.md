@@ -234,3 +234,21 @@ In order to use this script, it is required to host it locally on local raspberr
 
 ## trnasport-browserconsole
 * https://www.npmjs.com/package/winston-transport-browserconsole
+
+# Docker compose commands
+
+```bash
+dc logs webapps
+
+dc stop webapps
+dc rm
+dc up -d --build webapps
+
+dc ps
+dc images
+
+docker rmi nginx
+docker ps
+docker attach 8f5000b5df47
+docker exec -it d07161590a12 bash
+```
