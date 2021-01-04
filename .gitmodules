@@ -1,0 +1,3 @@
+[submodule "web/overview/themes/book"]
+	path = web/overview/themes/book
+	url = https://github.com/WebSVG/hugo-book.git
