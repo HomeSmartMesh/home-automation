@@ -1,6 +1,6 @@
 ---
-weight: 3
+weight: 4
 bookFlatSection: true
 bookCollapseSection: true
-title: "Zigbee"
+title: "Grafana"
 ---

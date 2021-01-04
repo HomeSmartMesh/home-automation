@@ -1,6 +1,6 @@
 ---
-weight: 5
+weight: 3
 bookFlatSection: true
 bookCollapseSection: true
-title: "Grafana"
+title: "Shellies"
 ---
