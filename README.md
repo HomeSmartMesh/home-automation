@@ -238,13 +238,11 @@ In order to use this script, it is required to host it locally on local raspberr
 # Docker compose commands
 
 ```bash
-
-dc up -d zigAssLifo
-
-dc logs webapps
-
 dc stop webapps
 dc rm
+dc up -d webapps
+
+dc logs webapps
 dc up -d --build webapps
 
 dc ps
