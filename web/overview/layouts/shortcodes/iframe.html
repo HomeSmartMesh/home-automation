@@ -1,1 +1,26 @@
-<iframe src="{{ .Get "src"}}" width=100% height=800 ></iframe>
+{{ $src := .Get "src" }}
+{{ $id := substr (md5 $src) 0 16 }}
+{{ $height := .Get "height" | default 1200 }}
+
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            <a id="btn-{{$id}}" class="book-btn" role="button" >Full screen</a>
+            <a class="book-btn" href="{{ $src }}" role="button" target="_blank">Open in a new page</a>
+        </div>
+</div>
+<iframe id="ifm-{{$id}}" src="{{ $src }}" width=100% height={{ $height }} frameborder="0" ></iframe>
+
+<script>
+    var button = document.getElementById("btn-{{$id}}");
+    button.onclick = ()=>{
+        var elem = document.getElementById("ifm-{{$id}}");
+        if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+        }
+    };
+</script>
