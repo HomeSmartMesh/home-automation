@@ -1,7 +1,5 @@
 ---
 weight: 2
-bookFlatSection: true
-bookCollapseSection: false
 title: "Home Assistant"
 BookToC: false
 ---

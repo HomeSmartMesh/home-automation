@@ -8,6 +8,6 @@ theme = "book"
   BookTheme = 'dark'
 
 [[menu.after]]
-  name = "Documentation Website"
-  url = "https://homesmartmesh.github.io/"
+  name = "Documentation"
+  url = "https://homesmartmesh.github.io/docs/raspi/readme/#meta-website"
   weight = 50
