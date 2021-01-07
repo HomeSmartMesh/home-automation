@@ -12,7 +12,7 @@ function delay(ms) {
 }
 
 //------------------ main ------------------
-logger.info('window blind roll service just started')
+logger.info('camera lapse service just started')
 logger.info('test info')
 logger.verbose('test verbose')
 logger.debug('test debug')
@@ -20,11 +20,13 @@ logger.silly('test silly')
 mqtt.start()
 
 mqtt.Emitter.on('mqtt',(data)=>{
-  if(data.topic == "camera/jpg"){
-      let date = new Date().toISOString()
-      let date_day = date.replace('T',' ').replace('Z','').replace(':','.').replace(':','.')
-      fs.writeFile(`${file_base}${date_day}.jpg`,data.msg, (err)=>{if(err) throw err;})
-      logger.verbose(`saved jpg image ${date_day}.jpg`)
+  if(data.topic == "esp/camera/jpg"){
+    let dt = new Date()
+    dt.setHours( dt.getHours() + 1 );//timezone +1, toISOString has a shuffled format
+    let date = (dt).toISOString()
+    let date_day = date.replace('T',' ').replace('Z','').replace(':','.').replace(':','.')
+    fs.writeFile(`${file_base}${date_day}.jpg`,data.msg, (err)=>{if(err) throw err;})
+    logger.verbose(`saved jpg image ${date_day}.jpg size(${data.msg.length})`)
   }
 })
 

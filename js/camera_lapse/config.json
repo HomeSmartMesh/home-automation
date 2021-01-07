@@ -5,7 +5,7 @@
         "keepalive":60,
         "client_id":"camera_client",
         "subscriptions":[  
-            "camera/#"
+            "esp/camera/#"
          ],
         "publish" :true,
         "subscribe" :true
