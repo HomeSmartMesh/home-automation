@@ -1,5 +1,5 @@
 # Intro
-controlling ikea blind roll with buttons
+service for recording MQTT published jpg image on disk
 
 # Install
     npm install
