@@ -1,5 +1,25 @@
+# influx 2 mqtt influx_client.py
 
-# influx queries examples
+## install dependencies
+
+    sudo /usr/bin/python3 -m pip install -r requirements.txt
+
+### run as a service
+
+```bash
+cd /lib/systemd/system/
+sudo cp /home/pi/raspi/py/influx/influx_mqtt.service .
+sudo chmod 644 /lib/systemd/system/influx_mqtt.service
+chmod +x /home/pi/raspi/py/influx/influx_client.py
+sudo systemctl daemon-reload
+sudo systemctl enable influx_mqtt.service
+sudo systemctl start influx_mqtt.service
+sudo systemctl stop influx_mqtt.service
+```
+
+
+# influxDB
+## influx queries examples
 
     SELECT "temperature" FROM "node91" WHERE $timeFilter
 
@@ -11,7 +31,7 @@
     Show Field Keys
     drop MEASUREMENT "motion button"
 
-# Install on the Raspberry pi
+## Install on the Raspberry pi
 sources:
 - https://gist.github.com/boseji/bb71910d43283a1b84ab200bcce43c26
 - https://docs.influxdata.com/influxdb/v1.4/introduction/getting_started/

@@ -3,7 +3,7 @@
         "host":"localhost",
         "port":1883,
         "keepalive":60,
-        "client_id":"raspy_influx",
+        "client_id":"influx2mqtt",
         "subscriptions":[   "lzig/living heat",
                             "lzig/kitchen heat",
                             "+/bed weather",
@@ -103,7 +103,7 @@
         "db":"mqtt"
     },
     "log":{
-        "logfile":"/home/pi/share/influx_client_2.log",
+        "logfile":"/home/pi/share/influx_client_3.log",
         "level":"Info"
     }
 }
