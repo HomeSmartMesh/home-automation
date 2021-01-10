@@ -1,5 +1,5 @@
 ---
-weight: 3
+weight: 4
 BookToC: false
 ---
 # zigbee2mqtt graph

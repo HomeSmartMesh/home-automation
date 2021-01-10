@@ -1,5 +1,13 @@
 version: "3.8"
 services:
+  mosquitto:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+      - "1884:1883"
+    volumes:
+      - ${PWD}/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      restart: unless-stopped
   webapps:
     image: nginx
     ports:
@@ -31,4 +39,13 @@ services:
           - TZ=Europe/Berlin
       ports:
           - 8090:80
+      restart: unless-stopped
+  zigAssRifo:
+      image: carldebilly/zigbee2mqttassistant
+      environment:
+          - Z2MA_SETTINGS__MQTTSERVER=10.0.0.42
+          - Z2MA_SETTINGS__BASETOPIC=rzig
+          - TZ=Europe/Berlin
+      ports:
+          - 8070:80
       restart: unless-stopped
