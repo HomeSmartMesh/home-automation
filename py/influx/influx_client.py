@@ -42,11 +42,12 @@ def mqtt_on_message(client, userdata, msg):
     topic_parts = msg.topic.split('/')
     try:
         post = None
+        payload = msg.payload.decode('utf-8')
         if( (len(topic_parts) == 3) and (topic_parts[0] == "Nodes") ):
             nodeid = topic_parts[1]
             sensor = topic_parts[2]
             measurement = "node"+nodeid
-            value = float(str(msg.payload))
+            value = float(payload)
             post = [
                 {
                     "measurement": measurement,
@@ -58,7 +59,7 @@ def mqtt_on_message(client, userdata, msg):
             ]
         elif( len(topic_parts) == 2 ):
             sensor = topic_parts[1]
-            fields = json.loads(msg.payload)
+            fields = json.loads(payload)
             if("voltage" in fields):
                 fields["voltage"] = float(fields["voltage"]) #convert voltage from milivolts to Volts
             check_all_types(fields)
@@ -83,7 +84,7 @@ def mqtt_on_message(client, userdata, msg):
             if(msg.topic in config["mqtt"]["names"]):
                 measurement = config["mqtt"]["names"][msg.topic]
                 sensor = topic_parts[4]
-                value = float(msg.payload)
+                value = float(payload)
                 post = [
                     {
                         "measurement": measurement,
@@ -96,13 +97,13 @@ def mqtt_on_message(client, userdata, msg):
         if(post != None):
             try:
                 clientDB.write_points(post)
-                log.debug(msg.topic+" "+str(msg.payload)+" posted")
+                log.debug(msg.topic+" "+payload+" posted")
             except requests.exceptions.ConnectionError:
                 log.error("ConnectionError sample skipped "+msg.topic)
             except influxdb.exceptions.InfluxDBServerError:
                 log.error("InfluxDBServerError sample skipped "+msg.topic)
             except influxdb.exceptions.InfluxDBClientError as e:
-                log.error("InfluxDBClientError with "+msg.topic+" : " +str(msg.payload)+" >>> "+str(e) )
+                log.error("InfluxDBClientError with "+msg.topic+" : " +payload+" >>> "+str(e) )
     except:
         log.exception("message")
 # -------------------- main -------------------- 
