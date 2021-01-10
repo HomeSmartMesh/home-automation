@@ -7,7 +7,7 @@ services:
       - "1884:1883"
     volumes:
       - ${PWD}/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
-      restart: unless-stopped
+    restart: unless-stopped
   webapps:
     image: nginx
     ports:
