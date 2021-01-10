@@ -40,12 +40,3 @@ services:
       ports:
           - 8090:80
       restart: unless-stopped
-  zigAssRifo:
-      image: carldebilly/zigbee2mqttassistant
-      environment:
-          - Z2MA_SETTINGS__MQTTSERVER=10.0.0.42
-          - Z2MA_SETTINGS__BASETOPIC=rzig
-          - TZ=Europe/Berlin
-      ports:
-          - 8070:80
-      restart: unless-stopped
