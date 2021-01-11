@@ -13,7 +13,8 @@
                             "mzig/bed nic button",
                             "mzig/living double switch",
                             "lzig/bedroom switch",
-                            "lzig/volume white"
+                            "lzig/volume white",
+                            "lzig/office switch"
                         ],
         "actions"   :[],
         "publish" :true,

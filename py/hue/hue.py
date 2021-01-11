@@ -216,22 +216,19 @@ def office_switch(payload):
     #log.info(f"office_switch ===> {payload}")
     switch = json.loads(payload)
     if("click" in switch and switch["click"] == "single"):
-        if(lights["office main"].on):
+        if(lights["office curtain"].on):
             lights["office main"].on = False
-            lights["office desk"].on = False
-            lights["office candle"].on = False
-            log.info("office_light>(click)(main on) => all off")
+            lights["office curtain"].on = False
+            log.info("office_light>(click)(curtain on) => all off")
         else:
             #command so that it does not go to previous level before adjusting the brightness
             b.set_light("office main", {'on' : True, 'bri' : 255})
-            b.set_light("office desk", {'on' : True, 'bri' : 100})
-            b.set_light("office candle", {'on' : True, 'bri' : 20})
-            log.info("office_light>(click)(main off) => all on, some low")
+            b.set_light("office curtain", {'on' : True, 'bri' : 100})
+            log.info("office_light>(click)(curtain off) => all on, some low")
     elif("action" in switch and switch["action"] == "hold"):
-            b.set_light("office main", {'on' : True, 'bri' : 1})
-            lights["office desk"].on = False
-            lights["office candle"].on = False
-            log.info("office_light>(hold)(x) => main low, rest off")
+            b.set_light("office curtain", {'on' : True, 'bri' : 1})
+            lights["office main"].on = False
+            log.info("office_light>(hold)(x) => curtain low, rest off")
     #else:
     #    log.debug("office_light>no click")
     return
@@ -297,8 +294,8 @@ def mqtt_on_message(client, userdata, msg):
             sensor_name = topic_parts[1]
             if(sensor_name == "bed light button") or (sensor_name == "bed nic button") or (sensor_name == "bedroom switch"):
                 bed_light_button(msg.payload)
-            #elif(sensor_name == "office switch"):
-                #office_switch(msg.payload)
+            elif(sensor_name == "office switch"):
+                office_switch(msg.payload)
             elif(sensor_name == "volume white"):
                 office_dimm(msg.payload)
             elif(sensor_name == "tree button"):

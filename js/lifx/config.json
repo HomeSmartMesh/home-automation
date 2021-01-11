@@ -6,9 +6,7 @@
         "client_id":"lifx_client",
         "subscriptions":[  
             "lifx/home show/#",
-            "lzig/office switch",
-            "lzig/office window right",
-            "lzig/office window left"
+            "lzig/office button"
          ],
         "publish" :true,
         "subscribe" :true

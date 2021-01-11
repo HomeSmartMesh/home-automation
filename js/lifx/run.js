@@ -100,10 +100,10 @@ async function office_switch(msg){
   if(defined(message.click) && (message.click == "single")){
     let result = await lifx.lightGet()
     if(result.power){
-      logger.info("office switch> (click)(power) => turning curtain off")
+      logger.info("office button> (click)(power) => turning curtain off")
       await lifx.turnOff({duration: 2000})
     }else{
-      logger.info("office switch> (click)(no power) =>turning curtain on")
+      logger.info("office button> (click)(no power) =>turning curtain on")
       await lifx.turnOn({duration: 1000})
     }
   }
@@ -120,7 +120,7 @@ async function main(){
   mqtt.start()
 
   mqtt.Emitter.on('mqtt',(data)=>{
-      if(data.topic == "lzig/office switch"){
+      if(data.topic == "lzig/office button"){
         office_switch(data.msg).then()
       }
     })
