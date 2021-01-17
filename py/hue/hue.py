@@ -286,6 +286,39 @@ def entrance_light(payload):
         log.debug("entrance_light>no click")
     return
 
+def light_list_clicks(payload,lights_list):
+    jval = json.loads(payload)
+    if("click" in jval and jval["click"] == "single"):
+        if(lights[lights_list[0]].on):
+            for light_name in lights_list:
+                lights[light_name].on = False
+            log.info("entrance_light> off")
+        else:
+            #command so that it does not go to previous level before adjusting the brightness
+            for light_name in lights_list:
+                lights[light_name].on = False
+                b.set_light(light_name, {'on' : True, 'bri' : 128})
+            log.info("entrance_light> on")
+    elif("click" in jval and jval["click"] == "double"):
+        for light_name in lights_list:
+            lights[light_name].on = False
+            b.set_light(light_name, {'on' : True, 'bri' : 255})
+        log.info("entrance_light> on Full Brightness")
+    elif("action" in jval and jval["action"] == "hold"):
+        for light_name in lights_list:
+            lights[light_name].on = False
+            b.set_light(light_name, {'on' : True, 'bri' : 1})
+        log.info("entrance_light> on Lowest Brightness")
+    return
+
+def call_action(action_name,payload,light_list):
+    possibles = globals().copy()
+    possibles.update(locals())
+    method = possibles.get(action_name)
+    log.debug(f"calling => ({action_name})")
+    method(payload,light_list)
+    return
+
 def mqtt_on_message(client, userdata, msg):
     #log.info(f"{msg.topic} : {msg.payload}")
     try:
@@ -304,10 +337,10 @@ def mqtt_on_message(client, userdata, msg):
                 livroom_light_button(msg.payload)
             elif(sensor_name == "living double switch"):
                 livroom_light_switch(msg.payload)
-            #else: 
-            #    for room_name,room in config["lightmap"].items():
-            #        if sensor_name in room["sensors"]:
-            #            getattr(light_actions,room_name)(b,msg.payload,room["lights"])
+            else:
+                for room_name,room in config["lightmap"].items():
+                    if sensor_name in room["sensors"]:
+                        call_action(room["action"],msg.payload,room["lights"])
         else:
             log.error("topic: "+msg.topic + "size not matching")
     except Exception as e:

@@ -14,19 +14,27 @@
                             "mzig/living double switch",
                             "lzig/bedroom switch",
                             "lzig/volume white",
-                            "lzig/office switch"
+                            "lzig/office switch",
+                            "lzig/hallway entrance switch",
+                            "lzig/hallway living switch",
+                            "lzig/hallway corridor switch"
                         ],
         "actions"   :[],
         "publish" :true,
         "subscribe" :true
     },
     "lightmap":{
-        "office_switch":{
+        "hallway":{
+            "action":"light_list_clicks",
             "sensors":[
-                "office switch"
+                "hallway entrance switch",
+                "hallway living switch",
+                "hallway corridor switch"
             ],
             "lights":[
-                "office main"
+                "Entrance White 1",
+                "Entrance White 2",
+                "Entrance White 3"
             ]
         }
     },
