@@ -9,5 +9,5 @@ theme = "book"
 
 [[menu.after]]
   name = "Documentation"
-  url = "https://homesmartmesh.github.io/docs/raspi/readme/#meta-website"
+  url = "https://www.homesmartmesh.com/docs/frameworks/raspi_iot/#meta-website"
   weight = 50

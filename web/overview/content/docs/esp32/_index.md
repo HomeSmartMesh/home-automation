@@ -1,5 +1,5 @@
 ---
-weight: 40
+weight: 5
 bookFlatSection: true
 bookCollapseSection: true
 title: "ESP32"

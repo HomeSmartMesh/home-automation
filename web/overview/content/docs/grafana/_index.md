@@ -1,5 +1,5 @@
 ---
-weight: 11
+weight: 2
 bookFlatSection: true
 bookCollapseSection: true
 title: "Grafana"
