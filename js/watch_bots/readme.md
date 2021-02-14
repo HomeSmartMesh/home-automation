@@ -127,3 +127,8 @@ a new file has to be created with the name `secret.json`. The reson it is not al
     ]
 }
 ```
+
+## running
+
+    pm2 start watch_bots.js --daemon
+

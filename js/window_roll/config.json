@@ -5,7 +5,7 @@
         "keepalive":60,
         "client_id":"window_roll_client",
         "subscriptions":[  
-            "mzig/roll button 1",
+            "lzig/roll button 1",
             "lzig/roll button 2",
             "lzig/volume white",
             "lzig/volume white/action",

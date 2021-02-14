@@ -30,7 +30,9 @@ def run():
             line = line.replace('\n','')
             on_line_function(line)
     except OSError as e:
-        log.error("uart> Handled exception: %s",str(e))
+        log.error("uart> Handled OSError exception: %s",str(e))
+    except UnicodeDecodeError as e:
+        log.error("uart> Handled UnicodeDecodeError exception: %s",str(e))
     return res
 
 def send(data):

@@ -56,7 +56,7 @@
         }
     },
     "alive_minutes_sensor":{
-        "nrf":10,
+        "nrf":15,
         "aqara":65,
         "eurotronics":120
     },

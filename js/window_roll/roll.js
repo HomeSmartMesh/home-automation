@@ -92,7 +92,7 @@ function window_state(topic,message){
 }
 
 mqtt.Emitter.on('mqtt',(data)=>{
-  if(data.topic == "mzig/roll button 1"){
+  if(data.topic == "lzig/roll button 1"){
     roll_buttons(data.topic,JSON.parse(data.msg))
   }else if(data.topic == "lzig/roll button 2"){
     roll_buttons(data.topic,JSON.parse(data.msg))
