@@ -1,0 +1,11 @@
+[Unit]
+Description=service for recording MQTT published jpg image on disk
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=node /home/pi/raspi/js/camera_lapse/lapse.js
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
