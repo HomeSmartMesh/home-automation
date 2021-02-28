@@ -1,5 +1,5 @@
 ---
-weight: 3
+weight: 11
 bookFlatSection: true
 bookCollapseSection: false
 title: "Open HAB"

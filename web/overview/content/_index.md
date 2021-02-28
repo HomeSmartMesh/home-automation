@@ -1,5 +1,5 @@
 ---
-weight: 100
+weight: 1
 bookFlatSection: true
 bookCollapseSection: false
 title: "Heating"

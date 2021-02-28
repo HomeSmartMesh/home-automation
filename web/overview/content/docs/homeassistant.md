@@ -1,5 +1,5 @@
 ---
-weight: 2
+weight: 10
 title: "Home Assistant"
 BookToC: false
 ---
