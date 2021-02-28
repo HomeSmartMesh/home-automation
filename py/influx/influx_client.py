@@ -80,6 +80,18 @@ def mqtt_on_message(client, userdata, msg):
                         "fields": fields
                     }
                 ]
+        elif( (len(topic_parts) == 3) and (topic_parts[2] == "status") ):
+            sensor = topic_parts[1]
+            fields = json.loads(payload)
+            check_all_types(fields)
+            check_discards(fields)
+            post = [
+                {
+                    "measurement": sensor,
+                    "time": datetime.datetime.utcnow(),
+                    "fields": fields
+                }
+            ]
         elif( (len(topic_parts) == 5) and (topic_parts[0] == "shellies") ):
             if(msg.topic in config["mqtt"]["names"]):
                 measurement = config["mqtt"]["names"][msg.topic]

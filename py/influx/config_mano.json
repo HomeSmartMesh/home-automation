@@ -38,6 +38,8 @@
                             "nrf/office tag",
                             "nrf/bedroom tag",
                             "nrf/kitchen tag",
+                            "esp/camera/status",
+                            "esp/firebeetle_1/status",
                             "shellies/#"
                                     ],
         "names":{
