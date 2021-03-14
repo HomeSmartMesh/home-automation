@@ -35,6 +35,9 @@ def stop_fan_relay_on_conditions():
     if(state["button_fan_timer_min"] != 0):
         log.info(f"stop_fan_relay_on_conditions> stop rejected, user timer running. state = {state}")
         return
+    if(state["light_relay"] == True):
+        log.info(f"stop_fan_relay_on_conditions> stop rejected, light is on. state = {state}")
+        return
     if(state["humidity_sensor_alive"]):
         if(state["humidity"] > config["humidity"]["stop_fan_on_condition"]):
             log.info(f"stop_fan_relay_on_conditions> stop rejected, humidity too high. state = {state}")
@@ -42,7 +45,7 @@ def stop_fan_relay_on_conditions():
             log.info(f"stop_fan_relay_on_conditions> stop accepted, not humid. state = {state}")
             set_fan_relay("off")
     else:
-        log.info(f"stop_fan_relay_on_conditions> stop accepted as humidity unavailable. state = {state}")
+        log.info(f"stop_fan_relay_on_conditions> stop accepted as light is off and humidity unavailable. state = {state}")
         set_fan_relay("off")
     return
 
@@ -120,7 +123,10 @@ def shelly_fan_relay(payload):
 def sensor_humidity(payload):
     global state
     sensor = json.loads(payload)
+    if(not "humidity" in sensor):#light packet no humidity
+        return
     humidity_level = float(sensor["humidity"])
+    log.debug(f"sensor_humidity> {humidity_level}")
     old_humidity = state["humidity"]
     state["humidity"] = humidity_level
     stop = config["humidity"]["stop_fan"]
