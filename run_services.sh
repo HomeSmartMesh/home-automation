@@ -62,6 +62,14 @@ sudo systemctl daemon-reload
 sudo systemctl enable watch_bots.service
 sudo systemctl start watch_bots.service
 
+sudo cp py/bathroom/bathroom.service /lib/systemd/system/
+sudo chmod 644 /lib/systemd/system/bathroom.service
+sudo chmod +x py/bathroom/bathroom.py
+sudo systemctl daemon-reload
+sudo systemctl enable bathroom.service
+sudo systemctl start bathroom.service
+
+
 sudo systemctl set-property nrf_mesh.service Framework=raspi_iot
 hover
 pc_power
