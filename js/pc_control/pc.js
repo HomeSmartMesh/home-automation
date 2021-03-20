@@ -8,6 +8,8 @@ let count_low = 0
 let pc_reley_status = "nothing"
 let auto_on_off = true
 
+let sonos_off = true
+
 function pc_shutdown(){
   logger.info(`pc> shutting down`)
   mqtt.publish(config.control.pc,"off")
@@ -43,13 +45,17 @@ function sonos_button(topic,message){
   if(message.hasOwnProperty("click")){
     logger.verbose(`sonos> ${topic} : click = ${message.click}`)
     if(message.click == "single"){
+      if(sonos_off){
         logger.info(`sonos> switching on`)
         mqtt.publish(config.control.sonos_front,"on")
-        //mqtt.publish(config.control.sonos_rear,"on")
-    }else if(message.click == "double"){
-      logger.info(`sonos> switching off`)
-      mqtt.publish(config.control.sonos_front,"off")
-      //mqtt.publish(config.control.sonos_rear,"off")
+        mqtt.publish(config.control.sonos_rear,"on")
+        sonos_off = false
+      }else{
+        logger.info(`sonos> switching off`)
+        mqtt.publish(config.control.sonos_front,"off")
+        mqtt.publish(config.control.sonos_rear,"off")
+        sonos_off = true
+      }
     }
   }
 }
@@ -62,11 +68,9 @@ function pc_button(topic,message){
       if(pc_reley_status == "on"){
         logger.info(`pc> is on and click => shutting off`)
         mqtt.publish(config.control.pc,"off")
-        mqtt.publish(config.control.repeater,"off")
       }else if(pc_reley_status == "off"){
         logger.info(`pc> is off and click => turning on`)
         mqtt.publish(config.control.pc,"on")
-        mqtt.publish(config.control.repeater,"on")
       }
     }else if(message.click == "double"){
       auto_on_off = !auto_on_off
@@ -75,12 +79,6 @@ function pc_button(topic,message){
       }else{
         http.request(config.control.led.off).end()
       }
-    }
-  }else if(message.hasOwnProperty("action")){
-    if(message.action == "hold"){
-      mqtt.publish(config.control.repeater,"off")
-    }else if(message.action == "release"){
-      mqtt.publish(config.control.repeater,"on")
     }
   }
 }

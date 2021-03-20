@@ -12,6 +12,8 @@ import cfg
 from mqtt import mqtt_start
 import threading
 
+input_timer = None
+
 def debounce(in_time):
     current_time = time.time()
     delta = current_time - in_time
@@ -35,8 +37,8 @@ def stop_fan_relay_on_conditions():
     if(state["button_fan_timer_min"] != 0):
         log.info(f"stop_fan_relay_on_conditions> stop rejected, user timer running. state = {state}")
         return
-    if(state["light_relay"] == True):
-        log.info(f"stop_fan_relay_on_conditions> stop rejected, light is on. state = {state}")
+    if(state["input"] == True):
+        log.info(f"stop_fan_relay_on_conditions> stop rejected, (light) 'input' is on. state = {state}")
         return
     if(state["humidity_sensor_alive"]):
         if(state["humidity"] > config["humidity"]["stop_fan_on_condition"]):
@@ -50,7 +52,7 @@ def stop_fan_relay_on_conditions():
     return
 
 def input_timer_trigger():
-    log.debug(f"input_timer_trigger> trigger")
+    log.info(f"input_timer_trigger> trigger")
     #if input still active after the delay since its start, then start the fan
     if(state["input"] == True):
         set_fan_relay("on")
@@ -77,10 +79,12 @@ def humidity_sensor_timer():
     return
 
 def start_input_timer():
+    global input_timer
     #start timer
     delay_min = int(config["input_to_fan_delay_min"])
-    threading.Timer(60*delay_min, input_timer_trigger).start()
-    log.debug(f"start_input_timer> state = {state}")
+    input_timer = threading.Timer(60*delay_min, input_timer_trigger)
+    input_timer.start()
+    log.info(f"start_input_timer> state = {state}")
     return
 
 def shelly_input(payload):
@@ -93,6 +97,8 @@ def shelly_input(payload):
     elif(input_state == 0) and (state["input"] == True):
         log.info(f"shelly_input> =>0. state = {state}")
         state["input"] = False
+        if(input_timer):
+            input_timer.cancel()
         stop_fan_relay_on_conditions()
     return
 

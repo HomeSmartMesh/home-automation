@@ -16,9 +16,8 @@
     },
     "control":{
         "pc":           "shellies/shellyplug-s-B85CCA/relay/0/command",
-        "repeater":     "shellies/shellyplug-s-6A5DCF/relay/0/command",
         "sonos_front":"shellies/shellyplug-s-6A5CE5/relay/0/command",
-        "sonos_rear":   "shellies/shellyplug-s-B85D90/relay/0/command",
+        "sonos_rear":   "shellies/shellyplug-s-6A5DCF/relay/0/command",
         "led":{
             "on":"http://dell_pc.shelly/settings/?led_status_disable=false",
             "off":"http://dell_pc.shelly/settings/?led_status_disable=true"
