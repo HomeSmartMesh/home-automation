@@ -38,6 +38,8 @@
                             "nrf/office tag",
                             "nrf/bedroom tag",
                             "nrf/kitchen tag",
+                            "esp/camera/status",
+                            "esp/firebeetle_1/status",
                             "shellies/#"
                                     ],
         "names":{
@@ -50,9 +52,9 @@
             "shellies/shellyplug-s-B85CA1/relay/0/power":"shelly routers servers",
             "shellies/shellyplug-s-1697DA/relay/0/power":"shelly tv",
             "shellies/shellyplug-s-6A5CE5/relay/0/power":"shelly sonos front",
-            "shellies/shellyplug-s-6A5DCF/relay/0/power":"shelly ethernet repeater",
+            "shellies/shellyplug-s-6A5DCF/relay/0/power":"shelly sonos sat",
             "shellies/shellyplug-s-B85CCA/relay/0/power":"shelly dell pc",
-            "shellies/shellyplug-s-B85D90/relay/0/power":"shelly sonos sat",
+            "shellies/shellyplug-s-B85D90/relay/0/power":"defect sonos rear",
             "shellies/shellyplug-s-021700/relay/0/power":"shelly entrance",
             "shellies/shellyswitch25-B8A4EE/relay/0/power":"shelly bathroom light",
             "shellies/shellyswitch25-B8A4EE/relay/1/power":"shelly bathroom fan",
@@ -66,9 +68,9 @@
             "shellies/shellyplug-s-B85CA1/relay/0/energy":"shelly routers servers",
             "shellies/shellyplug-s-1697DA/relay/0/energy":"shelly tv",
             "shellies/shellyplug-s-6A5CE5/relay/0/energy":"shelly sonos front",
-            "shellies/shellyplug-s-6A5DCF/relay/0/energy":"shelly ethernet repeater",
+            "shellies/shellyplug-s-6A5DCF/relay/0/energy":"shelly sonos sat",
             "shellies/shellyplug-s-B85CCA/relay/0/energy":"shelly dell pc",
-            "shellies/shellyplug-s-B85D90/relay/0/energy":"shelly sonos sat",
+            "shellies/shellyplug-s-B85D90/relay/0/energy":"defect sonos rear",
             "shellies/shellyplug-s-021700/relay/0/energy":"shelly entrance",
             "shellies/shellyswitch25-B8A4EE/relay/0/energy":"shelly bathroom light",
             "shellies/shellyswitch25-B8A4EE/relay/1/energy":"shelly bathroom fan",
@@ -103,7 +105,7 @@
         "db":"mqtt"
     },
     "log":{
-        "logfile":"/home/pi/share/influx_client_2.log",
+        "logfile":"/home/pi/share/influx_client_3.log",
         "level":"Info"
     }
 }

@@ -17,7 +17,8 @@
                             "lzig/office switch",
                             "lzig/hallway entrance switch",
                             "lzig/hallway living switch",
-                            "lzig/hallway corridor switch"
+                            "lzig/hallway corridor switch",
+                            "lzig/toilet switch"
                         ],
         "actions"   :[],
         "publish" :true,
@@ -37,6 +38,15 @@
                 "Entrance White 3",
                 "Entrance White 4",
                 "Entrance White 5"
+            ]
+        },
+        "toilet":{
+            "action":"light_list_clicks",
+            "sensors":[
+                "toilet switch"
+            ],
+            "lights":[
+                "Toilet"
             ]
         }
     },

@@ -1,0 +1,11 @@
+[Unit]
+Description=Telegram bot client to watch all of your MQTT sensors for liveliness and low battery with a simple, non redundant, configuration.
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=node /home/pi/raspi/js/watch_bots/watch_bots.js
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
