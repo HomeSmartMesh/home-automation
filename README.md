@@ -2,6 +2,13 @@
 raspberry pi server for home automation. 'No limits' to what you can do with python and node.js services interfaced with javascript web apps.
 This Fremwork is a lightweight mqtt interconnect between devices (HW), services (Automation) and webapps (UI).
 
+# documentation website
+https://www.homesmartmesh.com/docs/frameworks/raspi_iot/
+# community discussion
+[<img src ="discord.png" width="100">](https://discord.gg/4jcteVn9kP)
+
+Do you have a question or an idea related to this project ? Feel free to join the [discord](https://discord.gg/4jcteVn9kP) channel to chat live, make suggestions and give feedback.
+
 # Support
 * I'm using the scripts from this repo, they are running 24/7 and have a stunning reliability. Total system failure rate is nearing that of the HW devices. No reboots ever required.
 * Each service has a log file to trace back unintended behavior and complex logic.
