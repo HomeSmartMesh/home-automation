@@ -6,8 +6,10 @@ const config = JSON.parse(fs.readFileSync(__dirname+'/config.json'))
 
 let count_low = 0
 let pc_reley_status = "nothing"
-let auto_on_off = true
+let retro_light_status = "nothing"
+let retro_dimmer_status = {"alive":false,"list":[0,0,0,0,0,0,0,0]}
 
+let auto_on_off = true
 let sonos_off = true
 
 function pc_shutdown(){
@@ -41,6 +43,34 @@ logger.debug('test debug')
 logger.silly('test silly')
 mqtt.start()
 
+function retro_light(topic,message){
+  if(message.hasOwnProperty("click")){
+    logger.verbose(`retro light> ${topic} : click = ${message.click}`)
+    if(message.click == "single"){
+      if(retro_light_status == "off"){
+        logger.info(`retro light> switching on`)
+        mqtt.publish(config.control.retro_light_relay,"on")
+      }else{
+        logger.info(`retro light> switching off`)
+        mqtt.publish(config.control.retro_light_relay,"off")
+      }
+    }
+  }else if(topic == config.status.retro_light_relay){
+    logger.debug(`retro light> relay : ${message}`)
+    retro_light_status = message
+  }else if(topic == config.status.retro_light_dimmer){
+    if(message.hasOwnProperty("alive")){
+      logger.info(`retro light> dimmer : ${JSON.stringify(message)}`)
+      if(message.alive == true){
+        if(message.list[0] == 800){
+          mqtt.publish(config.control.retro_light_dimmer,`{"all":3000}`)
+        }
+      }
+      retro_dimmer_status = message
+    }
+  }
+}
+
 function sonos_button(topic,message){
   if(message.hasOwnProperty("click")){
     logger.verbose(`sonos> ${topic} : click = ${message.click}`)
@@ -59,6 +89,7 @@ function sonos_button(topic,message){
     }
   }
 }
+
 function pc_button(topic,message){
   //when user interacts, reset automation counter
   count_low = 0
@@ -99,7 +130,7 @@ function office_chair_vibration(topic,message){
 }
 
 mqtt.Emitter.on('mqtt',(data)=>{
-  if(data.topic == "shellies/shellyplug-s-B85CCA/relay/0/power"){
+  if(data.topic == config.status.pc_power){
     if(auto_on_off){
       const power = parseFloat(data.msg)
       if(power <10){
@@ -108,7 +139,7 @@ mqtt.Emitter.on('mqtt',(data)=>{
         call_high()
       }
     }
-  }else if(data.topic == "shellies/shellyplug-s-B85CCA/relay/0"){
+  }else if(data.topic == config.status.pc){
     pc_reley_status = data.msg
   }else if(data.topic == "mzig/pc button"){
     pc_button(data.topic,JSON.parse(data.msg))
@@ -116,6 +147,12 @@ mqtt.Emitter.on('mqtt',(data)=>{
     sonos_button(data.topic,JSON.parse(data.msg))
   }else if(data.topic == "mzig/office chair vibration"){
     office_chair_vibration(data.topic,JSON.parse(data.msg))
+  }else if(data.topic == config.status.retro_light_relay){
+    retro_light(data.topic,data.msg)
+  }else if(data.topic == config.status.retro_light_dimmer){
+    retro_light(data.topic,JSON.parse(data.msg))
+  }else if(data.topic == "lzig/retro light switch"){
+    retro_light(data.topic,JSON.parse(data.msg))
   }
 })
 
