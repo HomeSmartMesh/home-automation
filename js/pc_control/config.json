@@ -24,9 +24,7 @@
         }
     },
     "log":{
-        "logfile":"pc_control.log",
-        "exceptions":"pc_control_exceptions.log",
-        "share":"/home/pi/share/",
+        "logfile":"/home/pi/share/pc_control (date).log",
         "level":"debug"
     }
 }

@@ -43,9 +43,11 @@ def configure_log(logger_name):
         "Critical"  :50
     }
     #if(os.path.isfile(config["logfile"])):
+    logfile = config["logfile"].replace("(date)",datetime.datetime.now().strftime('-%Y.%m.%d'))
+    log.info(f"logging in file '{logfile}'")
     for handler in log.root.handlers[:]:
         log.root.removeHandler(handler)
-    log.basicConfig(    filename=config["logfile"],
+    log.basicConfig(    filename=logfile,
                         level=log_level_map[config["level"]],
                         format='%(asctime)s %(name)s %(levelname)-8s %(message)s',
                         datefmt='%d %H:%M:%S'

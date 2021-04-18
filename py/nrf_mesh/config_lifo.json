@@ -1,5 +1,6 @@
 {
     "serial":{
+        "ID":"0x10c4:0xea60",
         "port":"/dev/ttyUSB0",
         "baud":460800
     },
@@ -24,7 +25,7 @@
         "actions"   :[]
     },
     "log":{
-        "logfile":"/home/pi/share/log_nrf_mesh.log",
+        "logfile":"/home/pi/share/nrf_mesh(date).log",
         "level":"Info"
     }
 }
