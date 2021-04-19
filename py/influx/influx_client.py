@@ -83,6 +83,8 @@ def mqtt_on_message(client, userdata, msg):
         elif( (len(topic_parts) == 3) and (topic_parts[2] == "status") ):
             sensor = topic_parts[1]
             fields = json.loads(payload)
+            if("battery" in fields):
+                fields["voltage"] = fields["battery"]
             check_all_types(fields)
             check_discards(fields)
             post = [
