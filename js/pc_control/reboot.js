@@ -18,5 +18,7 @@ http.request("http://192.168.0.107/reboot").end()
 http.request("http://10.0.0.54/reboot").end()
 http.request("http://10.0.0.49/reboot").end()
 http.request("http://10.0.0.18/reboot").end()
+http.request("http://10.0.0.58/reboot").end()
+http.request("http://10.0.0.12/reboot").end()
 
 logger.info('rebooting devices complete')
