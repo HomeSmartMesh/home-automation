@@ -9,6 +9,9 @@
         "publish" :true,
         "subscribe" :false
     },
+    "friendlyNames":{
+        "7009D837C7BB557A":"01"
+    },
     "log":{
         "logfile":"/home/pi/share/thread_tags_(date).log",
         "level":"Info"
