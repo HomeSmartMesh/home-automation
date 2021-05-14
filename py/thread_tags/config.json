@@ -10,7 +10,8 @@
         "subscribe" :false
     },
     "friendlyNames":{
-        "7009D837C7BB557A":"01"
+        "7009D837C7BB557A":"01",
+        "631F80C39437F2F3":"02"
     },
     "log":{
         "logfile":"/home/pi/share/thread_tags_(date).log",
