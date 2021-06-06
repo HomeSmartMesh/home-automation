@@ -7,6 +7,8 @@ from mqtt import mqtt_start
 import time
 
 def friendly_topic(topic):
+    if('/' not in topic):
+        return topic
     base_topic = topic.split('/')[0]
     long_name =  topic.split('/')[1]
     if(long_name in config["friendlyNames"]):
