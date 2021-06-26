@@ -1,0 +1,11 @@
+[Unit]
+Description=manages thread sensor tags and forward their udp messages to MQTT
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/pi/raspi/py/thread_tags/thread_tags.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

@@ -69,6 +69,14 @@ sudo systemctl daemon-reload
 sudo systemctl enable bathroom.service
 sudo systemctl start bathroom.service
 
+sudo cp py/thread_tags/thread_tags.service /lib/systemd/system/
+sudo chmod 644 /lib/systemd/system/thread_tags.service
+sudo chmod +x py/thread_tags/thread_tags.py
+sudo systemctl daemon-reload
+sudo systemctl enable thread_tags.service
+sudo systemctl start thread_tags.service
+
+
 
 sudo systemctl set-property nrf_mesh.service Framework=raspi_iot
 hover
