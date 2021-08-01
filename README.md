@@ -4,10 +4,13 @@ This Fremwork is a lightweight mqtt interconnect between devices (HW), services 
 
 # documentation website
 https://www.homesmartmesh.com/docs/frameworks/raspi_iot/
-# community discussion
-[<img src ="discord.png" width="100">](https://discord.gg/4jcteVn9kP)
+# Discourse forum
+get support, give feedback or simply chat about ideas on the forum
 
-Do you have a question or an idea related to this project ? Feel free to join the [discord](https://discord.gg/4jcteVn9kP) channel to chat live, make suggestions and give feedback.
+[![discourse](./forum.png)](https://homesmartmesh.discourse.group/c/frameworks/11)
+
+[Home Smart Mesh Forum - Frameworks Category](https://homesmartmesh.discourse.group/c/frameworks/11)
+
 
 # Support
 * I'm using the scripts from this repo, they are running 24/7 and have a stunning reliability. Total system failure rate is nearing that of the HW devices. No reboots ever required.
