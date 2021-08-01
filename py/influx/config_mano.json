@@ -38,6 +38,7 @@
                             "nrf/office tag",
                             "nrf/bedroom tag",
                             "nrf/kitchen tag",
+                            "thread_tags/#",
                             "esp/camera/status",
                             "esp/firebeetle_1/status",
                             "shellies/#"
@@ -83,6 +84,7 @@
         "types":{
             "energy"      :"int",
             "power"      :"float",
+            "light"      :"float",
             "pressure"      :"float",
             "temperature"   :"float",
             "humidity"      :"float",
