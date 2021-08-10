@@ -46,7 +46,8 @@
                 "toilet switch"
             ],
             "lights":[
-                "Toilet"
+                "Toilet1",
+                "Toilet2"
             ]
         }
     },
