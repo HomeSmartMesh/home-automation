@@ -1,9 +1,15 @@
 FROM python:3
+
 WORKDIR /usr/src/app
+
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
+
+COPY thread_tags.py .
 COPY mqtt.py .
 COPY cfg.py .
-COPY influx_client.py .
 COPY config-local.json ./config.json
-CMD [ "python", "./influx_client.py" ]
+
+RUN mkdir -p /var/log/thread
+
+CMD [ "python", "./thread_tags.py" ]

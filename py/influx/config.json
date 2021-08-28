@@ -103,7 +103,7 @@
         "db":"mqtt"
     },
     "log":{
-        "logfile":"/home/pi/share/influx_client_3.log",
+        "logfile":"/home/pi/share/influx_client_(date).log",
         "level":"Info"
     }
 }

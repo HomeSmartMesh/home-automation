@@ -1,0 +1,20 @@
+{  
+    "mqtt":{
+        "host":"localhost",
+        "port":1883,
+        "keepalive":60,
+        "client_id":"thread_tags",
+        "subscriptions":[ ],
+        "actions"   :[],
+        "publish" :true,
+        "subscribe" :false
+    },
+    "friendlyNames":{
+        "7009D837C7BB557A":"01",
+        "631F80C39437F2F3":"02"
+    },
+    "log":{
+        "logfile":"/var/log/thread/thread_tags_(date).log",
+        "level":"Info"
+    }
+}

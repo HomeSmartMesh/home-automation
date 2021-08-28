@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  mosquitto:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+      - "1884:1883"
+    volumes:
+      - ${PWD}/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    restart: unless-stopped
+  influx:
+    image: influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      - ${PWD}/influxdb:/var/lib/influxdb
+      - ${PWD}/py/influx/data:/var/log/influx
+    environment:
+      - INFLUXDB_DB:=mqtt
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    network_mode: "host"
+    volumes:
+      - ${PWD}/grafana/data:/var/lib/grafana
+      - ${PWD}/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
+    depends_on:
+      - "influx"
+  mqtt2influx:
+    build:
+      context: ./py/influx
+    network_mode: "host"
+    depends_on:
+      - "mosquitto"
+      - "influx"
+  udp2mqtt:
+    build:
+      context: ./py/thread_tags
+    network_mode: "host"
+    volumes:
+      - ${PWD}/py/thread_tags/data:/var/log/thread
+    depends_on:
+      - "mosquitto"
