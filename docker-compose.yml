@@ -14,6 +14,7 @@ services:
       - "8086:8086"
     volumes:
       - ${PWD}/influxdb:/var/lib/influxdb
+      - ${PWD}/py/influx/data:/var/log/influx
     environment:
       - INFLUXDB_DB:=mqtt
   grafana:
@@ -42,6 +43,14 @@ services:
     depends_on:
       - "mosquitto"
       - "influx"
+  udp2mqtt:
+    build:
+      context: ./py/thread_tags
+    network_mode: "host"
+    volumes:
+      - ${PWD}/py/thread_tags/data:/var/log/thread
+    depends_on:
+      - "mosquitto"
   webapps:
     image: nginx
     ports:

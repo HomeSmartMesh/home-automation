@@ -27,18 +27,3 @@ services:
       - ${PWD}/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
     depends_on:
       - "influx"
-  mqtt2influx:
-    build:
-      context: ./py/influx
-    network_mode: "host"
-    depends_on:
-      - "mosquitto"
-      - "influx"
-  udp2mqtt:
-    build:
-      context: ./py/thread_tags
-    network_mode: "host"
-    volumes:
-      - ${PWD}/py/thread_tags/data:/var/log/thread
-    depends_on:
-      - "mosquitto"
