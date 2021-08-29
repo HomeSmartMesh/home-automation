@@ -1,4 +1,4 @@
-pip3 install -r requirements.txt
+sudo pip3 install -r requirements.txt
 rm config.json
 mv config-local.json config.json
 sudo cp thread_tags.service /lib/systemd/system/

@@ -4,7 +4,7 @@ services:
     image: eclipse-mosquitto
     ports:
       - "1883:1883"
-      - "1884:1883"
+      - "1884:1884"
     volumes:
       - ${PWD}/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
     restart: unless-stopped
@@ -17,12 +17,13 @@ services:
       - ${PWD}/py/influx/data:/var/log/influx
     environment:
       - INFLUXDB_DB:=mqtt
+    restart: unless-stopped
   grafana:
     image: grafana/grafana
-    ports:
-      - "3000:3000"
+    network_mode: "host"
     volumes:
       - ${PWD}/grafana/data:/var/lib/grafana
       - ${PWD}/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
     depends_on:
       - "influx"
+    restart: unless-stopped
