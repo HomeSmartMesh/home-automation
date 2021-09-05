@@ -25,6 +25,7 @@ services:
     volumes:
       - ${PWD}/grafana/data:/var/lib/grafana
       - ${PWD}/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
+      - ${PWD}/grafana/provisioning:/etc/grafana/provisioning:ro
     depends_on:
       - "influx"
   nrf2mqtt:

@@ -1,0 +1,11 @@
+apiVersion: 1
+
+datasources:
+  - name: InfluxDB_mqtt
+    type: influxdb
+    access: proxy
+    database: mqtt
+    user: grafana
+    url: http://localhost:8086
+    jsonData:
+      httpMode: GET
