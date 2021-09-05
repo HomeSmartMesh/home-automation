@@ -1,10 +1,10 @@
 sudo apt-get update && sudo apt-get upgrade -y
 # -------- git -------- 
-if [ -x "$(command --version git)" ]; then
+if [ -x "$(command git)" ]; then
     echo "git available"
 else
-    echo "Installing docker"
-    sudo apt-get install git
+    echo "Installing git"
+    sudo apt-get install git -y
 fi
 
 git clone https://github.com/HomeSmartMesh/raspi.git

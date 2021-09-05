@@ -23,6 +23,6 @@ MIT
 # Install
 
 ```shell
-curl https://github.com/HomeSmartMesh/raspi/blob/master/get_raspi.sh -o get_raspi.sh
+curl https://raw.githubusercontent.com/HomeSmartMesh/raspi/master/get_raspi.sh -o get_raspi.sh
 sudo sh get_raspi.sh
 ```

@@ -1,3 +1,4 @@
+#!/bin/bash
 pushd ~
 git clone https://github.com/openthread/ot-br-posix
 cd ot-br-posix

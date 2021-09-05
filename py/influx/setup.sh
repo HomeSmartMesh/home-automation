@@ -6,4 +6,5 @@ sudo chmod +x influx_client.py
 sudo systemctl daemon-reload
 sudo systemctl enable influx_mqtt.service
 sudo systemctl start influx_mqtt.service
-influx -execute 'CREATE DATABASE mqtt'
+#needs to run inside the container
+#influx -execute 'CREATE DATABASE mqtt'
