@@ -1,6 +1,6 @@
 {  
     "mqtt":{
-        "host":"10.0.0.42",
+        "host":"localhost",
         "port":1883,
         "keepalive":60,
         "client_id":"thread_tags",
@@ -14,7 +14,7 @@
         "631F80C39437F2F3":"02"
     },
     "log":{
-        "logfile":"/home/pi/share/thread_tags_(date).log",
+        "logfile":"/var/log/thread/thread_tags_(date).log",
         "level":"Info"
     }
 }

@@ -1,6 +1,4 @@
 sudo pip3 install -r requirements.txt
-rm config.json
-mv config-local.json config.json
 sudo mkdir /var/log/thread/
 sudo cp thread_tags.service /lib/systemd/system/
 sudo chmod 644 /lib/systemd/system/thread_tags.service

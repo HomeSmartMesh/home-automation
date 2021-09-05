@@ -19,3 +19,10 @@ get support, give feedback or simply chat about ideas on the forum in the [Home 
 
 # License
 MIT
+
+# Install
+
+```shell
+curl https://github.com/HomeSmartMesh/raspi/blob/master/get_raspi.sh -o get_raspi.sh
+sudo sh get_raspi.sh
+```

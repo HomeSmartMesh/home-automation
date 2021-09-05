@@ -37,10 +37,8 @@
                             "nrf/office tag",
                             "nrf/bedroom tag",
                             "nrf/kitchen tag",
-                            "thread_tags/#",
-                            "esp/camera/status",
-                            "esp/firebeetle_1/status",
-                            "shellies/#"
+                            "shellies/#",
+                            "thread_tags/#"
                                     ],
         "names":{
             "shellies/shellyplug-s-01E2B5/relay/0/power":"shelly dryer",
