@@ -1,0 +1,32 @@
+container:
+    - mosquitto
+    - influx
+    - grafana
+    - zigbee2mqtt
+    - homeassistant
+    - nginx
+    - zigAssMano
+    - zigAssLifo
+    - deconz
+webapps:
+    - overview
+    - bed_heating
+    - heating
+    - leds_panel
+    - mesh_view
+    - zigbee_graph_view
+python:
+    - nrf2mqtt
+    - udp2mqtt
+    - mqtt2influx
+    - bathroom_fan
+    - huelight_control
+    - home_status
+nodejs:
+    - camera_lapse
+    - lifx_control
+    - pc_power
+    - watch_bots
+    - window_roll
+native:
+    - openthread

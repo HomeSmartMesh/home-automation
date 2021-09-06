@@ -1,0 +1,32 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+sensor:
+  - platform: mqtt
+    state_topic: "nrf/bathroom tag"
+    name: "Bathroom Temperature"
+    value_template: "{{ value_json.temperature }}"
+    unit_of_measurement: "°C"
+  - platform: mqtt
+    state_topic: "nrf/bathroom tag"
+    name: "Bathroom Humidity"
+    value_template: "{{ value_json.humidity }}"
+    unit_of_measurement: "%"
+    icon: mdi:water-percent
+cover:
+  - platform: "mqtt"
+    name: "Bedroom window roll"
+    availability_topic: "lzig/bridge/state"
+    command_topic: "lzig/bedroom roll/set"
+    position_template: "{{ value_json.position }}"
+    set_position_template: "{ \"position\": {{ position }} }"
+    set_position_topic: "lzig/bedroom roll/set"
+    position_topic: "lzig/bedroom roll"

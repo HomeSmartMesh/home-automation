@@ -1,6 +1,6 @@
 #!/bin/bash
-mkdir grafana/data
-sudo chmod a+rw grafana/data
+mkdir containers/grafana/data
+sudo chmod a+rw containers/grafana/data
 docker-compose -f docker-compose-thread.yml up -d --remove-orphans
 pushd py/influx
 sudo sh setup.sh

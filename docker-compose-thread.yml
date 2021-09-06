@@ -6,14 +6,14 @@ services:
       - "1883:1883"
       - "1884:1884"
     volumes:
-      - ${PWD}/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ${PWD}/containers/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
     restart: unless-stopped
   influx:
     image: influxdb:1.8
     ports:
       - "8086:8086"
     volumes:
-      - ${PWD}/influxdb:/var/lib/influxdb
+      - ${PWD}/containers/influxdb:/var/lib/influxdb
       - ${PWD}/py/influx/data:/var/log/influx
     environment:
       - INFLUXDB_DB:=mqtt
@@ -22,8 +22,9 @@ services:
     image: grafana/grafana
     network_mode: "host"
     volumes:
-      - ${PWD}/grafana/data:/var/lib/grafana
-      - ${PWD}/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
+      - ${PWD}/containers/grafana/data:/var/lib/grafana
+      - ${PWD}/containers/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
+      - ${PWD}/containers/grafana/provisioning:/etc/grafana/provisioning:ro
     depends_on:
       - "influx"
     restart: unless-stopped

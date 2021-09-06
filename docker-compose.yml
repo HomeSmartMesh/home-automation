@@ -6,15 +6,15 @@ services:
       - "1883:1883"
       - "1884:1883"
     volumes:
-      - ${PWD}/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ${PWD}/containers/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
     restart: unless-stopped
   influx:
     image: influxdb
     ports:
       - "8086:8086"
     volumes:
-      - ${PWD}/influxdb:/var/lib/influxdb
-      - ${PWD}/py/influx/data:/var/log/influx
+      - ${PWD}/containers/influxdb:/var/lib/influxdb
+      - ${PWD}/containers/influxdb/data:/var/log/influx
     environment:
       - INFLUXDB_DB:=mqtt
   grafana:
@@ -23,11 +23,33 @@ services:
       - "3000:3000"
     network_mode: "host"
     volumes:
-      - ${PWD}/grafana/data:/var/lib/grafana
-      - ${PWD}/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
-      - ${PWD}/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ${PWD}/containers/grafana/data:/var/lib/grafana
+      - ${PWD}/containers/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
+      - ${PWD}/containers/grafana/provisioning:/etc/grafana/provisioning:ro
     depends_on:
       - "influx"
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt
+    volumes:
+      - ${PWD}/containers/zigbee2mqtt/data:/app/data
+      - /run/udev:/run/udev:ro
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    restart: always
+    network_mode: host
+    privileged: true
+    environment:
+      - TZ=Europe/Berlin
+  homeassistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/raspberrypi4-homeassistant:stable"
+    volumes:
+      - ${PWD}/containers/homeassistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
   nrf2mqtt:
     build:
       context: ./py/nrf_mesh
@@ -57,12 +79,12 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ${PWD}/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ${PWD}/containers/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ${PWD}/web/overview/public:/usr/share/nginx/html/home:ro
-      - ${PWD}/zigbee/graph_view:/usr/share/nginx/html/zigbee:ro
-      - ${PWD}/js/bed_heating:/usr/share/nginx/html/bed:ro
-      - ${PWD}/js/heating:/usr/share/nginx/html/heat:ro
-      - ${PWD}/js/leds_panel:/usr/share/nginx/html/leds:ro
+      - ${PWD}/web/zigbee_graph_view:/usr/share/nginx/html/zigbee:ro
+      - ${PWD}/web/bed_heating:/usr/share/nginx/html/bed:ro
+      - ${PWD}/web/heating:/usr/share/nginx/html/heat:ro
+      - ${PWD}/web/leds_panel:/usr/share/nginx/html/leds:ro
       - ${PWD}/../smart_home_3d_webapp:/usr/share/nginx/html/3d:ro
       - ${PWD}/../nRF52_Mesh/nodes.json:/usr/share/nginx/html/nodes.json:ro
     network_mode: "host"
@@ -85,12 +107,21 @@ services:
       ports:
           - 8090:80
       restart: unless-stopped
-  zigAssRifo:
-      image: carldebilly/zigbee2mqttassistant
-      environment:
-          - Z2MA_SETTINGS__MQTTSERVER=10.0.0.42
-          - Z2MA_SETTINGS__BASETOPIC=rzig
-          - TZ=Europe/Berlin
-      ports:
-          - 8070:80
-      restart: unless-stopped
+  deconz:
+    image: marthoc/deconz
+    container_name: deconz
+    restart: always
+    volumes:
+      - ${PWD}/containers/conbee/data:/root/.local/share/dresden-elektronik/deCONZ
+    devices:
+      - /dev/ttyUSB0
+    environment:
+      - DECONZ_WEB_PORT=80
+      - DECONZ_WS_PORT=443
+      - DEBUG_INFO=1
+      - DEBUG_APS=0
+      - DEBUG_ZCL=0
+      - DEBUG_ZDP=0
+      - DEBUG_OTAU=0
+    ports:
+      - "8000:80"
