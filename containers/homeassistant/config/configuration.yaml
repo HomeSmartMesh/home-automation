@@ -9,18 +9,7 @@ group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
-sensor:
-  - platform: mqtt
-    state_topic: "nrf/bathroom tag"
-    name: "Bathroom Temperature"
-    value_template: "{{ value_json.temperature }}"
-    unit_of_measurement: "°C"
-  - platform: mqtt
-    state_topic: "nrf/bathroom tag"
-    name: "Bathroom Humidity"
-    value_template: "{{ value_json.humidity }}"
-    unit_of_measurement: "%"
-    icon: mdi:water-percent
+sensor: !include_dir_merge_list sensors/
 cover:
   - platform: "mqtt"
     name: "Bedroom window roll"

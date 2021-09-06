@@ -1,0 +1,54 @@
+- platform: mqtt
+  state_topic: "nrf/bathroom tag"
+  name: "Bathroom Temperature"
+  unit_of_measurement: "°C"
+  value_template: >
+    {% if value_json.temperature %}
+      {{ value_json.temperature }}
+    {% else %}
+      {{ states('sensor.bathroom_temperature') }}
+    {% endif %}
+- platform: mqtt
+  state_topic: "nrf/bathroom tag"
+  name: "Bathroom Humidity"
+  unit_of_measurement: "%"
+  icon: mdi:water-percent
+  value_template: >
+    {% if value_json.humidity %}
+      {{ value_json.humidity }}
+    {% else %}
+      {{ states('sensor.bathroom_humidity') }}
+    {% endif %}
+- platform: mqtt
+  state_topic: "nrf/bathroom tag"
+  name: "Bathroom Pressure"
+  unit_of_measurement: "bar"
+  icon: mdi:gauge
+  value_template: >
+    {% if value_json.pressure %}
+      {{ value_json.pressure }}
+    {% else %}
+      {{ states('sensor.bathroom_pressure') }}
+    {% endif %}
+- platform: mqtt
+  state_topic: "nrf/bathroom tag"
+  name: "Bathroom Light"
+  unit_of_measurement: "lux"
+  icon: mdi:brightness-6
+  value_template: >
+    {% if value_json.light %}
+      {{ value_json.light }}
+    {% else %}
+      {{ states('sensor.bathroom_light') }}
+    {% endif %}
+- platform: mqtt
+  state_topic: "nrf/bathroom tag"
+  name: "Bathroom Tag Voltage"
+  unit_of_measurement: "V"
+  icon: mdi:car-battery
+  value_template: >
+    {% if value_json.voltage %}
+      {{ value_json.voltage }}
+    {% else %}
+      {{ states('sensor.bathroom_tag_voltage') }}
+    {% endif %}
