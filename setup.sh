@@ -28,8 +28,8 @@ else
     SCRIPT_REBOOT="yes"
 fi
 
-if ["$SCRIPT_REBOOT" == "yes"]; then
-    echo "rebooting now - please run `sudo sh setup.sh` again after reboot"
+if [ "$SCRIPT_REBOOT" = "yes" ]; then
+    echo "rebooting now - please run 'sudo sh setup.sh' again after reboot"
     sudo reboot now
 fi
 

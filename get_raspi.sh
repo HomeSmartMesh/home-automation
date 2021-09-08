@@ -9,4 +9,4 @@ fi
 
 git clone https://github.com/HomeSmartMesh/raspi.git
 cd raspi
-sudo sh setup.sh
+sudo bash setup.sh
