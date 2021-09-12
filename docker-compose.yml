@@ -89,15 +89,6 @@ services:
       - ${PWD}/../nRF52_Mesh/nodes.json:/usr/share/nginx/html/nodes.json:ro
     network_mode: "host"
     restart: always
-  zigAssMano:
-      image: carldebilly/zigbee2mqttassistant
-      environment:
-          - Z2MA_SETTINGS__MQTTSERVER=10.0.0.42
-          - Z2MA_SETTINGS__BASETOPIC=mzig
-          - TZ=Europe/Berlin
-      ports:
-          - 8080:80
-      restart: unless-stopped
   zigAssLifo:
       image: carldebilly/zigbee2mqttassistant
       environment:

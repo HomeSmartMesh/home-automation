@@ -17,7 +17,7 @@
         "last_seen":true,
         "retain":true,
         "qos":1,
-        "host":"10.0.0.42",
+        "host":"localhost",
         "port":1883,
         "keepalive":60,
         "client_id":"nrf_mesh",
