@@ -1,0 +1,11 @@
+[Unit]
+Description=cuts a rooms heat when a room's window is open
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/pi/raspi/py/heating/heat.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

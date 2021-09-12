@@ -14,7 +14,7 @@
         "631F80C39437F2F3":"02"
     },
     "log":{
-        "logfile":"/var/log/thread/thread_tags_(date).log",
+        "logfile":"/var/log/thread/thread_tags(date).log",
         "level":"Info"
     }
 }

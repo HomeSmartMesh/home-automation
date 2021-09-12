@@ -4,9 +4,13 @@
         "port":1883,
         "keepalive":60,
         "client_id":"heat_client",
-        "subscriptions":[   "zig/balcony door",
-                            "zig/balcony window right",
-                            "zig/balcony window left"
+        "subscriptions":[   "lzig/balcony door",
+                            "lzig/balcony window right",
+                            "lzig/balcony window left",
+                            "lzig/office window right",
+                            "lzig/office window left",
+                            "lzig/bedroom window",
+                            "lzig/kitchen window"
                         ],
         "actions"   :[],
         "publish" :true,
@@ -14,16 +18,35 @@
     },
     "heatings":{
         "living heat":{
-            "topic":"zig/living heat/set",
+            "topic":"lzig/living heat/set",
             "Apertures":[
                 "balcony door",
                 "balcony window right",
                 "balcony window left"
             ]
+        },
+        "office heat":{
+            "topic":"lzig/office heat/set",
+            "Apertures":[
+                "office window right",
+                "office window left"
+            ]
+        },
+        "bedroom heat":{
+            "topic":"lzig/bedroom heat/set",
+            "Apertures":[
+                "bedroom window"
+            ]
+        },
+        "kitchen heat":{
+            "topic":"lzig/kitchen heat/set",
+            "Apertures":[
+                "kitchen window"
+            ]
         }
     },
     "log":{
-        "logfile":"/home/pi/share/heat.log",
-        "level":"Debug"
+        "logfile":"/home/pi/share/heat_cut(date).log",
+        "level":"Info"
     }
 }

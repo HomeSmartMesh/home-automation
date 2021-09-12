@@ -48,7 +48,7 @@
         }
     },
     "log":{
-        "logfile":"/home/pi/share/home_status.log",
+        "logfile":"/home/pi/share/home_status(date).log",
         "level":"Info"
     }
 }
