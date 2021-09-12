@@ -30,7 +30,7 @@ function onMqttSendRequest(e){
 
 function init(){
   // Create a client instance
-  client = new Paho.MQTT.Client("10.0.0.42", Number(mqtt_port), "clientId");
+  client = new Paho.MQTT.Client("10.0.0.31", Number(mqtt_port), "clientId");
   // set callback handlers
   client.onConnectionLost = onConnectionLost;
   client.onMessageArrived = onMessageArrived;

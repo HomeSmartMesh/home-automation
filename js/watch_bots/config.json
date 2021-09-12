@@ -1,6 +1,6 @@
 {  
     "mqtt":{
-        "host":"10.0.0.42",
+        "host":"mqtt_broquer",
         "port":1883,
         "keepalive":60,
         "client_id":"watch_bots",
@@ -64,7 +64,7 @@
         "nrf":1
     },
     "log":{
-        "logfile":"/home/pi/share/watch_bots (date).log",
+        "logfile":"/home/pi/share/watch_bots(date).log",
         "level":"info"
     }
 }

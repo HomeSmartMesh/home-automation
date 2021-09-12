@@ -4,7 +4,7 @@
         "subscribe" :true,
         "publish" :true,
         "base_topic" : "nrf",
-        "host":"10.0.0.42",
+        "host":"mqtt_broquer",
         "port":1883,
         "keepalive":60,
         "client_id":"nrf_mesh",

@@ -2,7 +2,7 @@
 
 var client,textBox;
 
-var mqtt_host = "10.0.0.42";
+var mqtt_host = "mqtt_broquer";
 var mqtt_port = 1884;
 
 var btn_on = document.getElementById("btn_on");

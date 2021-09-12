@@ -1,6 +1,6 @@
 {  
     "mqtt":{
-        "host":"10.0.0.42",
+        "host":"mqtt_broquer",
         "port":1883,
         "keepalive":60,
         "client_id":"lifx_client",
@@ -15,7 +15,7 @@
         "sim":"lifx/sim_tiles",
         "curtain sun":{
             "mac": "D0:73:D5:40:98:88",
-            "ip": "10.0.0.5"
+            "ip": "cutain_sun.lifx"
         }
     },
     "log":{

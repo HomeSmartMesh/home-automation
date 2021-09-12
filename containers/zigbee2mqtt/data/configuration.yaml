@@ -2,7 +2,7 @@ homeassistant: true
 permit_join: false
 mqtt:
   base_topic: lzig
-  server: 'mqtt://10.0.0.42'
+  server: 'mqtt://localhost'
 serial:
   port: /dev/ttyUSB1
 advanced:

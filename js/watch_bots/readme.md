@@ -32,7 +32,7 @@ The idea is to configure as many sensors with as less declaration redunduncy as 
 ```json
 {  
     "mqtt":{
-        "host":"10.0.0.42",
+        "host":"mqtt_broquer",
         "port":1883,
         "keepalive":60,
         "client_id":"watch_bots",

@@ -5,7 +5,7 @@ function defined(obj){
     return (typeof(obj) != "undefined")
 }
 
-const client = connect('mqtt://10.0.0.42:1883', {
+const client = connect('mqtt://mqtt_broquer:1883', {
     reconnectPeriod: 1000
 });
 

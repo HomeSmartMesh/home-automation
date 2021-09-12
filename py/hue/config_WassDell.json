@@ -1,6 +1,6 @@
 {  
     "bridges":{
-        "LivingRoom":"10.0.0.38"
+        "LivingRoom":"hue"
     },
     "rules":{
         "wakeup":{
@@ -10,7 +10,7 @@
         }
     },
     "mqtt":{
-        "host":"10.0.0.42",
+        "host":"10.0.0.31",
         "port":1883,
         "keepalive":60,
         "client_id":"hue_client",
