@@ -1,0 +1,19 @@
+{
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "value_template": "{{ value_json.temperature }}",
+    "state_topic": "thread_tags/01",
+    "json_attributes_topic": "thread_tags/01",
+    "name": "01_temperature",
+    "unique_id": "7009D837C7BB557A_temperature_threadtag",
+    "device": {
+        "identifiers": [
+            "threadtag_7009D837C7BB557A"
+        ],
+        "name": "thread tester tag",
+        "sw_version": "openthread v1.2",
+        "model": "produced version 1.2",    
+        "manufacturer": "Home Smart Mesh"
+    },
+    "availability_topic": "thread_tags/state"
+}

@@ -53,7 +53,7 @@ var house = {
     "heater_status"  :"esp/bed heater/status",
     "level"   :"esp/bed heater/heating",
     "timer"   :"esp/bed heater/timer",
-    "weather" :"mzig/bed weather",
+    "weather" :"lzig/bed weather",
     "relay_command"   :"shellies/shelly1pm-C45303/relay/0/command",
     "relay_status"   :"shellies/shelly1pm-C45303/relay/0",
     "relay_power"   :"shellies/shelly1pm-C45303/relay/0/power"

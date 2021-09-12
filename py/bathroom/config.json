@@ -8,7 +8,7 @@
                             "shellies/shellyswitch25-B8A4EE/relay/0",
                             "shellies/shellyswitch25-B8A4EE/relay/1",
                             "nrf/bathroom tag",
-                            "mzig/bathroom fan button"
+                            "lzig/bathroom fan button"
                         ],
         "publications"  :[  "shellies/shellyswitch25-B8A4EE/relay/1/command"
                         ],
@@ -16,8 +16,8 @@
         "subscribe" :true
     },
     "humidity":{
-        "start_fan":65,
-        "stop_fan":60,
+        "start_fan":70,
+        "stop_fan":65,
         "stop_fan_on_condition":62
     },
     "input_to_fan_delay_min":5,

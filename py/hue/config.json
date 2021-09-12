@@ -9,9 +9,9 @@
         "keepalive":60,
         "client_id":"hue_client",
         "subscriptions":[
-                            "mzig/bed light button",
-                            "mzig/bed nic button",
-                            "mzig/living double switch",
+                            "lzig/bed light button",
+                            "lzig/bed nic button",
+                            "lzig/living double switch",
                             "lzig/bedroom switch",
                             "lzig/volume white",
                             "lzig/office switch",

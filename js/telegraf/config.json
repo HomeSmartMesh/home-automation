@@ -4,7 +4,7 @@
         "port":1883,
         "keepalive":60,
         "client_id":"telegraf_bots_client",
-        "subscriptions":[  "lzig/hover button" ],
+        "subscriptions":[  "+/hover button" ],
         "publish" :true,
         "subscribe" :true
     },

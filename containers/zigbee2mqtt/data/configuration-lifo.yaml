@@ -1,0 +1,142 @@
+homeassistant: true
+permit_join: false
+mqtt:
+  base_topic: lzig
+  server: 'mqtt://10.0.0.42'
+serial:
+  port: /dev/ttyUSB1
+advanced:
+  channel: 11
+  rtscts: false
+  log_level: debug
+  log_directory: /home/pi/share/zigbee/%TIMESTAMP%
+  last_seen: ISO_8601_local
+devices:
+  '0x00124b0021b77899':
+    friendly_name: coord cc2652
+  '0x00124b001d4a014b':
+    friendly_name: power lifo
+  '0x00124b0018ed23a5':
+    friendly_name: old coord lifo
+  '0x00158d000192dd3e':
+    friendly_name: living heat
+    retain: true
+  '0x00158d0004240973':
+    friendly_name: office window right
+    retain: true
+  '0x00158d0004237aad':
+    friendly_name: office window left
+    retain: true
+  '0x00158d0002476b04':
+    friendly_name: fridge weather
+    retain: false
+  '0x00158d00028f7fb5':
+    friendly_name: office switch
+    retain: false
+  '0x00158d00041a3bfe':
+    friendly_name: bedroom window
+    retain: true
+  '0x00158d00041a3b31':
+    friendly_name: kitchen window
+    retain: true
+  '0x00124b001c2f1279':
+    friendly_name: power router
+    retain: false
+  '0x00158d0001922d10':
+    friendly_name: bathroom heat
+    retain: true
+  '0xccccccfffee20ebd':
+    friendly_name: tv button
+  '0x00158d0001922d4f':
+    friendly_name: bedroom heat
+    retain: true
+  '0x00158d000232c52c':
+    friendly_name: entrance door
+  '0x680ae2fffe3ebf5c':
+    friendly_name: bedroom roll
+  '0x680ae2fffeac9ea7':
+    friendly_name: roll button 1
+  '0x842e14fffe1be08a':
+    friendly_name: roll button 2
+  '0x00158d00024b3e45':
+    friendly_name: retro light switch
+  '0x00158d00028cad58':
+    friendly_name: bedroom switch
+  '0x04cf8cdf3c7b5bad':
+    friendly_name: day light
+  '0x00158d000543fc96':
+    friendly_name: freezer weather
+  '0x00158d00051e127b':
+    friendly_name: servers weather
+  '0x00158d0001922ce9':
+    friendly_name: kitchen heat
+    retain: true
+  '0x00124b001d49f6ac':
+    friendly_name: router office
+  '0x00158d00051e1276':
+    friendly_name: bedroom heat weather
+  '0x00158d00046514c5':
+    friendly_name: hallway living switch
+  '0x00158d000454de0a':
+    friendly_name: hallway entrance switch
+  '0x00158d00012a781d':
+    friendly_name: hallway corridor switch
+  '0x00158d000171876f':
+    friendly_name: toilet switch
+  '0x000d6ffffe09806c':
+    friendly_name: round dimmer
+  '0x00158d000255fb8b':
+    friendly_name: floody
+  '0x00124b001d4a012d':
+    friendly_name: mano power
+  '0x00158d0002a4f61e':
+    friendly_name: desk motion
+    retain: false
+  '0x00158d0001ef6374':
+    friendly_name: bed light button
+    retain: false
+  '0x00158d00026ecd6a':
+    friendly_name: office heat weather
+    retain: true
+  '0x00158d000237df83':
+    friendly_name: fridge weather
+    retain: false
+  '0x00158d000272623b':
+    friendly_name: balcony window left
+    retain: true
+  '0x00158d0002760208':
+    friendly_name: balcony window right
+    retain: true
+  '0x00158d0002518c83':
+    friendly_name: balcony door
+    retain: true
+  '0x00158d0001eb81c7':
+    friendly_name: tree button
+    retain: false
+  '0x00158d0002a2c21c':
+    friendly_name: bathroom fan button
+    retain: false
+  '0x00158d0001eb8fc9':
+    friendly_name: pc button
+    retain: false
+  '0x00158d0001e7a12b':
+    friendly_name: bed heat button
+    retain: false
+  '0x00158d0001922d22':
+    friendly_name: office heat
+    retain: true
+  '0x00158d0002a4f51d':
+    friendly_name: office chair vibration
+  '0x000d6ffffe9ccd6a':
+    friendly_name: cupboard light
+  '0x00158d0001eb9b32':
+    friendly_name: sonos button
+  '0x00158d0004570435':
+    friendly_name: living double switch
+  '0x00158d00029078a2':
+    friendly_name: bed nic button
+  '0x00158d0005484ec5':
+    friendly_name: living heat weather
+    retain: true
+  '0x00158d00028f8531':
+    friendly_name: '0x00158d00028f8531'

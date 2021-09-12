@@ -5,9 +5,9 @@
         "keepalive":60,
         "client_id":"pc_power_client",
         "subscriptions":[  
-            "mzig/pc button",
-            "mzig/sonos button",
-            "mzig/office chair vibration",
+            "lzig/pc button",
+            "lzig/sonos button",
+            "lzig/office chair vibration",
             "lzig/retro light switch",
             "shellies/shellyplug-s-B85CCA/relay/0",
             "shellies/shelly1pm-C45303/relay/0",

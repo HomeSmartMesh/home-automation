@@ -179,7 +179,7 @@ def mqtt_on_message(client, userdata, msg):
             shelly_fan_relay(msg.payload)
         elif(msg.topic == "nrf/bathroom tag"):
             sensor_humidity(msg.payload)
-        elif(msg.topic == "mzig/bathroom fan button"):
+        elif(msg.topic == "lzig/bathroom fan button"):
             button_fan(msg.payload)
         else:
             log.error("unknown topic: "+msg.topic)

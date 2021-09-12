@@ -141,11 +141,11 @@ mqtt.Emitter.on('mqtt',(data)=>{
     }
   }else if(data.topic == config.status.pc){
     pc_reley_status = data.msg
-  }else if(data.topic == "mzig/pc button"){
+  }else if(data.topic == "lzig/pc button"){
     pc_button(data.topic,JSON.parse(data.msg))
-  }else if(data.topic == "mzig/sonos button"){
+  }else if(data.topic == "lzig/sonos button"){
     sonos_button(data.topic,JSON.parse(data.msg))
-  }else if(data.topic == "mzig/office chair vibration"){
+  }else if(data.topic == "lzig/office chair vibration"){
     office_chair_vibration(data.topic,JSON.parse(data.msg))
   }else if(data.topic == config.status.retro_light_relay){
     retro_light(data.topic,data.msg)

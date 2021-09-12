@@ -1,0 +1,11 @@
+- platform: mvglive
+  nextdeparture:
+   - station: Unterschleißheim
+     name: "Go To City"
+     products: "S-Bahn"
+     timeoffset: 3
+     destinations: ['Marienplatz, München', 'Feldmoching']
+   - station: Hauptbahnhof
+     name: "Go Home"
+     products: "S-Bahn"
+     timeoffset: 2

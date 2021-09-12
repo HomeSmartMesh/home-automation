@@ -4,7 +4,7 @@
         "port":1883,
         "keepalive":60,
         "client_id":"hover_control",
-        "subscriptions":[   "+/hover button"
+        "subscriptions":[   "lzig/hover button"
                             ],
         "actions"   :[],
         "publish" :true,

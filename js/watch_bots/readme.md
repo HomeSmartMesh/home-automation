@@ -41,7 +41,7 @@ The idea is to configure as many sensors with as less declaration redunduncy as 
                 "lzig/living heat",
                 "lzig/kitchen heat",
                 "lzig/bedroom heat",
-                "mzig/office heat",
+                "lzig/office heat",
                 "lzig/bathroom heat"
             ],
             "nrf":[
@@ -55,14 +55,14 @@ The idea is to configure as many sensors with as less declaration redunduncy as 
                 "nrf/kitchen tag"
             ],
             "aqara":[
-                "mzig/bed weather",
+                "lzig/bed weather",
                 "lzig/bedroom window",
                 "lzig/kitchen window",
                 "lzig/office switch",
                 "lzig/fridge weather",
-                "mzig/balcony window left",
-                "mzig/balcony window right",
-                "mzig/balcony door",
+                "lzig/balcony window left",
+                "lzig/balcony window right",
+                "lzig/balcony door",
                 "lzig/office window left",
                 "lzig/office window right"
             ]
