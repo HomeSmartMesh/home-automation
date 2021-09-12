@@ -44,7 +44,7 @@ def configure_log(logger_name):
     }
     #if(os.path.isfile(config["logfile"])):
     logfile = config["logfile"].replace("(date)",datetime.datetime.now().strftime('-%Y.%m.%d'))
-    log.info(f"logging in file '{logfile}'")
+    log.info(logfile)
     for handler in log.root.handlers[:]:
         log.root.removeHandler(handler)
     log.basicConfig(    filename=logfile,
