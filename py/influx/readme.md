@@ -81,6 +81,10 @@ SELECT * FROM "cpu_temp" WHERE "host" = 'ioserv'
 
 SELECT "power" FROM "node30" WHERE time > '2017-12-24T12:33:00Z' AND time < '2017-12-24T15:34:10Z'
 DELETE FROM "node37" WHERE time > '2017-12-24T12:33:00Z' AND time < '2017-12-24T15:34:10Z'
+
+
+SELECT "temperature" FROM "livingroom window tag" WHERE time > '2021-07-25T05:00:00Z' AND time < '2021-07-25T05:01:00Z'
+DELETE FROM "livingroom window tag" WHERE time > '2021-07-25T05:00:00Z' AND time < '2021-07-25T05:01:00Z'
 ```
 ### Nodes posts
 ```

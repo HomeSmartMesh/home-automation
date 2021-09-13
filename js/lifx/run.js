@@ -1,11 +1,22 @@
 const fs = require('fs');
 const {logger} = require('./logger.js')
 const mqtt = require('./mqtt.js')
-const config = JSON.parse(fs.readFileSync(__dirname+'/config.json'))
+let config = JSON.parse(fs.readFileSync(__dirname+'/config.json'))
 
 const Lifx  = require('node-lifx-lan');
 const { discover } = require('node-lifx-lan/lib/lifx-lan-udp');
 const { create } = require('domain');
+
+const dns = require('dns')
+
+async function dns_lookup(){
+  return new Promise((resolve, reject) => {
+      dns.lookup(config.lifx["curtain sun"].ip, (err, address, family) => {
+          if(err) reject(err);
+          resolve(address);
+      });
+ });
+};
 
 function defined(obj){
   return (typeof(obj) != "undefined")
@@ -126,7 +137,10 @@ async function main(){
     })
 
   //if mqtt start would have been async, you could simply await it
-  lifx = await Lifx.createDevice(config.lifx["curtain sun"])
+
+    config.lifx["curtain sun"].ip = await dns_lookup()
+    logger.info(`resolved ip to ${config.lifx["curtain sun"].ip}`)
+    lifx = await Lifx.createDevice(config.lifx["curtain sun"])
   
 }
 
