@@ -65,6 +65,7 @@
     },
     "log":{
         "logfile":"/home/pi/share/watch_bots(date).log",
+        "exceptions_log_file":"watch_bots_exceptions.log",
         "level":"info"
     }
 }

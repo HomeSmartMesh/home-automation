@@ -19,9 +19,8 @@
         }
     },
     "log":{
-        "logfile":"lifx.log",
-        "exceptions":"lifx_exceptions.log",
-        "share":"/home/pi/share/",
-        "level":"debug"
+        "logfile":"/home/pi/share/lifx (date).log",
+        "exceptions_log_file":"lifx_exceptions.log",
+        "level":"info"
     }
 }

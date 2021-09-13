@@ -19,9 +19,8 @@
         "roll":        "lzig/bedroom roll/set"
     },
     "log":{
-        "logfile":"roll.log",
-        "exceptions":"roll_exceptions.log",
-        "share":"/home/pi/share/",
+        "logfile":"/home/pi/share/roll (date).log",
+        "exceptions_log_file":"roll_exceptions.log",
         "level":"info"
     }
 }

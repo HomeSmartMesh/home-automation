@@ -26,7 +26,7 @@ var logger = createLogger({
     ],
     exceptionHandlers: [
       new transports.File({
-        filename: 'log_exceptions.log' ,
+        filename: config.log.exceptions_log_file ,
         level:config.log.level,
         json:false
       })

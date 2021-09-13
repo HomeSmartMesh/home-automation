@@ -37,6 +37,7 @@
     },
     "log":{
         "logfile":"/home/pi/share/pc_control (date).log",
+        "exceptions_log_file":"pc_control_exceptions.log",
         "level":"info"
     }
 }
