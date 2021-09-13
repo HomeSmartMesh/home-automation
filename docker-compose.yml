@@ -17,6 +17,10 @@ services:
       - ${PWD}/containers/influxdb/data:/var/log/influx
     environment:
       - INFLUXDB_DB:=mqtt
+  chronograf:
+    image: chronograf
+    ports:
+      - "8888:8888"
   grafana:
     image: grafana/grafana
     ports:
@@ -96,7 +100,7 @@ services:
           - Z2MA_SETTINGS__BASETOPIC=lzig
           - TZ=Europe/Berlin
       ports:
-          - 8090:80
+          - 8080:80
       restart: unless-stopped
   deconz:
     image: marthoc/deconz
