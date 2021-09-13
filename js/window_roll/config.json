@@ -22,6 +22,6 @@
         "logfile":"roll.log",
         "exceptions":"roll_exceptions.log",
         "share":"/home/pi/share/",
-        "level":"debug"
+        "level":"info"
     }
 }
