@@ -130,29 +130,33 @@ function office_chair_vibration(topic,message){
 }
 
 mqtt.Emitter.on('mqtt',(data)=>{
-  if(data.topic == config.status.pc_power){
-    if(auto_on_off){
-      const power = parseFloat(data.msg)
-      if(power <10){
-        call_low()
-      }else{
-        call_high()
+  try{
+    if(data.topic == config.status.pc_power){
+      if(auto_on_off){
+        const power = parseFloat(data.msg)
+        if(power <10){
+          call_low()
+        }else{
+          call_high()
+        }
       }
+    }else if(data.topic == config.status.pc){
+      pc_reley_status = data.msg
+    }else if(data.topic == "lzig/pc button"){
+      pc_button(data.topic,JSON.parse(data.msg))
+    }else if(data.topic == "lzig/sonos button"){
+      sonos_button(data.topic,JSON.parse(data.msg))
+    }else if(data.topic == "lzig/office chair vibration"){
+      office_chair_vibration(data.topic,JSON.parse(data.msg))
+    }else if(data.topic == config.status.retro_light_relay){
+      retro_light(data.topic,data.msg)
+    }else if(data.topic == config.status.retro_light_dimmer){
+      retro_light(data.topic,JSON.parse(data.msg))
+    }else if(data.topic == "lzig/retro light switch"){
+      retro_light(data.topic,JSON.parse(data.msg))
     }
-  }else if(data.topic == config.status.pc){
-    pc_reley_status = data.msg
-  }else if(data.topic == "lzig/pc button"){
-    pc_button(data.topic,JSON.parse(data.msg))
-  }else if(data.topic == "lzig/sonos button"){
-    sonos_button(data.topic,JSON.parse(data.msg))
-  }else if(data.topic == "lzig/office chair vibration"){
-    office_chair_vibration(data.topic,JSON.parse(data.msg))
-  }else if(data.topic == config.status.retro_light_relay){
-    retro_light(data.topic,data.msg)
-  }else if(data.topic == config.status.retro_light_dimmer){
-    retro_light(data.topic,JSON.parse(data.msg))
-  }else if(data.topic == "lzig/retro light switch"){
-    retro_light(data.topic,JSON.parse(data.msg))
+  }catch(e){
+    logger.info(`pc> Handling all exceptions : ${e.message}`)
   }
 })
 
