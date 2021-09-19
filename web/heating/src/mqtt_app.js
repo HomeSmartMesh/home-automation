@@ -2,7 +2,8 @@
 
 var client,textBox;
 
-var mqtt_host = "mqtt_broquer";
+//mqtt_broquer host dependency hardcoded as needed by the webapp client
+var mqtt_host = "10.0.0.31";
 var mqtt_port = 1884;
 
 var btn_cosy = document.getElementById("btn_cosy");
