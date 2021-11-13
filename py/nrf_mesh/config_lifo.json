@@ -1,7 +1,7 @@
 {
     "serial":{
         "ID":"0x10c4:0xea60",
-        "port":"/dev/ttyUSB0",
+        "port":"/dev/ttyUSB1",
         "baud":460800
     },
     "mesh":{
