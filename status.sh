@@ -22,4 +22,4 @@ check_service "pc_power"
 check_service "lapse"
 
 #check now the Docker Compose containers
-dc ps
+docker-compose ps
