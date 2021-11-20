@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   mosquitto:
+    #socket_domain ipv4 https://github.com/eclipse/mosquitto/issues/1004
     image: eclipse-mosquitto
     ports:
       - "1883:1883"
