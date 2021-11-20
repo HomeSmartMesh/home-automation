@@ -4,7 +4,7 @@ mqtt:
   base_topic: lzig
   server: 'mqtt://localhost'
 serial:
-  port: /dev/ttyUSB1
+  port: /dev/usbzigbee
 advanced:
   channel: 11
   rtscts: false
