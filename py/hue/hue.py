@@ -41,33 +41,30 @@ def debounce_3():
     return res
 
 def bed_light_button(payload):
-    if(debounce_1()):
-        log.debug("bed_light_button> taken")
-        sensor = json.loads(payload)
-        if("click" in sensor and sensor["click"] == "single"):
-            if(lights["Bed Malm"].on):
-                lights["Bed N"].on = False
-                lights["Bed Malm"].on = False
-                lights["Bed W"].on = False
-                log.info("bed_light_button>(click-single)(on) => set light off")
-            else:
-                #switch on and brightness command together so that it does not go to previous level before adjusting the brightness
-                b.set_light("Bed Malm", {'on' : True, 'bri' : 128})
-                b.set_light("Bed N", {'on' : True, 'bri' : 128})
-                b.set_light("Bed W", {'on' : True, 'bri' : 128})
-                log.info("bed_light_button>(click-single)(off) set light to MID")
-        elif("click" in sensor and sensor["click"] == "double"):
-                b.set_light("Bed Malm", {'on' : True, 'bri' : 128})
-                b.set_light("Bed N", {'on' : True, 'bri' : 128})
-                b.set_light("Bed W", {'on' : True, 'bri' : 128})
-                log.info("bed_light_button>(click-double)(X) set light to MAX")
-        elif("action" in sensor and sensor["action"] == "hold"):
-            b.set_light("Bed Malm", {'on' : True, 'bri' : 1})
+    log.debug("bed_light_button> taken")
+    sensor = json.loads(payload)
+    if("click" in sensor and sensor["click"] == "single"):
+        if(lights["Bed Malm"].on):
             lights["Bed N"].on = False
+            lights["Bed Malm"].on = False
             lights["Bed W"].on = False
-            log.info("bed_light_button>(hold)(X) set light to min")
-    #else:
-        #log.debug("bed_light_button> debounced")
+            log.info("bed_light_button>(click-single)(on) => set light off")
+        else:
+            #switch on and brightness command together so that it does not go to previous level before adjusting the brightness
+            b.set_light("Bed Malm", {'on' : True, 'bri' : 128})
+            b.set_light("Bed N", {'on' : True, 'bri' : 128})
+            b.set_light("Bed W", {'on' : True, 'bri' : 128})
+            log.info("bed_light_button>(click-single)(off) set light to MID")
+    elif("click" in sensor and sensor["click"] == "double"):
+            b.set_light("Bed Malm", {'on' : True, 'bri' : 128})
+            b.set_light("Bed N", {'on' : True, 'bri' : 128})
+            b.set_light("Bed W", {'on' : True, 'bri' : 128})
+            log.info("bed_light_button>(click-double)(X) set light to MAX")
+    elif("action" in sensor and sensor["action"] == "hold"):
+        b.set_light("Bed Malm", {'on' : True, 'bri' : 1})
+        lights["Bed N"].on = False
+        lights["Bed W"].on = False
+        log.info("bed_light_button>(hold)(X) set light to min")
     return
 
 def bathroom_shelly_light(cmd):
@@ -84,24 +81,23 @@ def bathroom_light_hue():
     return
 
 def bathroom_light_button(payload):
-    if(debounce_2()):
-        log.debug("bathroom light> taken")
-        sensor = json.loads(payload)
-        if("click" in sensor and sensor["click"] == "single"):
-            #state = b.get_light("Bathroom main")
-            #if(not state["state"]["reachable"]):
-            bathroom_shelly_light("on")
-            threading.Timer(1, bathroom_light_hue).start()
-            #else:
-            #    if(lights["Bathroom main"].on):
-            #        lights["Bathroom main"].on = False
-            #        log.debug("bathroom light> set light off")
-            #    else:
-            #        b.set_light("Bathroom main", {'on' : True, 'bri' : 1})
-            #        log.debug("bathroom_light_button> set light to min")
-        elif("action" in sensor and sensor["action"] == "hold"):
-            b.set_light("Bathroom main", {'on' : True, 'bri' : 1})
-            log.debug("bathroom light> set light to min")
+    log.debug("bathroom light> taken")
+    sensor = json.loads(payload)
+    if("click" in sensor and sensor["click"] == "single"):
+        #state = b.get_light("Bathroom main")
+        #if(not state["state"]["reachable"]):
+        bathroom_shelly_light("on")
+        threading.Timer(1, bathroom_light_hue).start()
+        #else:
+        #    if(lights["Bathroom main"].on):
+        #        lights["Bathroom main"].on = False
+        #        log.debug("bathroom light> set light off")
+        #    else:
+        #        b.set_light("Bathroom main", {'on' : True, 'bri' : 1})
+        #        log.debug("bathroom_light_button> set light to min")
+    elif("action" in sensor and sensor["action"] == "hold"):
+        b.set_light("Bathroom main", {'on' : True, 'bri' : 1})
+        log.debug("bathroom light> set light to min")
     return
 
 
@@ -184,32 +180,31 @@ def livroom_light_switch(payload):
 
 
 def livroom_light_button(payload):
-    if(debounce_3()):
-        log.debug("living room light> taken")
-        sensor = json.loads(payload)
-        if("click" in sensor and sensor["click"] == "single"):
-            if(lights["LivingTop5"].on):
-                lights["LivingTop1"].on = False
-                lights["LivingTop2"].on = False
-                lights["LivingTop3"].on = False
-                lights["LivingTop4"].on = False
-                lights["LivingTop5"].on = False
-                log.debug("living room light> set light off")
-            else:
-                #switch on and brightness command together so that it does not go to previous level before adjusting the brightness
-                b.set_light("LivingTop1", {'on' : True, 'bri' : 254})
-                b.set_light("LivingTop2", {'on' : True, 'bri' : 254})
-                b.set_light("LivingTop3", {'on' : True, 'bri' : 254})
-                b.set_light("LivingTop4", {'on' : True, 'bri' : 254})
-                b.set_light("LivingTop5", {'on' : True, 'bri' : 254})
-                log.debug("living room light> set light to MAX")
-        elif("action" in sensor and sensor["action"] == "hold"):
-            b.set_light("LivingTop1", {'on' : True, 'bri' : 1})
-            b.set_light("LivingTop2", {'on' : True, 'bri' : 1})
-            b.set_light("LivingTop3", {'on' : True, 'bri' : 1})
-            b.set_light("LivingTop4", {'on' : True, 'bri' : 1})
-            b.set_light("LivingTop5", {'on' : True, 'bri' : 1})
-            log.debug("living room light> set light to min")
+    log.debug("living room light> taken")
+    sensor = json.loads(payload)
+    if("click" in sensor and sensor["click"] == "single"):
+        if(lights["LivingTop5"].on):
+            lights["LivingTop1"].on = False
+            lights["LivingTop2"].on = False
+            lights["LivingTop3"].on = False
+            lights["LivingTop4"].on = False
+            lights["LivingTop5"].on = False
+            log.debug("living room light> set light off")
+        else:
+            #switch on and brightness command together so that it does not go to previous level before adjusting the brightness
+            b.set_light("LivingTop1", {'on' : True, 'bri' : 254})
+            b.set_light("LivingTop2", {'on' : True, 'bri' : 254})
+            b.set_light("LivingTop3", {'on' : True, 'bri' : 254})
+            b.set_light("LivingTop4", {'on' : True, 'bri' : 254})
+            b.set_light("LivingTop5", {'on' : True, 'bri' : 254})
+            log.debug("living room light> set light to MAX")
+    elif("action" in sensor and sensor["action"] == "hold"):
+        b.set_light("LivingTop1", {'on' : True, 'bri' : 1})
+        b.set_light("LivingTop2", {'on' : True, 'bri' : 1})
+        b.set_light("LivingTop3", {'on' : True, 'bri' : 1})
+        b.set_light("LivingTop4", {'on' : True, 'bri' : 1})
+        b.set_light("LivingTop5", {'on' : True, 'bri' : 1})
+        log.debug("living room light> set light to min")
     return
 
 def office_switch(payload):

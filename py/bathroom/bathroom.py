@@ -150,22 +150,21 @@ def sensor_humidity(payload):
 
 def button_fan(payload):
     global state
-    if(debounce_1()):
-        sensor = json.loads(payload)
-        if("click" in sensor and sensor["click"] == "single"):
-            log.info("button_fan> single click")
-            if(state["fan_relay"] == False):
-                set_fan_relay("on")
-                state["button_fan_timer_min"] = config["button_fan_short_min"]
-                button_timer_trigger()
-            else:
-                #user force stopping the fan on all conditions
-                set_fan_relay("off")
-        elif("action" in sensor and sensor["action"] == "hold"):
-            log.info("button_fan> long press")
+    sensor = json.loads(payload)
+    if("click" in sensor and sensor["click"] == "single"):
+        log.info("button_fan> single click")
+        if(state["fan_relay"] == False):
             set_fan_relay("on")
-            state["button_fan_timer_min"] = config["button_fan_long_min"]
+            state["button_fan_timer_min"] = config["button_fan_short_min"]
             button_timer_trigger()
+        else:
+            #user force stopping the fan on all conditions
+            set_fan_relay("off")
+    elif("action" in sensor and sensor["action"] == "hold"):
+        log.info("button_fan> long press")
+        set_fan_relay("on")
+        state["button_fan_timer_min"] = config["button_fan_long_min"]
+        button_timer_trigger()
     return
 
 def mqtt_on_message(client, userdata, msg):
