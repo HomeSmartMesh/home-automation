@@ -18,7 +18,8 @@
                             "lzig/hallway entrance switch",
                             "lzig/hallway living switch",
                             "lzig/hallway corridor switch",
-                            "lzig/toilet switch"
+                            "lzig/toilet switch",
+                            "lzig/poster socket"
                         ],
         "actions"   :[],
         "publish" :true,
@@ -49,6 +50,23 @@
                 "Toilet1",
                 "Toilet2"
             ]
+        },
+        "bedroom":{
+            "action":"light_hold_switch",
+            "sensors":[
+                "bedroom switch",
+                "bed light button",
+                "bed nic button"
+            ],
+            "lights":[
+                "Bed Malm",
+                "Bed N",
+                "Bed W"
+            ],
+            "switches":[
+                "poster socket"
+            ],
+            "base_topic":"lzig"
         }
     },
     "log":{

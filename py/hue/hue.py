@@ -17,28 +17,7 @@ from mqtt import mqtt_start
 import threading
 import time
 
-def debounce(in_time):
-    current_time = time.time()
-    delta = current_time - in_time
-    return (delta > 2),current_time
-
-debounce_1_prev = 0
-def debounce_1():
-    global debounce_1_prev
-    res,debounce_1_prev = debounce(debounce_1_prev)
-    return res
-
-debounce_2_prev = 0
-def debounce_2():
-    global debounce_2_prev
-    res,debounce_2_prev = debounce(debounce_2_prev)
-    return res
-
-debounce_3_prev = 0
-def debounce_3():
-    global debounce_3_prev
-    res,debounce_3_prev = debounce(debounce_3_prev)
-    return res
+states = {}
 
 def bed_light_button(payload):
     log.debug("bed_light_button> taken")
@@ -84,17 +63,8 @@ def bathroom_light_button(payload):
     log.debug("bathroom light> taken")
     sensor = json.loads(payload)
     if("click" in sensor and sensor["click"] == "single"):
-        #state = b.get_light("Bathroom main")
-        #if(not state["state"]["reachable"]):
         bathroom_shelly_light("on")
         threading.Timer(1, bathroom_light_hue).start()
-        #else:
-        #    if(lights["Bathroom main"].on):
-        #        lights["Bathroom main"].on = False
-        #        log.debug("bathroom light> set light off")
-        #    else:
-        #        b.set_light("Bathroom main", {'on' : True, 'bri' : 1})
-        #        log.debug("bathroom_light_button> set light to min")
     elif("action" in sensor and sensor["action"] == "hold"):
         b.set_light("Bathroom main", {'on' : True, 'bri' : 1})
         log.debug("bathroom light> set light to min")
@@ -281,48 +251,88 @@ def entrance_light(payload):
         log.debug("entrance_light>no click")
     return
 
-def light_list_clicks(payload,lights_list):
+def light_list_clicks(room,room_name,payload):
     jval = json.loads(payload)
     if("click" in jval and jval["click"] == "single"):
-        if(lights[lights_list[0]].on):
-            for light_name in lights_list:
+        if(lights[room["lights"][0]].on):
+            for light_name in room["lights"]:
                 lights[light_name].on = False
-            log.info("entrance_light> off")
+            log.info(f"{room_name} lights> off")
         else:
             #command so that it does not go to previous level before adjusting the brightness
-            for light_name in lights_list:
+            for light_name in room["lights"]:
                 lights[light_name].on = False
                 b.set_light(light_name, {'on' : True, 'bri' : 128})
-            log.info("entrance_light> on")
+            log.info(f"{room_name} lights> on")
     elif("click" in jval and jval["click"] == "double"):
-        for light_name in lights_list:
+        for light_name in room["lights"]:
             lights[light_name].on = False
             b.set_light(light_name, {'on' : True, 'bri' : 255})
-        log.info("entrance_light> on Full Brightness")
+        log.info(f"{room_name} lights> on Full Brightness")
     elif("action" in jval and jval["action"] == "hold"):
-        for light_name in lights_list:
+        for light_name in room["lights"]:
             lights[light_name].on = False
             b.set_light(light_name, {'on' : True, 'bri' : 1})
-        log.info("entrance_light> on Lowest Brightness")
+        log.info(f"{room_name} lights> on Lowest Brightness")
     return
 
-def call_action(action_name,payload,light_list):
+def room_switches_control(room,cmd):
+    if "switches" in room:
+        for switch_topic in room["switches"]:
+            topic = f"{room['base_topic']}/{switch_topic}/set"
+            state_cmd = '{"state":"'+cmd+'"}'
+            clientMQTT.publish(topic,state_cmd)
+
+
+def light_hold_switch(room,room_name,payload):
+    jval = json.loads(payload)
+    if("click" in jval and jval["click"] == "single"):
+        switch_0 = room["switches"][0]
+        if(lights[room["lights"][0]].on):
+            for light_name in room["lights"]:
+                lights[light_name].on = False
+            room_switches_control(room,"OFF")
+            log.info(f"{room_name} lights> OFF ; switches> OFF (light_0 was on)")
+        elif((switch_0 in states) and (states[switch_0] == "ON")):
+            for light_name in room["lights"]:
+                lights[light_name].on = False
+            room_switches_control(room,"OFF")
+            log.info(f"{room_name} lights> OFF ; switches> OFF (switch_0 was on)")
+        else:
+            #command so that it does not go to previous level before adjusting the brightness
+            for light_name in room["lights"]:
+                lights[light_name].on = False
+                b.set_light(light_name, {'on' : True, 'bri' : 128})
+            log.info(f"{room_name} lights> on")
+    elif("click" in jval and jval["click"] == "double"):
+        for light_name in room["lights"]:
+            lights[light_name].on = False
+            b.set_light(light_name, {'on' : True, 'bri' : 255})
+            room_switches_control(room,"ON")
+        log.info(f"{room_name} lights> on Full Brightness ; switches> ON")
+    elif("action" in jval and jval["action"] == "hold"):
+        for light_name in room["lights"]:
+            lights[light_name].on = False
+        room_switches_control(room,"TOGGLE")
+        log.info(f"{room_name} switches> toggled")
+    return
+
+def call_action(room,room_name,payload):
     possibles = globals().copy()
     possibles.update(locals())
-    method = possibles.get(action_name)
-    log.debug(f"calling => ({action_name})")
-    method(payload,light_list)
+    method = possibles.get(room["action"])
+    log.debug(f"calling => ({room['action']})")
+    method(room,room_name,payload)
     return
 
 def mqtt_on_message(client, userdata, msg):
+    global states
     #log.info(f"{msg.topic} : {msg.payload}")
     try:
         topic_parts = msg.topic.split('/')
         if(len(topic_parts) == 2):
             sensor_name = topic_parts[1]
-            if(sensor_name == "bed light button") or (sensor_name == "bed nic button") or (sensor_name == "bedroom switch"):
-                bed_light_button(msg.payload)
-            elif(sensor_name == "office switch"):
+            if(sensor_name == "office switch"):
                 office_switch(msg.payload)
             elif(sensor_name == "volume white"):
                 office_dimm(msg.payload)
@@ -335,7 +345,13 @@ def mqtt_on_message(client, userdata, msg):
             else:
                 for room_name,room in config["lightmap"].items():
                     if sensor_name in room["sensors"]:
-                        call_action(room["action"],msg.payload,room["lights"])
+                        call_action(room,room_name,msg.payload)
+                    if "switches" in room:
+                        if topic_parts[1] in room["switches"]:
+                            jval = json.loads(msg.payload)
+                            if("state" in jval):
+                                states[topic_parts[1]] = jval["state"]
+
         else:
             log.error("topic: "+msg.topic + "size not matching")
     except Exception as e:
