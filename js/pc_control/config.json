@@ -9,9 +9,9 @@
             "lzig/sonos button",
             "lzig/office chair vibration",
             "lzig/retro light switch",
-            "shellies/shellyplug-s-B85CCA/relay/0",
+            "shellies/shellyplug-s-9D94DB/relay/0",
             "shellies/shelly1pm-C45303/relay/0",
-            "shellies/shellyplug-s-B85CCA/relay/0/power",
+            "shellies/shellyplug-s-9D94DB/relay/0/power",
             "esp/dimmer/request",
             "esp/dimmer/response"
          ],
@@ -19,13 +19,13 @@
         "subscribe" :true
     },
     "status":{
-        "pc":"shellies/shellyplug-s-B85CCA/relay/0",
-        "pc_power":"shellies/shellyplug-s-B85CCA/relay/0/power",
+        "pc":"shellies/shellyplug-s-9D94DB/relay/0",
+        "pc_power":"shellies/shellyplug-s-9D94DB/relay/0/power",
         "retro_light_relay":"shellies/shelly1pm-C45303/relay/0",
         "retro_light_dimmer":"esp/dimmer/response"
     },
     "control":{
-        "pc":           "shellies/shellyplug-s-B85CCA/relay/0/command",
+        "pc":           "shellies/shellyplug-s-9D94DB/relay/0/command",
         "sonos_front":"shellies/shellyplug-s-6A5CE5/relay/0/command",
         "sonos_rear":   "shellies/shellyplug-s-6A5DCF/relay/0/command",
         "retro_light_relay":   "shellies/shelly1pm-C45303/relay/0/command",
