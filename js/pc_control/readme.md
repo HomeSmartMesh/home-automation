@@ -1,5 +1,8 @@
 # Intro
-controlling smart socket for starting a PC and an ethernet repeater
+controlling smart socket for starting 
+ - PC
+ - Retro light
+ - Sonos Front Rear
 
 
 # Install

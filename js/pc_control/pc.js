@@ -14,8 +14,7 @@ let sonos_off = true
 
 function pc_shutdown(){
   logger.info(`pc> shutting down`)
-  mqtt.publish(config.control.pc,"off")
-  mqtt.publish(config.control.repeater,"off")
+  mqtt.publish(config.control.pc,'{"state":"OFF"}')
 }
 
 function call_low(){
@@ -23,7 +22,7 @@ function call_low(){
     count_low++
     logger.debug(`pc> count down ${count_low}`)
   }else{
-    if(pc_reley_status == "on"){
+    if(pc_reley_status == "ON"){
       pc_shutdown()
       count_low = 0
     }
@@ -96,19 +95,15 @@ function pc_button(topic,message){
   if(message.hasOwnProperty("click")){
     logger.verbose(`pc> ${topic} : click = (${message.click})`)
     if(message.click == "single"){
-      if(pc_reley_status == "on"){
+      if(pc_reley_status == "ON"){
         logger.info(`pc> is on and click => shutting off`)
-        mqtt.publish(config.control.pc,"off")
-      }else if(pc_reley_status == "off"){
+        mqtt.publish(config.control.pc,'{"state":"OFF"}')
+      }else if(pc_reley_status == "OFF"){
         logger.info(`pc> is off and click => turning on`)
-        mqtt.publish(config.control.pc,"on")
+        mqtt.publish(config.control.pc,'{"state":"ON"}')
       }
-    }else if(message.click == "double"){
-      auto_on_off = !auto_on_off
-      if(auto_on_off){
-        http.request(config.control.led.on).end()
-      }else{
-        http.request(config.control.led.off).end()
+      else{
+        logger.error(`No state in pc_reley_status : ${pc_reley_status}`)
       }
     }
   }
@@ -120,8 +115,7 @@ function office_chair_vibration(topic,message){
     if((message.action == "tilt") || (message.action == "vibration")){
       if(auto_on_off){
         logger.info(`pc> chair moved - auto_on_off => switching on`)
-        mqtt.publish(config.control.pc,"on")
-        mqtt.publish(config.control.repeater,"on")
+        mqtt.publish(config.control.pc,'{"state":"ON"}')
       }else{
         logger.info(`pc> chair moved - but auto_on_off false => No action taken`)
       }
@@ -131,17 +125,15 @@ function office_chair_vibration(topic,message){
 
 mqtt.Emitter.on('mqtt',(data)=>{
   try{
-    if(data.topic == config.status.pc_power){
-      if(auto_on_off){
-        const power = parseFloat(data.msg)
-        if(power <10){
-          call_low()
-        }else{
-          call_high()
-        }
+    if(data.topic == config.status.pc){
+      const jvals = JSON.parse(data.msg)
+      pc_reley_status = jvals.state
+      logger.debug(`pc_reley_status updated to ${pc_reley_status}`)
+      if(jvals.power <10){
+        call_low()
+      }else{
+        call_high()
       }
-    }else if(data.topic == config.status.pc){
-      pc_reley_status = data.msg
     }else if(data.topic == "lzig/pc button"){
       pc_button(data.topic,JSON.parse(data.msg))
     }else if(data.topic == "lzig/sonos button"){
@@ -159,9 +151,6 @@ mqtt.Emitter.on('mqtt',(data)=>{
     logger.info(`pc> Handling all exceptions : ${e.message}`)
   }
 })
-
-//auto_on_off starts true => on
-http.request(config.control.led.on).end()
 
 //winston has it
 //process.on('uncaughtException', (err) => {
