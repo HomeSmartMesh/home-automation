@@ -84,8 +84,9 @@
         "publish" :false,
         "subscribe" :true,
         "types":{
-            "energy"      :"int",
+            "energy"     :"float",
             "power"      :"float",
+            "current"    :"float",
             "light"      :"float",
             "pressure"      :"float",
             "temperature"   :"float",
@@ -102,7 +103,8 @@
         "discard":[
             "path",
             "eurotronic_host_flags",
-            "occupancy"
+            "occupancy",
+            "update"
         ]              
     },
     "influxdb":{
