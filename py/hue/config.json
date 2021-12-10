@@ -13,7 +13,6 @@
                             "lzig/bed nic button",
                             "lzig/living double switch",
                             "lzig/bedroom switch",
-                            "lzig/volume white",
                             "lzig/office switch",
                             "lzig/hallway entrance switch",
                             "lzig/hallway living switch",
@@ -65,6 +64,12 @@
             ],
             "switches":[
                 "poster socket"
+            ],
+            "base_topic":"lzig"
+        },
+        "office":{
+            "switches":[
+                "lifx socket"
             ],
             "base_topic":"lzig"
         }

@@ -184,11 +184,13 @@ def office_switch(payload):
         if(lights["office curtain"].on):
             lights["office main"].on = False
             lights["office curtain"].on = False
+            room_switches_control(config["lightmap"]["office"],"OFF")
             log.info("office_light>(click)(curtain on) => all off")
         else:
             #command so that it does not go to previous level before adjusting the brightness
             b.set_light("office main", {'on' : True, 'bri' : 255})
             b.set_light("office curtain", {'on' : True, 'bri' : 100})
+            room_switches_control(config["lightmap"]["office"],"ON")
             log.info("office_light>(click)(curtain off) => all on, some low")
     elif("action" in switch and switch["action"] == "hold"):
             b.set_light("office curtain", {'on' : True, 'bri' : 1})
@@ -334,8 +336,6 @@ def mqtt_on_message(client, userdata, msg):
             sensor_name = topic_parts[1]
             if(sensor_name == "office switch"):
                 office_switch(msg.payload)
-            elif(sensor_name == "volume white"):
-                office_dimm(msg.payload)
             elif(sensor_name == "tree button"):
                 bathroom_light_button(msg.payload)
             elif(sensor_name == "liv light 1 button"):
