@@ -108,7 +108,7 @@
         ]              
     },
     "influxdb":{
-        "host":"10.0.0.3",
+        "host":"localhost",
         "port":8086,
         "db":"mqtt"
     },

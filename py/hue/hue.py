@@ -344,13 +344,14 @@ def mqtt_on_message(client, userdata, msg):
                 livroom_light_switch(msg.payload)
             else:
                 for room_name,room in config["lightmap"].items():
-                    if sensor_name in room["sensors"]:
-                        call_action(room,room_name,msg.payload)
-                    if "switches" in room:
-                        if topic_parts[1] in room["switches"]:
-                            jval = json.loads(msg.payload)
-                            if("state" in jval):
-                                states[topic_parts[1]] = jval["state"]
+                    if "sensors" in room:
+                        if sensor_name in room["sensors"]:
+                            call_action(room,room_name,msg.payload)
+                        if "switches" in room:
+                            if topic_parts[1] in room["switches"]:
+                                jval = json.loads(msg.payload)
+                                if("state" in jval):
+                                    states[topic_parts[1]] = jval["state"]
 
         else:
             log.error("topic: "+msg.topic + "size not matching")

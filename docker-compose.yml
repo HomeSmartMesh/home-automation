@@ -33,6 +33,7 @@ services:
       - ${PWD}/containers/grafana/provisioning:/etc/grafana/provisioning:ro
     depends_on:
       - "influx"
+    restart: always
   zigbee2mqtt:
     container_name: zigbee2mqtt
     image: koenkk/zigbee2mqtt
