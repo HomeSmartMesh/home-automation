@@ -21,4 +21,7 @@ docker exec -it d07161590a12 bash
 
 docker ps -f "status=exited"
 docker logs --tail=50 <container id>
+
+sudo docker update --restart=no 5b7637252532
+docker stop 5b7637252532
 ```

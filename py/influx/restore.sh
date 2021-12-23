@@ -1,0 +1,1 @@
+influxd restore -db mqtt /home/pi/share/2021-12-23_influx_backup/
