@@ -24,8 +24,8 @@
     },
     "control":{
         "pc":         "lzig/pc socket/set",
-        "sonos_front":"shellies/shellyplug-s-6A5CE5/relay/0/command",
-        "sonos_rear":   "shellies/shellyplug-s-6A5DCF/relay/0/command",
+        "sonos_front":"lzig/sonos front socket/set",
+        "sonos_rear":   "lzig/sonos rear socket/set",
         "retro_light_relay":   "shellies/shelly1pm-C45303/relay/0/command",
         "retro_light_dimmer":   "esp/dimmer/request"
     },

@@ -76,13 +76,13 @@ function sonos_button(topic,message){
     if(message.click == "single"){
       if(sonos_off){
         logger.info(`sonos> switching on`)
-        mqtt.publish(config.control.sonos_front,"on")
-        mqtt.publish(config.control.sonos_rear,"on")
+        mqtt.publish(config.control.sonos_front,'{"state":"ON"}')
+        mqtt.publish(config.control.sonos_rear,'{"state":"ON"}')
         sonos_off = false
       }else{
         logger.info(`sonos> switching off`)
-        mqtt.publish(config.control.sonos_front,"off")
-        mqtt.publish(config.control.sonos_rear,"off")
+        mqtt.publish(config.control.sonos_front,'{"state":"OFF"}')
+        mqtt.publish(config.control.sonos_rear,'{"state":"OFF"}')
         sonos_off = true
       }
     }
