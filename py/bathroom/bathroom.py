@@ -14,18 +14,6 @@ import threading
 
 input_timer = None
 
-def debounce(in_time):
-    current_time = time.time()
-    delta = current_time - in_time
-    return (delta > 2),current_time
-
-debounce_1_prev = 0
-def debounce_1():
-    global debounce_1_prev
-    res,debounce_1_prev = debounce(debounce_1_prev)
-    return res
-
-
 def set_fan_relay(fan_val):
     topic = "shellies/shellyswitch25-B8A4EE/relay/1/command"
     clientMQTT.publish(topic,fan_val)
@@ -41,7 +29,7 @@ def stop_fan_relay_on_conditions():
         log.info(f"stop_fan_relay_on_conditions> stop rejected, (light) 'input' is on. state = {state}")
         return
     if(state["humidity_sensor_alive"]):
-        if(state["humidity"] > config["humidity"]["stop_fan_on_condition"]):
+        if(state["humidity"] > config["humidity"]["stop_fan"]):
             log.info(f"stop_fan_relay_on_conditions> stop rejected, humidity too high. state = {state}")
         else:
             log.info(f"stop_fan_relay_on_conditions> stop accepted, not humid. state = {state}")
