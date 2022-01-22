@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import {    Grid,FormControlLabel, Switch} from '@mui/material';
+import {    Grid,FormControlLabel, Switch, Button, ButtonGroup} from '@mui/material';
 import { connect } from "mqtt"
 
 var mqtt_url = "ws://10.0.0.31:1884";
-const options = {clientId : 'home_next_'+Math.random().toString(16).substr(2, 8)}
+const connect_options = {clientId : 'home_next_'+Math.random().toString(16).substr(2, 8)}
+const subscribe_options = {qos:2}
+const publish_options = {qos:2, retain:false}
 const mqtt_subscriptions = ["lzig/sonos front socket","lzig/sonos rear socket"]
 const mqtt_control = {
     "front":"lzig/sonos front socket/set",
@@ -17,15 +19,14 @@ export default function PowerControl(){
     const [checked_mqtt,setCheckedMqtt] = useState(false)
     const [checked_front,setCheckedFront] = useState(false)
     const [checked_rear,setCheckedRear] = useState(false)
-    const [checked_power,setCheckedPower] = useState(false)
 
     useEffect(()=>{
         let isMounted = true
         if(client == null){
-            client = connect(mqtt_url,options)
+            client = connect(mqtt_url,connect_options)
             client.on('connect', ()=>{
                 console.log("connected")
-                client.subscribe(mqtt_subscriptions)
+                client.subscribe(mqtt_subscriptions,subscribe_options)
                 if(!isMounted){
                     console.log("component not mounted")
                     return
@@ -71,16 +72,14 @@ export default function PowerControl(){
                     console.log(`undefined msg : '${msg}'`)
                 }
                 else if("state" in data){
-                    const data_state = ((data.state=="ON")?true:false)
+                    const data_state = data.state.includes("ON")
                     if(topic.includes("front")){
-                        console.log(`Front state = ${data.state}`)
+                        console.log(`Front state = ${data_state}`)
                         setCheckedFront(data_state)
-                        setCheckedPower(data_state || checked_rear)
                     }
                     else if(topic.includes("rear")){
-                        console.log(`Rear state = ${data.state}`)
+                        console.log(`Rear state = ${data_state}`)
                         setCheckedRear(data_state)
-                        setCheckedPower(data_state || checked_front)
                     }
                 }
             })
@@ -88,28 +87,23 @@ export default function PowerControl(){
             console.log("client already initialized")
         }
     }, [])
-    function powerControl(checked){
-        if(checked){
-            client.publish(mqtt_control.front,`{"state":"ON"}`)
-            client.publish(mqtt_control.rear,`{"state":"ON"}`)
-        }else{
-            client.publish(mqtt_control.front,`{"state":"OFF"}`)
-            client.publish(mqtt_control.rear,`{"state":"OFF"}`)
-        }
-        setCheckedPower(checked)
+    function switch_on(e){
+        client.publish(mqtt_control.front,`{"state":"ON"}`,publish_options)
+        client.publish(mqtt_control.rear,`{"state":"ON"}`,publish_options)
     }
+    function switch_off(e){
+        client.publish(mqtt_control.front,`{"state":"OFF"}`,publish_options)
+        client.publish(mqtt_control.rear,`{"state":"OFF"}`,publish_options)
+}
       return (
-        <Grid container columns={{ xs: 4, sm: 8, md: 12 }} sx={{margin:2}}>
+        <Grid container columns={{ xs: 4, sm: 8, md: 12 }}  sx={{m:1}}>
         <Grid item>
-            <FormControlLabel 
-                label="Sonos Power"
-                control={<Switch 
-                    checked={checked_power}
-                    onChange={(event)=>{powerControl(event.target.checked)}}
-                />}  
-            />
+            <ButtonGroup sx={{m:1}} variant="contained" aria-label="outlined primary button group">
+                <Button variant="contained" color="success" onClick={switch_on}>Switch On</Button>
+                <Button variant="contained" color="error"  onClick={switch_off}>Switch Off</Button>
+            </ButtonGroup>
         </Grid>
-        <Grid item>
+        <Grid item sx={{m:1}}>
             <FormControlLabel 
                 label={mqtt} 
                 control={<Switch 

@@ -91,6 +91,7 @@ services:
       - ${PWD}/web/bed_heating:/usr/share/nginx/html/bed:ro
       - ${PWD}/web/heating:/usr/share/nginx/html/heat:ro
       - ${PWD}/web/leds_panel:/usr/share/nginx/html/leds:ro
+      - ${PWD}/web/home-next/out:/usr/share/nginx/html/next:ro
       - ${PWD}/../smart_home_3d_webapp:/usr/share/nginx/html/3d:ro
       - ${PWD}/../nRF52_Mesh/nodes.json:/usr/share/nginx/html/nodes.json:ro
     network_mode: "host"
