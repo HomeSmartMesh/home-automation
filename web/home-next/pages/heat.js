@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useReducer ,useEffect } from 'react';
 import {    FormControlLabel, Switch} from '@mui/material';
 import { connect } from "mqtt"
 import RoomHeater from '../components/RoomHeater';
-
 
 
 var mqtt_url = "ws://10.0.0.31:1884";
@@ -10,15 +9,20 @@ const connect_options = {clientId : 'next_heat_'+Math.random().toString(16).subs
 const subscribe_options = {qos:2}
 const publish_options = {qos:2, retain:false}
 
-const rooms = {
+const initial_state = {
     livingroom:{
         name:"Livingroom",
         heater:{
             topic:"lzig/living heat",
+            last_seen_mn:"Not seen",
             data:{}
         },
-        sensor:{
+        ambient:{
             topic:"nrf/livingroom tag",
+            temperature:0
+        },
+        metal:{
+            topic:"lzig/living heat weather",
             data:{}
         }
     },
@@ -26,10 +30,15 @@ const rooms = {
         name:"Bedroom",
         heater:{
             topic:"lzig/bedroom heat",
+            last_seen_mn:"Not seen",
             data:{}
         },
-        sensor:{
+        ambient:{
             topic:"nrf/bedroom tag",
+            temperature:0
+        },
+        metal:{
+            topic:"lzig/bedroom heat weather",
             data:{}
         }
     },
@@ -37,10 +46,15 @@ const rooms = {
         name:"Kitchen",
         heater:{
             topic:"lzig/kitchen heat",
+            last_seen_mn:"Not seen",
             data:{}
         },
-        sensor:{
+        ambient:{
             topic:"nrf/kitchen tag",
+            temperature:0
+        },
+        metal:{
+            topic:"lzig/kitchen heat weather",
             data:{}
         }
     },
@@ -48,10 +62,15 @@ const rooms = {
         name:"Bathroom",
         heater:{
             topic:"lzig/bathroom heat",
+            last_seen_mn:"Not seen",
             data:{}
         },
-        sensor:{
+        ambient:{
             topic:"nrf/bathroom tag",
+            temperature:0
+        },
+        metal:{
+            topic:"lzig/bathroom heat weather",
             data:{}
         }
     },
@@ -59,10 +78,15 @@ const rooms = {
         name:"Office",
         heater:{
             topic:"lzig/office heat",
+            last_seen_mn:"Not seen",
             data:{}
         },
-        sensor:{
+        ambient:{
             topic:"nrf/office tag",
+            temperature:0
+        },
+        metal:{
+            topic:"lzig/office heat weather",
             data:{}
         }
     }
@@ -70,28 +94,60 @@ const rooms = {
 
 let client = null
 
+function get_last_seen_minutes(sensor){
+    let result = "No info"
+    if("last_seen" in sensor){
+      let diff = Date.now() - Date.parse(sensor["last_seen"]);
+      if(diff < 0){
+        diff = 0;//avoids small clocks discrepancies
+      }
+      let nb_min = Math.floor(diff / (60*1000));
+      if(nb_min < 60){
+        result = nb_min+" mn";
+      }else if(nb_min > 60){
+        let nb_h = Math.floor(nb_min / 60);
+        result = nb_h+" h";
+      }
+    }
+    return result
+  }
+  
+
+function reducer(state, action){
+    let result = {}
+    if("temperature" in action){
+        result[action.room_id] = state[action.room_id]
+        result[action.room_id].ambient.temperature = action.temperature
+    }else if("heater" in action){
+        result[action.room_id] = state[action.room_id]
+        result[action.room_id].heater.data = action.heater
+        result[action.room_id].heater.last_seen_mn = get_last_seen_minutes(action.heater)
+        //console.log(`${action.room_id} not seen since ${result[action.room_id].heater.last_seen_mn}`);
+    }else if("setpoint" in action){
+        result[action.room_id] = state[action.room_id]
+        result[action.room_id].heater.data.current_heating_setpoint = action.setpoint
+    }else if("metal" in action){
+        result[action.room_id] = state[action.room_id]
+        result[action.room_id].metal.data = action.metal
+    }
+    return {...state, ...result}
+}
+
 export default function PowerControl(){
     const [mqtt,setMqtt] = useState("nothing")
     const [checked_mqtt,setCheckedMqtt] = useState(false)
-    const [room_temp_list, setRoomTempList] = useState(new Array(5).fill(0))
-    const [room_0_temp, setRoom0Temp] = useState(0)
+    const [rooms, dispatch] = useReducer(reducer, initial_state)
     
     function receive_data(topic,data){
         Object.entries(rooms).forEach(([id,room],index)=>{
             if(topic == room.heater.topic){
-                room.heater.data = data
-                console.log(`heater update: ${topic}`)
-            }
-            else if(topic == room.sensor.topic){
+                dispatch({room_id:id, heater:data})
+            }else if(topic == room.ambient.topic){
                 if("temperature" in data){
-                    console.log(`room '${room.name}' temperature: ${data.temperature} : (${typeof(data.temperature)})`)
-                    let temp_list = room_temp_list
-                    temp_list[index] = data.temperature.toFixed(1)
-                    setRoomTempList(temp_list)
-                    if(index == 0){
-                        setRoom0Temp(data.temperature.toFixed(1))
-                    }
+                    dispatch({room_id:id, temperature:data.temperature})
                 }
+            }else if(topic == room.metal.topic){
+                dispatch({room_id:id, metal:data})
             }
         })
     }
@@ -103,7 +159,8 @@ export default function PowerControl(){
             client.on('connect', ()=>{
                 console.log("connected")
                 client.subscribe(Object.entries(rooms).map(([key,room])=>(room.heater.topic)),subscribe_options)
-                client.subscribe(Object.entries(rooms).map(([key,room])=>(room.sensor.topic)),subscribe_options)
+                client.subscribe(Object.entries(rooms).map(([key,room])=>(room.ambient.topic)),subscribe_options)
+                client.subscribe(Object.entries(rooms).map(([key,room])=>(room.metal.topic)),subscribe_options)
                 if(!isMounted)return
                 setMqtt("mqtt connected")
                 setCheckedMqtt(true)
@@ -141,19 +198,18 @@ export default function PowerControl(){
             console.log("client already initialized")
         }
     }, [])
-    function handleSliderChange(topic, newValue){
-        rooms[topic].target = newValue
-        console.log(`room '${topic}' set at '${newValue}'`)
+    function handleSliderChange(room_id, newValue){
+        console.log(`room '${room_id}' set at '${newValue}'`)
+        dispatch({room_id:room_id, setpoint:newValue})
+        //TODO publish
     }
       return (
     <div>
         {Object.entries(rooms).map(([id,room],index)=>(
             <RoomHeater key={index}
-            room={id}
-            roomName={room.name}
-            roomData={room.heater.data}
+            room_id={id}
+            room={room}
             onChange={handleSliderChange}
-            roomTemp={(index==0)?room_0_temp:room_temp_list[index]}
             />
             ))
         }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {    Paper, Grid,Box, 
+import {    Paper, Grid,Box, Divider,
   Typography, Slider,LinearProgress,
   CircularProgress} from '@mui/material';
 import {Thermostat} from '@mui/icons-material';
@@ -10,73 +10,83 @@ const slider_config ={
   step:1
 }
 
-const slider_marks = [
-  {
-    value: 5,
-    label: '5°C',
-  },
-  {
-    value: 10,
-    label: 'Current 10°C',
-  },
-  {
-    value: 27,
-    label: '27°C',
-  },
+let slider_marks = [
+  {value: 5,label: '5°',},
+  {value: 27,label: '27°',},
 ];
 
-export default function RoomHeater({ room, roomName, roomData,onChange, roomTemp }) {
+export default function RoomHeater({ room_id,room, onChange }) {
   const [value,setValue] = useState(12)
 
-  function valuetext(val){
-    return `${val} °C`
+  let handle_metal = 0
+
+  let current_heating_setpoint = 6
+  if("current_heating_setpoint" in room.heater.data){
+    current_heating_setpoint = room.heater.data.current_heating_setpoint
   }
-  function valueTemperature(){
-    let result = ""
-    if("local_temperature" in roomData){
-      result = roomData.local_temperature.toString()+"°"
+  let handle_temperature = ""
+  if("local_temperature" in room.heater.data){
+    handle_temperature = "handle "+room.heater.data.local_temperature.toFixed(1)+"°"
+  }
+
+  let room_temperature = ""
+  if(room.ambient.temperature != 0){
+    room_temperature = "room "+room.ambient.temperature.toFixed(1)+"°"
+    slider_marks = [{value: 5,label: '5°',},{value:room.ambient.temperature,label:"room"},{value: 27,label: '27°'}]
+  }
+  let metal_temperature = ""
+  if("temperature" in room.metal.data){
+    metal_temperature = "metal "+room.metal.data.temperature.toFixed(1)+"°"
+    if("local_temperature" in room.heater.data){
+      handle_metal = 100*(room.metal.data.temperature - room.heater.data.local_temperature)/60
     }
-    return result
   }
+  let pi_heating_demand = ("pi_heating_demand" in room.heater.data)?room.heater.data.pi_heating_demand:0
+
+
   return(
   <div>
     <Box id="mainContent" m={1} >
       <Paper elevation={3} >
         <Box id="allCard" px={2} pt={1}>
           <Grid id="cardHeader" container alignItems="center">
-            <Grid item><Typography variant="h6" >{roomName}</Typography></Grid>
+            <Grid item><Typography variant="h6" >{room.name}</Typography></Grid>
             <Grid item><Thermostat /></Grid>
-            <Grid item><Typography variant="h6" >{(roomTemp==0)?"":roomTemp+"°"}</Typography></Grid>
           </Grid>
           <Box px={1}>
-            <Slider value={value}
-                  getAriaValueText={valuetext}
+            <Slider value={current_heating_setpoint}
+                  getAriaValueText={()=>{`${value} °C`}}
                   min={slider_config.min}
                   max={slider_config.max}
                   step={slider_config.step}
                   marks={slider_marks}
-                  onChange={(e)=>{
-                    onChange(room,e.target.value)
-                    setValue(e.target.value)
+                  onChange={(e,newValue)=>{
+                    if(newValue != value){//required due to step but triggers on each pixel move
+                      onChange(room_id,newValue)
+                      setValue(newValue)
+                    }
                   }}
                   aria-label="Small steps"
                   valueLabelDisplay="on"
               />
           </Box>
-          <Grid container spacing={2} b={1}>
-              <Grid item xs={2}>
-                  <Typography gutterBottom>Metal Temperature 35°C</Typography>
-              </Grid>
-              <Grid item xs={4}>
-                  <LinearProgress variant="determinate" value={80}  color="secondary"/>
-              </Grid>
-              <Grid item xs={2}>
-              <Typography gutterBottom>Flow Opening 50%</Typography>
-              </Grid>
-              <Grid item xs={4}>
-                  <CircularProgress variant="determinate" value={80}  color="secondary"/>
-              </Grid>
-          </Grid>
+          <Divider light />
+          <Box pt={1}>
+            <Grid container spacing={2} b={1}>
+              <Grid item xs={2}><Typography variant="h6" >{room_temperature}</Typography></Grid>
+              <Grid item xs={1}><Typography variant="h6" >
+                  {(pi_heating_demand==0)?"closed":`open ${pi_heating_demand}%`} 
+                </Typography></Grid>
+              <Grid item xs={1}><CircularProgress variant="determinate" value={pi_heating_demand}color="secondary"/></Grid>
+              <Grid item xs={2}><Typography variant="h6" >{handle_temperature}</Typography></Grid>
+              <Grid item xs={2}><LinearProgress 
+                sx={{ display: (handle_metal==0)?'none':'block' }}
+                variant="determinate" 
+                value={handle_metal}  
+                color="secondary"/></Grid>
+              <Grid item xs={2}><Typography variant="h6" >{metal_temperature}</Typography></Grid>
+            </Grid>
+          </Box>
         </Box>
       </Paper>
     </Box>
