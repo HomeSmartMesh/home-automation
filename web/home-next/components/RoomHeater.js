@@ -62,9 +62,12 @@ export default function RoomHeater({ room_id,room, onChange }) {
                   marks={slider_marks}
                   onChange={(e,newValue)=>{
                     if(newValue != value){//required due to step but triggers on each pixel move
-                      onChange(room_id,newValue)
                       setValue(newValue)
+                      onChange(room_id,newValue,false)
                     }
+                  }}
+                  onChangeCommitted={(e,newValue)=>{
+                      onChange(room_id,newValue,true)
                   }}
                   aria-label="Small steps"
                   valueLabelDisplay="on"
@@ -74,6 +77,7 @@ export default function RoomHeater({ room_id,room, onChange }) {
           <Box pt={1}>
             <Grid container spacing={2} b={1}>
               <Grid item xs={2}><Typography variant="h6" >{room_temperature}</Typography></Grid>
+              <Grid item xs={2}><Typography variant="h6" >{room.heater.last_seen_mn}</Typography></Grid>
               <Grid item xs={1}><Typography variant="h6" >
                   {(pi_heating_demand==0)?"closed":`open ${pi_heating_demand}%`} 
                 </Typography></Grid>

@@ -198,10 +198,15 @@ export default function PowerControl(){
             console.log("client already initialized")
         }
     }, [])
-    function handleSliderChange(room_id, newValue){
-        console.log(`room '${room_id}' set at '${newValue}'`)
+    function handleSliderChange(room_id, newValue,exit){
+        console.log(`room '${room_id}' to be set at '${newValue}'`)
         dispatch({room_id:room_id, setpoint:newValue})
-        //TODO publish
+        if(exit){
+            let topic = rooms[room_id].heater.topic+"/set"
+            let payload = JSON.stringify({current_heating_setpoint:newValue})
+            client.publish(topic,payload,publish_options)
+            console.log(`published '${room_id}' set at '${newValue}'`)
+        }
     }
       return (
     <div>
