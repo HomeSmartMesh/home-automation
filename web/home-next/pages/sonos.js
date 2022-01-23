@@ -3,7 +3,7 @@ import {    Grid,FormControlLabel, Switch, Button, ButtonGroup} from '@mui/mater
 import { connect } from "mqtt"
 
 var mqtt_url = "ws://10.0.0.31:1884";
-const connect_options = {clientId : 'home_next_'+Math.random().toString(16).substr(2, 8)}
+const connect_options = {clientId : 'next_sonos_'+Math.random().toString(16).substr(2, 8)}
 const subscribe_options = {qos:2}
 const publish_options = {qos:2, retain:false}
 const mqtt_subscriptions = ["lzig/sonos front socket","lzig/sonos rear socket"]
@@ -94,9 +94,9 @@ export default function PowerControl(){
     function switch_off(e){
         client.publish(mqtt_control.front,`{"state":"OFF"}`,publish_options)
         client.publish(mqtt_control.rear,`{"state":"OFF"}`,publish_options)
-}
+    }
       return (
-        <Grid container columns={{ xs: 4, sm: 8, md: 12 }}  sx={{m:1}}>
+    <Grid container columns={{ xs: 4, sm: 8, md: 12 }}  sx={{m:1}}>
         <Grid item>
             <ButtonGroup sx={{m:1}} variant="contained" aria-label="outlined primary button group">
                 <Button variant="contained" color="success" onClick={switch_on}>Switch On</Button>
