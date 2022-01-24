@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import {    Paper, Grid,Box, Divider,
             Typography, Slider,  Stack } from '@mui/material';
-
 import {Thermostat,MeetingRoom} from '@mui/icons-material';
 import BathtubIcon from '@mui/icons-material/Bathtub';
 import SoupKitchenIcon from '@mui/icons-material/SoupKitchen';
@@ -112,7 +111,7 @@ export default function RoomHeater({ room_id,room, onChange }) {
 
   return(
   <div>
-    <Box id="mainContent" m={1} >
+    <Box id="mainContent" m={1}>
       <Paper elevation={3} >
         <Box id="allCard" px={2} pt={1}>
           <Grid id="cardHeader" container alignItems="center" spacing={1}>
@@ -146,26 +145,28 @@ export default function RoomHeater({ room_id,room, onChange }) {
               />
           </Box>
           <Divider light />
-          <Stack  direction="row"
-                  spacing={2}
-                  alignItems="center"
-                  justifyContent="flex-start"
-                  divider={<Divider orientation="vertical" flexItem />}
-                  >
+          <Grid container alignItems="center" justifyContent="space-evenly">
+            <Grid item>
               <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={1}>
                 <Thermostat/>
                 <Typography variant="h6" >{room_temperature}</Typography>
               </Stack>
+            </Grid>
+            <Grid item>
               <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={1}>
                 <SignalCellularAltIcon/>
                 <Typography variant="h6" >{room.heater.last_seen_mn}</Typography>
               </Stack>
+            </Grid>
+            <Grid item>
               <Stack direction="row"
                   alignItems="center"
                   justifyContent="center">
                 <Typography variant="h6" >{(pi_heating_demand==0)?"closed":`open ${pi_heating_demand}%`}</Typography>
                 <Box m={1}><MUICircularProgress value={pi_heating_demand}/></Box>
               </Stack>
+            </Grid>
+            <Grid item>
               <Stack direction="row"
                   spacing={1}
                   alignItems="center"
@@ -176,7 +177,8 @@ export default function RoomHeater({ room_id,room, onChange }) {
                 </Box>
                 <Typography variant="h6" sx={{ display: (handle_metal==0)?'none':'block' }}>{metal_temperature}</Typography>
               </Stack>
-          </Stack>
+            </Grid>
+          </Grid>
         </Box>
       </Paper>
     </Box>
