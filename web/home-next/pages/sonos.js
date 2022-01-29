@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {    Grid,FormControlLabel, Switch, Button, ButtonGroup} from '@mui/material';
+import {    Stack,FormControlLabel, Switch, Button, ButtonGroup} from '@mui/material';
 import { connect } from "mqtt"
 
 var mqtt_url = "ws://10.0.0.31:1884";
@@ -31,7 +31,7 @@ export default function PowerControl(){
                     console.log("component not mounted")
                     return
                 }
-                setMqtt("mqtt connected")
+                setMqtt("connected")
                 setCheckedMqtt(true)
             })
             client.on('reconnect', () => {
@@ -40,7 +40,7 @@ export default function PowerControl(){
                     console.log("component not mounted")
                     return
                 }
-                setMqtt("mqtt reconnecting")
+                setMqtt("reconnecting")
                 setCheckedMqtt(false)
             })
             client.on('error', (err)=>{
@@ -50,7 +50,7 @@ export default function PowerControl(){
                     console.log("component not mounted")
                     return
                 }
-                setMqtt("mqtt error")
+                setMqtt("error")
                 setCheckedMqtt(false)
             })    
             client.on('close', ()=>{
@@ -59,7 +59,7 @@ export default function PowerControl(){
                     console.log("component not mounted")
                     return
                 }
-                setMqtt("mqtt disconnected")
+                setMqtt("disconnected")
                 setCheckedMqtt(false)
                 })
             client.on('message', (topic,msg)=>{
@@ -100,39 +100,25 @@ export default function PowerControl(){
         client.publish(mqtt_control.rear,`{"state":"OFF"}`,publish_options)
     }
       return (
-    <Grid container columns={{ xs: 4, sm: 8, md: 12 }}  sx={{m:1}}>
-        <Grid item>
-            <ButtonGroup sx={{m:1}} variant="contained" aria-label="outlined primary button group">
+        <Stack direction="column" justifyContent="center" alignItems="center" spacing={1}>
+            <ButtonGroup sx={{m:2}} variant="contained" aria-label="outlined primary button group">
                 <Button variant="contained" color="success" onClick={switch_on}>Switch On</Button>
                 <Button variant="contained" color="error"  onClick={switch_off}>Switch Off</Button>
             </ButtonGroup>
-        </Grid>
-        <Grid item sx={{m:1}}>
+            <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
+                <FormControlLabel 
+                    label="Front"
+                    control={<Switch checked={checked_front} disabled/>}
+                />
+                <FormControlLabel 
+                    label="Rear"
+                    control={<Switch checked={checked_rear} disabled/>} 
+                />
+            </Stack>
             <FormControlLabel 
                 label={mqtt} 
-                control={<Switch 
-                            checked={checked_mqtt}
-                            disabled
-                        />
-                        } 
+                control={<Switch checked={checked_mqtt} disabled/>} 
             />
-            <FormControlLabel 
-                label="Front"
-                control={<Switch 
-                            checked={checked_front}
-                            disabled
-                        />
-                        } 
-            />
-            <FormControlLabel 
-                label="Rear"
-                control={<Switch 
-                            checked={checked_rear}
-                            disabled
-                        />
-                        } 
-            />
-        </Grid>
-    </Grid>
+        </Stack>
     );
 }
