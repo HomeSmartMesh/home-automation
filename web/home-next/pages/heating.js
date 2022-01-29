@@ -1,8 +1,7 @@
 import { useState, useReducer ,useEffect } from 'react';
-import {    FormControlLabel, Switch, Grid,
-            Container } from '@mui/material';
+import {    FormControlLabel, Switch} from '@mui/material';
 import { connect } from "mqtt"
-import RoomSimpleHeater from '../components/RoomSimpleHeater';
+import RoomHeater from '../components/RoomHeater';
 
 
 var mqtt_url = "ws://10.0.0.31:1884";
@@ -56,6 +55,22 @@ const initial_state = {
         },
         metal:{
             topic:"lzig/kitchen heat weather",
+            data:{}
+        }
+    },
+    bathroom:{
+        name:"Bathroom",
+        heater:{
+            topic:"lzig/bathroom heat",
+            last_seen_mn:"Not seen",
+            data:{}
+        },
+        ambient:{
+            topic:"nrf/bathroom tag",
+            temperature:0
+        },
+        metal:{
+            topic:"lzig/bathroom heat weather",
             data:{}
         }
     },
@@ -194,22 +209,14 @@ export default function PowerControl(){
     }
       return (
     <div>
-        <Grid   container 
-                columns={{ xs: 4, sm: 6 }}
-                spacing={{xs:0,sm:1}}
-                justifyContent="center"
-                >
         {Object.entries(rooms).map(([id,room],index)=>(
-            <Grid item xs={1} key={index}>
-                <RoomSimpleHeater 
-                room_id={id}
-                room={room}
-                onChange={handleSliderChange}
-                />
-            </Grid>
+            <RoomHeater key={index}
+            room_id={id}
+            room={room}
+            onChange={handleSliderChange}
+            />
             ))
         }
-        </Grid>
         <FormControlLabel 
             label={mqtt} 
             control={<Switch 

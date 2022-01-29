@@ -86,6 +86,10 @@ export default function PowerControl(){
         }else{
             console.log("client already initialized")
         }
+        return ()=>{
+            client.end()
+            client = null
+        }
     }, [])
     function switch_on(e){
         client.publish(mqtt_control.front,`{"state":"ON"}`,publish_options)

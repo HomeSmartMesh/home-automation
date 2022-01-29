@@ -1,0 +1,1 @@
+scp -Tr ./out/ pi@10.0.0.31:/home/pi/raspi/web/home-next/
