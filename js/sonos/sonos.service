@@ -1,0 +1,11 @@
+[Unit]
+Description=sonos upnp server that maps to a REST API
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=npm run start --prefix /home/pi/raspi/js/sonos/node-sonos-http-api
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
