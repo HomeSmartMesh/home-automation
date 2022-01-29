@@ -76,6 +76,13 @@ sudo systemctl daemon-reload
 sudo systemctl enable thread_tags.service
 sudo systemctl start thread_tags.service
 
+sudo cp js/sonos/sonos.service /lib/systemd/system/
+sudo chmod 644 /lib/systemd/system/sonos.service
+sudo chmod +x js/sonos/node-sonos-http-api/server.js
+sudo systemctl daemon-reload
+sudo systemctl enable sonos.service
+sudo systemctl start sonos.service
+
 
 
 sudo systemctl set-property nrf_mesh.service Framework=raspi_iot
