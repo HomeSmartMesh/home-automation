@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import {    Stack,FormControlLabel, Switch, Button, ButtonGroup} from '@mui/material';
+import {    Stack,FormControlLabel, Switch, Container,
+            Button, ButtonGroup, Slider} from '@mui/material';
 import { connect } from "mqtt"
 
 var mqtt_url = "ws://10.0.0.31:1884";
+const sonos_url = 'http://10.0.0.31:5005/livingroom'
 const connect_options = {clientId : 'next_sonos_'+Math.random().toString(16).substr(2, 8)}
 const subscribe_options = {qos:2}
 const publish_options = {qos:2, retain:false}
@@ -13,12 +15,30 @@ const mqtt_control = {
 }
 let client = null
 
+async function getVolume(){
+    const response = await fetch(`${sonos_url}/state`)
+    const state = await response.json()
+    console.log(`fetched volume = ${state.volume}`);
+    return state.volume
+}
+
+async function rest_setVolume(volume){
+    const response = await fetch(`${sonos_url}/volume/${volume}`)
+    const resp = await response.json()
+    if(("status" in resp) && (resp.status == "success")){
+        console.log(`success`);
+    }else{
+        console.log(`fail`);
+    }
+}
+
 
 export default function PowerControl(){
     const [mqtt,setMqtt] = useState("nothing")
     const [checked_mqtt,setCheckedMqtt] = useState(false)
     const [checked_front,setCheckedFront] = useState(false)
     const [checked_rear,setCheckedRear] = useState(false)
+    const [volume,setVolume] = useState(0)
 
     useEffect(()=>{
         let isMounted = true
@@ -83,6 +103,10 @@ export default function PowerControl(){
                     }
                 }
             })
+
+            getVolume().then((volume)=>{
+                setVolume(volume)
+            })
         }else{
             console.log("client already initialized")
         }
@@ -94,10 +118,15 @@ export default function PowerControl(){
     function switch_on(e){
         client.publish(mqtt_control.front,`{"state":"ON"}`,publish_options)
         client.publish(mqtt_control.rear,`{"state":"ON"}`,publish_options)
+        //todo delay then get volume
     }
     function switch_off(e){
         client.publish(mqtt_control.front,`{"state":"OFF"}`,publish_options)
         client.publish(mqtt_control.rear,`{"state":"OFF"}`,publish_options)
+    }
+    function handleSliderChange(newValue){
+        rest_setVolume(newValue)
+        console.log(`published volume at '${newValue}'`)
     }
       return (
         <Stack direction="column" justifyContent="center" alignItems="center" spacing={1}>
@@ -105,6 +134,21 @@ export default function PowerControl(){
                 <Button variant="contained" color="success" onClick={switch_on}>Switch On</Button>
                 <Button variant="contained" color="error"  onClick={switch_off}>Switch Off</Button>
             </ButtonGroup>
+            <Container maxWidth="sm">
+                <Slider value={volume}
+                    getAriaValueText={()=>{`${volume} %`}}
+                    min={0}
+                    max={100}
+                    onChange={(e,newValue)=>{
+                        setVolume(newValue)
+                    }}
+                    onChangeCommitted={(e,newValue)=>{
+                        handleSliderChange(newValue)
+                    }}
+                    aria-label="Small steps"
+                    valueLabelDisplay="on"
+                />
+            </Container>
             <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
                 <FormControlLabel 
                     label="Front"
