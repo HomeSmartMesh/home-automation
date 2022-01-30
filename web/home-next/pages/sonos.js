@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { styled } from '@mui/material/styles';
 import {    Stack,FormControlLabel, Switch, Container,
-            Button, ButtonGroup, Slider} from '@mui/material';
+            Button, Box, Slider,Snackbar, Alert} from '@mui/material';
 import { connect } from "mqtt"
 
 var mqtt_url = "ws://10.0.0.31:1884";
 const sonos_url = 'http://10.0.0.31:5005/livingroom'
+const safety_volume_jump_percent = 30
 const connect_options = {clientId : 'next_sonos_'+Math.random().toString(16).substr(2, 8)}
 const subscribe_options = {qos:2}
 const publish_options = {qos:2, retain:false}
@@ -15,11 +17,16 @@ const mqtt_control = {
 }
 let client = null
 
+function delay(ms) {return new Promise(resolve => setTimeout(resolve, ms));}
+    
 async function getVolume(){
     const response = await fetch(`${sonos_url}/state`)
-    const state = await response.json()
-    console.log(`fetched volume = ${state.volume}`);
-    return state.volume
+    if(response.ok){
+        const state = await response.json()
+        return state.volume
+    }else{
+        return Promise.reject(response.statusText)
+    }
 }
 
 async function rest_setVolume(volume){
@@ -32,13 +39,40 @@ async function rest_setVolume(volume){
     }
 }
 
+const OnButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText('#1976D2'),
+    backgroundColor: '#1976D2',
+    '&:hover': {backgroundColor: '#0C3C68'},
+  }));
+const OffButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText('#BDBDBD'),
+    backgroundColor: '#BDBDBD',
+    '&:hover': {backgroundColor: '#757575'},
+}));
 
 export default function PowerControl(){
     const [mqtt,setMqtt] = useState("nothing")
     const [checked_mqtt,setCheckedMqtt] = useState(false)
     const [checked_front,setCheckedFront] = useState(false)
     const [checked_rear,setCheckedRear] = useState(false)
-    const [volume,setVolume] = useState(0)
+    const [available,setAvailable] = useState(false)
+    const [speakerVolume,setSpeakerVolume] = useState(0)
+    const [sliderVolume,setSliderVolume] = useState(0)
+    const [limitWarning, setLimitWarning] = useState(false);
+    const [limitMessage, setLimitMessage] = useState("volume limit");
+
+    function updateVolume(){
+        console.log('updating volume');
+        getVolume().then((volume)=>{
+            console.log(`fetched volume = ${volume} => Available`);
+            setAvailable(true)
+            setSliderVolume(volume)
+            setSpeakerVolume(volume)
+        }).catch((error)=>{
+            console.log(`getVolume fetch failed with error '${error}' => Not Available`);
+            setAvailable(false)
+        })
+    }
 
     useEffect(()=>{
         let isMounted = true
@@ -103,9 +137,11 @@ export default function PowerControl(){
                     }
                 }
             })
-
-            getVolume().then((volume)=>{
-                setVolume(volume)
+            delay(1000).then(()=>{
+                updateVolume()
+                delay(1000).then(()=>{
+                    updateVolume()
+                })
             })
         }else{
             console.log("client already initialized")
@@ -118,29 +154,64 @@ export default function PowerControl(){
     function switch_on(e){
         client.publish(mqtt_control.front,`{"state":"ON"}`,publish_options)
         client.publish(mqtt_control.rear,`{"state":"ON"}`,publish_options)
-        //todo delay then get volume
+        if(!available){
+            delay(3000).then(()=>{
+                updateVolume()
+                delay(3000).then(()=>{
+                    updateVolume()
+                })
+            })
+        }
     }
     function switch_off(e){
         client.publish(mqtt_control.front,`{"state":"OFF"}`,publish_options)
         client.publish(mqtt_control.rear,`{"state":"OFF"}`,publish_options)
+        setAvailable(false)
     }
     function handleSliderChange(newValue){
-        rest_setVolume(newValue)
-        console.log(`published volume at '${newValue}'`)
+        const volume_diff = parseInt(newValue) - parseInt(speakerVolume)
+        console.log(`volume diff = ${newValue} - ${speakerVolume} = ${volume_diff}`);
+        if((volume_diff) < safety_volume_jump_percent){
+            setSpeakerVolume(newValue)
+            rest_setVolume(newValue)
+            console.log(`published volume at '${newValue}'`)
+        }else{
+            const warning_message = `safety jump too high from ${speakerVolume} to ${newValue}`
+            setSliderVolume(speakerVolume)
+            setLimitMessage(warning_message)
+            setLimitWarning(true)
+        }
     }
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setLimitWarning(false);
+      };
       return (
+        <Container maxWidth="sm">
         <Stack direction="column" justifyContent="center" alignItems="center" spacing={1}>
-            <ButtonGroup sx={{m:2}} variant="contained" aria-label="outlined primary button group">
-                <Button variant="contained" color="success" onClick={switch_on}>Switch On</Button>
-                <Button variant="contained" color="error"  onClick={switch_off}>Switch Off</Button>
-            </ButtonGroup>
-            <Container maxWidth="sm">
-                <Slider value={volume}
-                    getAriaValueText={()=>{`${volume} %`}}
+            <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
+            <OffButton variant="contained" color="error"  onClick={switch_off} sx={{height:60}}>Switch Off</OffButton>
+                <Stack direction="column" justifyContent="center" alignItems="flex-start" spacing={0}>
+                    <FormControlLabel 
+                        label="Front"
+                        control={<Switch checked={checked_front} disabled/>}
+                    />
+                    <FormControlLabel 
+                        label="Rear"
+                        control={<Switch checked={checked_rear} disabled/>} 
+                    />
+                </Stack>
+                <OnButton variant="contained" onClick={switch_on} sx={{height:60}}>Switch On</OnButton>
+            </Stack>
+            <Box sx={{width:300}} pt={2}>
+                <Slider value={sliderVolume}
+                    disabled={!available}
                     min={0}
                     max={100}
                     onChange={(e,newValue)=>{
-                        setVolume(newValue)
+                        setSliderVolume(newValue)
                     }}
                     onChangeCommitted={(e,newValue)=>{
                         handleSliderChange(newValue)
@@ -148,21 +219,15 @@ export default function PowerControl(){
                     aria-label="Small steps"
                     valueLabelDisplay="on"
                 />
-            </Container>
-            <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-                <FormControlLabel 
-                    label="Front"
-                    control={<Switch checked={checked_front} disabled/>}
-                />
-                <FormControlLabel 
-                    label="Rear"
-                    control={<Switch checked={checked_rear} disabled/>} 
-                />
-            </Stack>
+            </Box>
             <FormControlLabel 
                 label={mqtt} 
                 control={<Switch checked={checked_mqtt} disabled/>} 
             />
         </Stack>
+        <Snackbar open={limitWarning} onClose={handleClose} autoHideDuration={2000}>
+            <Alert severity="warning" sx={{ width: '100%' }}>{limitMessage}</Alert>
+       </Snackbar>
+      </Container>
     );
 }

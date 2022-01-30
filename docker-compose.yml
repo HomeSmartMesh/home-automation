@@ -65,11 +65,6 @@ services:
     depends_on:
       - "webapps"
       - "mosquitto"
-  sonos:
-    build:
-      context: ./js/sonos
-    ports:
-      - "5005:5005"
   mqtt2influx:
     build:
       context: ./py/influx
@@ -101,8 +96,6 @@ services:
       - ${PWD}/../nRF52_Mesh/nodes.json:/usr/share/nginx/html/nodes.json:ro
     network_mode: "host"
     restart: always
-    depends_on:
-      - sonos
   zigAssLifo:
       image: carldebilly/zigbee2mqttassistant
       environment:

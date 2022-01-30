@@ -1,0 +1,13 @@
+{
+    "short_name": "Home",
+    "name": "Home Automation",
+    "icons": [
+      {
+        "src": "./favicon.ico",
+        "type": "image/ico",
+        "sizes": "32x32"
+      }
+    ],
+    "start_url": "./index.html",
+    "display": "standalone"
+  }
