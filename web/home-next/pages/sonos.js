@@ -39,6 +39,49 @@ async function rest_setVolume(volume){
     }
 }
 
+const WideSlider = styled(Slider)(({theme})=>({
+    height:20,
+    '& .MuiSlider-track': {
+        border: 'none',
+        height:20
+      },
+    '& .MuiSlider-rail': {
+        opacity: 0.5,
+        backgroundColor: '#bfbfbf',
+      },
+      '& .MuiSlider-thumb': {
+        height: 68,
+        width: 24,
+        backgroundColor: '#fff',
+        border: '2px solid currentColor',
+        '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
+          boxShadow: 'inherit',
+        },
+        '&:before': {
+          display: 'none',
+        },
+      },
+      '& .MuiSlider-valueLabel': {
+        lineHeight: 1.2,
+        fontSize: 12,
+        background: 'unset',
+        padding: 0,
+        width: 32,
+        height: 32,
+        borderRadius: '50% 50% 50% 0',
+        backgroundColor: '#1976D2',
+        transformOrigin: 'bottom left',
+        transform: 'translate(50%, -100%) rotate(-45deg) scale(0)',
+        '&:before': { display: 'none' },
+        '&.MuiSlider-valueLabelOpen': {
+          transform: 'translate(50%, -100%) rotate(-45deg) scale(1)',
+        },
+        '& > *': {
+          transform: 'rotate(45deg)',
+        },
+      },
+}))
+
 const OnButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText('#1976D2'),
     backgroundColor: '#1976D2',
@@ -137,11 +180,9 @@ export default function PowerControl(){
                     }
                 }
             })
+            updateVolume()
             delay(1000).then(()=>{
                 updateVolume()
-                delay(1000).then(()=>{
-                    updateVolume()
-                })
             })
         }else{
             console.log("client already initialized")
@@ -155,9 +196,9 @@ export default function PowerControl(){
         client.publish(mqtt_control.front,`{"state":"ON"}`,publish_options)
         client.publish(mqtt_control.rear,`{"state":"ON"}`,publish_options)
         if(!available){
-            delay(3000).then(()=>{
+            delay(6000).then(()=>{
                 updateVolume()
-                delay(3000).then(()=>{
+                delay(8000).then(()=>{
                     updateVolume()
                 })
             })
@@ -205,8 +246,8 @@ export default function PowerControl(){
                 </Stack>
                 <OnButton variant="contained" onClick={switch_on} sx={{height:60}}>Switch On</OnButton>
             </Stack>
-            <Box sx={{width:300}} pt={2}>
-                <Slider value={sliderVolume}
+            <Box sx={{width:300}} pt={6}>
+                <WideSlider value={sliderVolume}
                     disabled={!available}
                     min={0}
                     max={100}

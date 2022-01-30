@@ -7,7 +7,8 @@ const Meta = ({ title, keywords, description }) => {
       <meta name='keywords' content={keywords} />
       <meta name='description' content={description} />
       <meta charSet='utf-8' />
-      <link rel='icon' href='favicon.ico' />
+      <link rel='icon' href='/next/favicon.ico' />
+      <link rel="manifest" href="/next/manifest.json"></link>
       <title>{title}</title>
     </Head>
   )

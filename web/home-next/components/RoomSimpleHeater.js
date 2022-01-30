@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import {    Paper, Grid,Box, Divider,
+import {    Paper, Grid,Box, Tooltip,
             Typography, Slider,  Stack } from '@mui/material';
 import {Thermostat,MeetingRoom} from '@mui/icons-material';
+import PropTypes from 'prop-types';
 import BathtubIcon from '@mui/icons-material/Bathtub';
 import SoupKitchenIcon from '@mui/icons-material/SoupKitchen';
 import HomeIcon from '@mui/icons-material/Home';
@@ -24,6 +25,28 @@ let slider_marks = [
   {value: 5,label: '5°',},
   {value: 27,label: '27°',},
 ];
+
+const HeatSlider = styled(Slider)(({theme})=>({
+    '& .MuiSlider-valueLabel': {
+      lineHeight: 1.2,
+      fontSize: 14,
+      background: 'unset',
+      padding: 0,
+      width: 32,
+      height: 32,
+      borderRadius: '50% 50% 50% 0',
+      backgroundColor: '#1976D2b0',
+      transformOrigin: 'bottom left',
+      transform: 'translate(50%, -100%) rotate(-45deg) scale(0)',
+      '&:before': { display: 'none' },
+      '&.MuiSlider-valueLabelOpen': {
+        transform: 'translate(50%, -100%) rotate(-30deg) scale(1)',
+      },
+      '& > *': {
+        transform: 'rotate(45deg)',
+      },
+    },
+}))
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 5,
@@ -123,8 +146,8 @@ export default function RoomHeater({ room_id,room, onChange }) {
           <MeetingRoom  sx={{display: window_open?'block':'none'}}/>
           </Stack>
           <Stack direction="column" justifyContent="flex-start" alignItems="center" spacing={1}>
-          <Box pr={0} pb={2} pt={5} sx={{height:400}}>
-              <Slider value={current_heating_setpoint}
+          <Box pr={0} pb={2} pt={6} sx={{height:400}}>
+              <HeatSlider value={current_heating_setpoint}
                     getAriaValueText={()=>{`${value} °C`}}
                     orientation="vertical"
                     min={slider_config.min}
