@@ -1,5 +1,5 @@
 {
     "host":"10.0.0.3",
     "port":8086,
-    "db":"mqtt"
+    "db":"nrf_mesh"
 }
