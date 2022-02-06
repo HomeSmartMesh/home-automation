@@ -1,0 +1,27 @@
+{
+    "shellies":[
+        "shelly bathroom fan",
+        "shelly bathroom light",
+        "shelly bed",
+        "shelly dell pc",
+        "shelly dish washer",
+        "shelly dryer",
+        "shelly entrance",
+        "shelly ethernet repeater",
+        "shelly freezer",
+        "shelly fridge",
+        "shelly micro wave",
+        "shelly play tv sound",
+        "shelly printer",
+        "shelly retro light",
+        "shelly routers servers",
+        "shelly sonos front",
+        "shelly sonos sat",
+        "shelly tv",
+        "shelly washing machine"
+    ],
+    "tuya":[
+        "pc socket",
+        "poster socket"
+    ]
+}
