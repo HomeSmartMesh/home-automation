@@ -5,7 +5,7 @@ import {Button} from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link'
 
-const pages = ['heat', 'sonos', 'heating']
+const pages = ['heat', 'sonos', 'heating', 'history','3h']
 
 
 export default function Nav() {
