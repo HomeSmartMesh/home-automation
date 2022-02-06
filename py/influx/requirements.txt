@@ -1,3 +1,4 @@
 paho-mqtt
 influxdb
 requests
+pandas

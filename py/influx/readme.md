@@ -155,3 +155,9 @@ step:
 * retrieve measurements
 * modify
 * re-insert
+
+# first and last
+
+    select battery from "bedroom roll" limit 5
+    select battery from "bedroom roll" order by time desc limit 5
+

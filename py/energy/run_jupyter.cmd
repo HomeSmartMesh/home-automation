@@ -1,0 +1,1 @@
+venv\Scripts\jupyter lab

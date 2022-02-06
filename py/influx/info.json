@@ -1,0 +1,1320 @@
+{
+    "01": {
+        "first": "2021-05-13T12:26:08.796556Z",
+        "last": "2021-09-08T17:00:42.007960Z",
+        "alive": {
+            "count": 1177852
+        },
+        "humidity": {
+            "count": 1177852
+        },
+        "light": {
+            "count": 1177852
+        },
+        "pressure": {
+            "count": 1177852
+        },
+        "temperature": {
+            "count": 1177852
+        },
+        "voltage": {
+            "count": 1177852
+        }
+    },
+    "02": {
+        "first": "2021-08-01T11:15:06.275701Z",
+        "last": "2021-09-20T04:20:21.853000Z",
+        "alive": {
+            "count": 860229
+        },
+        "humidity": {
+            "count": 860229
+        },
+        "light": {
+            "count": 860229
+        },
+        "pressure": {
+            "count": 860229
+        },
+        "temperature": {
+            "count": 860229
+        },
+        "voltage": {
+            "count": 860229
+        }
+    },
+    "Flora1": {
+        "first": "2019-12-09T11:33:38.544541Z",
+        "last": "2020-03-04T04:52:24.998910Z",
+        "battery": {
+            "count": 24394
+        },
+        "conductivity": {
+            "count": 24394
+        },
+        "light": {
+            "count": 24394
+        },
+        "moisture": {
+            "count": 24394
+        },
+        "temperature": {
+            "count": 24394
+        }
+    },
+    "announce": {
+        "first": "2020-06-14T20:08:45.599854Z",
+        "last": "2021-12-23T10:17:34.742250Z",
+        "fw_ver": {
+            "count": 6241
+        },
+        "id": {
+            "count": 6241
+        },
+        "ip": {
+            "count": 6241
+        },
+        "mac": {
+            "count": 6241
+        },
+        "mode": {
+            "count": 57
+        },
+        "model": {
+            "count": 3775
+        },
+        "new_fw": {
+            "count": 6241
+        }
+    },
+    "balcony door": {
+        "first": "2020-06-13T19:04:24.985892Z",
+        "last": "2021-12-23T14:31:08.154100Z",
+        "battery": {
+            "count": 19218
+        },
+        "contact": {
+            "count": 19218
+        },
+        "linkquality": {
+            "count": 19216
+        },
+        "temperature": {
+            "count": 2010
+        },
+        "voltage": {
+            "count": 19218
+        }
+    },
+    "balcony tag": {
+        "first": "2019-12-09T11:31:16.495100Z",
+        "last": "2021-12-23T15:05:23.921635Z",
+        "alive_count": {
+            "count": 60239
+        },
+        "battery": {
+            "count": 11801
+        },
+        "humidity": {
+            "count": 1138980
+        },
+        "light": {
+            "count": 1266407
+        },
+        "pressure": {
+            "count": 1138980
+        },
+        "reset": {
+            "count": 2587
+        },
+        "rssi": {
+            "count": 60239
+        },
+        "temperature": {
+            "count": 1138980
+        },
+        "voltage": {
+            "count": 50233
+        }
+    },
+    "balcony weather": {
+        "first": "2019-12-09T11:49:54.950159Z",
+        "last": "2020-07-02T10:38:29.158053Z",
+        "battery": {
+            "count": 58079
+        },
+        "humidity": {
+            "count": 58079
+        },
+        "linkquality": {
+            "count": 58079
+        },
+        "pressure": {
+            "count": 58079
+        },
+        "temperature": {
+            "count": 58079
+        },
+        "voltage": {
+            "count": 58079
+        }
+    },
+    "balcony window left": {
+        "first": "2020-06-13T19:01:06.862457Z",
+        "last": "2021-12-23T14:45:17.836382Z",
+        "battery": {
+            "count": 16954
+        },
+        "contact": {
+            "count": 16954
+        },
+        "linkquality": {
+            "count": 16951
+        },
+        "temperature": {
+            "count": 1842
+        },
+        "voltage": {
+            "count": 16954
+        }
+    },
+    "balcony window right": {
+        "first": "2020-06-13T19:25:37.043965Z",
+        "last": "2021-12-23T14:47:49.535531Z",
+        "battery": {
+            "count": 16812
+        },
+        "contact": {
+            "count": 16812
+        },
+        "linkquality": {
+            "count": 16810
+        },
+        "temperature": {
+            "count": 1787
+        },
+        "voltage": {
+            "count": 16812
+        }
+    },
+    "bathroom heat": {
+        "first": "2019-12-09T11:32:54.154387Z",
+        "last": "2021-12-23T15:05:09.014799Z",
+        "battery": {
+            "count": 269893
+        },
+        "current_heating_setpoint": {
+            "count": 269893
+        },
+        "eurotronic_error_status": {
+            "count": 269893
+        },
+        "eurotronic_system_mode": {
+            "count": 269893
+        },
+        "linkquality": {
+            "count": 269893
+        },
+        "local_temperature": {
+            "count": 269893
+        },
+        "occupied_heating_setpoint": {
+            "count": 269893
+        },
+        "pi_heating_demand": {
+            "count": 269893
+        },
+        "system_mode": {
+            "count": 269064
+        },
+        "unoccupied_heating_setpoint": {
+            "count": 269893
+        },
+        "update_available": {
+            "count": 11113
+        }
+    },
+    "bathroom tag": {
+        "first": "2019-12-09T11:31:48.998206Z",
+        "last": "2021-12-23T15:05:33.130043Z",
+        "alive_count": {
+            "count": 85326
+        },
+        "battery": {
+            "count": 21799
+        },
+        "humidity": {
+            "count": 1608014
+        },
+        "light": {
+            "count": 1889823
+        },
+        "pressure": {
+            "count": 1608014
+        },
+        "reset": {
+            "count": 40285
+        },
+        "rssi": {
+            "count": 85326
+        },
+        "temperature": {
+            "count": 1608014
+        },
+        "voltage": {
+            "count": 96152
+        }
+    },
+    "bed weather": {
+        "first": "2019-12-09T11:37:06.917561Z",
+        "last": "2020-12-12T14:57:47.311158Z",
+        "battery": {
+            "count": 70092
+        },
+        "humidity": {
+            "count": 70092
+        },
+        "linkquality": {
+            "count": 70092
+        },
+        "pressure": {
+            "count": 70092
+        },
+        "temperature": {
+            "count": 70092
+        },
+        "voltage": {
+            "count": 70092
+        }
+    },
+    "bedroom heat": {
+        "first": "2019-12-09T11:31:05.864999Z",
+        "last": "2021-12-23T15:05:37.810452Z",
+        "battery": {
+            "count": 346583
+        },
+        "current_heating_setpoint": {
+            "count": 346606
+        },
+        "eurotronic_error_status": {
+            "count": 346601
+        },
+        "eurotronic_system_mode": {
+            "count": 346581
+        },
+        "linkquality": {
+            "count": 346606
+        },
+        "local_temperature": {
+            "count": 346606
+        },
+        "occupied_heating_setpoint": {
+            "count": 346605
+        },
+        "pi_heating_demand": {
+            "count": 346606
+        },
+        "system_mode": {
+            "count": 338309
+        },
+        "unoccupied_heating_setpoint": {
+            "count": 346605
+        },
+        "update_available": {
+            "count": 18801
+        }
+    },
+    "bedroom heat weather": {
+        "first": "2020-12-15T16:38:56.115733Z",
+        "last": "2021-12-23T14:50:15.380424Z",
+        "battery": {
+            "count": 387783
+        },
+        "humidity": {
+            "count": 387783
+        },
+        "linkquality": {
+            "count": 387779
+        },
+        "pressure": {
+            "count": 387783
+        },
+        "temperature": {
+            "count": 387783
+        },
+        "voltage": {
+            "count": 387783
+        }
+    },
+    "bedroom roll": {
+        "first": "2020-11-28T14:33:59.698444Z",
+        "last": "2021-12-23T09:07:50.870811Z",
+        "battery": {
+            "count": 14571
+        },
+        "linkquality": {
+            "count": 14571
+        },
+        "position": {
+            "count": 14571
+        },
+        "update_available": {
+            "count": 14571
+        }
+    },
+    "bedroom switch": {
+        "first": "2020-08-20T09:31:31.139636Z",
+        "last": "2021-12-23T14:24:39.631702Z",
+        "action": {
+            "count": 2540
+        },
+        "battery": {
+            "count": 20470
+        },
+        "click": {
+            "count": 2780
+        },
+        "linkquality": {
+            "count": 20470
+        },
+        "voltage": {
+            "count": 20470
+        }
+    },
+    "bedroom tag": {
+        "first": "2019-12-09T11:31:16.601582Z",
+        "last": "2021-12-23T15:05:25.836951Z",
+        "alive_count": {
+            "count": 86496
+        },
+        "battery": {
+            "count": 22358
+        },
+        "humidity": {
+            "count": 1651290
+        },
+        "light": {
+            "count": 1868201
+        },
+        "pressure": {
+            "count": 1651290
+        },
+        "reset": {
+            "count": 380
+        },
+        "rssi": {
+            "count": 86496
+        },
+        "temperature": {
+            "count": 1651290
+        },
+        "voltage": {
+            "count": 69954
+        }
+    },
+    "bedroom window": {
+        "first": "2020-06-13T19:18:48.102115Z",
+        "last": "2021-12-23T14:43:15.512147Z",
+        "battery": {
+            "count": 18681
+        },
+        "contact": {
+            "count": 18681
+        },
+        "linkquality": {
+            "count": 18681
+        },
+        "temperature": {
+            "count": 1796
+        },
+        "voltage": {
+            "count": 18681
+        }
+    },
+    "camera": {
+        "first": "2021-02-28T10:48:55.591562Z",
+        "last": "2021-05-13T12:26:00.628623Z",
+        "battery": {
+            "count": 9390
+        },
+        "voltage": {
+            "count": 9278
+        },
+        "wakeup": {
+            "count": 9390
+        }
+    },
+    "day light": {
+        "first": "2020-08-25T16:46:17.699085Z",
+        "last": "2021-12-23T15:03:47.231822Z",
+        "battery": {
+            "count": 283806
+        },
+        "illuminance": {
+            "count": 283806
+        },
+        "illuminance_lux": {
+            "count": 283806
+        },
+        "linkquality": {
+            "count": 283806
+        },
+        "voltage": {
+            "count": 283806
+        }
+    },
+    "firebeetle_1": {
+        "first": "2021-02-28T10:48:55.638356Z",
+        "last": "2021-03-07T17:50:57.567866Z",
+        "battery": {
+            "count": 24577
+        },
+        "voltage": {
+            "count": 22413
+        },
+        "wakeup": {
+            "count": 24577
+        }
+    },
+    "freezer weather": {
+        "first": "2020-08-25T17:14:14.329311Z",
+        "last": "2021-11-14T06:55:34.153401Z",
+        "battery": {
+            "count": 33847
+        },
+        "humidity": {
+            "count": 33847
+        },
+        "linkquality": {
+            "count": 33847
+        },
+        "pressure": {
+            "count": 33847
+        },
+        "temperature": {
+            "count": 33847
+        },
+        "voltage": {
+            "count": 33847
+        }
+    },
+    "fridge weather": {
+        "first": "2020-07-03T18:20:26.558814Z",
+        "last": "2021-12-23T14:51:16.032795Z",
+        "battery": {
+            "count": 164890
+        },
+        "humidity": {
+            "count": 164890
+        },
+        "linkquality": {
+            "count": 164890
+        },
+        "pressure": {
+            "count": 164890
+        },
+        "temperature": {
+            "count": 164890
+        },
+        "voltage": {
+            "count": 164890
+        }
+    },
+    "hallway corridor switch": {
+        "first": "2021-09-18T18:27:11.415291Z",
+        "last": "2021-12-23T14:46:39.338006Z",
+        "action": {
+            "count": 299
+        },
+        "battery": {
+            "count": 4516
+        },
+        "click": {
+            "count": 292
+        },
+        "linkquality": {
+            "count": 4512
+        },
+        "voltage": {
+            "count": 4516
+        }
+    },
+    "hallway entrance switch": {
+        "first": "2021-09-18T18:25:14.743575Z",
+        "last": "2021-12-23T14:51:43.927724Z",
+        "action": {
+            "count": 150
+        },
+        "battery": {
+            "count": 4057
+        },
+        "click": {
+            "count": 146
+        },
+        "linkquality": {
+            "count": 4054
+        },
+        "voltage": {
+            "count": 4057
+        }
+    },
+    "hallway living switch": {
+        "first": "2021-09-18T18:07:35.879418Z",
+        "last": "2021-12-23T15:05:39.391915Z",
+        "action": {
+            "count": 505
+        },
+        "battery": {
+            "count": 5132
+        },
+        "click": {
+            "count": 495
+        },
+        "linkquality": {
+            "count": 5129
+        },
+        "voltage": {
+            "count": 5132
+        }
+    },
+    "hallway presence": {
+        "first": "2020-07-12T11:26:03.682757Z",
+        "last": "2020-12-12T11:25:23.529501Z",
+        "battery": {
+            "count": 20283
+        },
+        "illuminance": {
+            "count": 20283
+        },
+        "illuminance_lux": {
+            "count": 20283
+        },
+        "linkquality": {
+            "count": 20283
+        },
+        "occupancy": {
+            "count": 206
+        },
+        "voltage": {
+            "count": 20283
+        }
+    },
+    "hallway tag": {
+        "first": "2020-06-14T11:18:38.973978Z",
+        "last": "2021-12-23T15:05:21.209106Z",
+        "alive_count": {
+            "count": 67758
+        },
+        "humidity": {
+            "count": 1317260
+        },
+        "light": {
+            "count": 1501652
+        },
+        "pressure": {
+            "count": 1317260
+        },
+        "reset": {
+            "count": 132464
+        },
+        "rssi": {
+            "count": 67758
+        },
+        "temperature": {
+            "count": 1317260
+        },
+        "voltage": {
+            "count": 118078
+        }
+    },
+    "kitchen heat": {
+        "first": "2019-12-09T11:33:21.681091Z",
+        "last": "2021-12-23T15:02:31.453804Z",
+        "battery": {
+            "count": 311644
+        },
+        "current_heating_setpoint": {
+            "count": 311680
+        },
+        "eurotronic_error_status": {
+            "count": 311670
+        },
+        "eurotronic_system_mode": {
+            "count": 311651
+        },
+        "linkquality": {
+            "count": 311671
+        },
+        "local_temperature": {
+            "count": 311678
+        },
+        "occupied_heating_setpoint": {
+            "count": 311677
+        },
+        "pi_heating_demand": {
+            "count": 311678
+        },
+        "system_mode": {
+            "count": 309090
+        },
+        "unoccupied_heating_setpoint": {
+            "count": 311677
+        },
+        "update_available": {
+            "count": 15254
+        }
+    },
+    "kitchen tag": {
+        "first": "2019-12-09T11:31:20.308359Z",
+        "last": "2021-12-23T15:05:41.068217Z",
+        "alive_count": {
+            "count": 110221
+        },
+        "battery": {
+            "count": 21312
+        },
+        "humidity": {
+            "count": 2122945
+        },
+        "light": {
+            "count": 2329940
+        },
+        "pressure": {
+            "count": 2122945
+        },
+        "reset": {
+            "count": 15691
+        },
+        "rssi": {
+            "count": 110221
+        },
+        "temperature": {
+            "count": 2122945
+        },
+        "voltage": {
+            "count": 109142
+        }
+    },
+    "kitchen window": {
+        "first": "2020-06-13T19:00:37.774819Z",
+        "last": "2021-12-23T14:43:34.395626Z",
+        "battery": {
+            "count": 18278
+        },
+        "contact": {
+            "count": 18278
+        },
+        "linkquality": {
+            "count": 18278
+        },
+        "temperature": {
+            "count": 1972
+        },
+        "voltage": {
+            "count": 18278
+        }
+    },
+    "living double switch": {
+        "first": "2020-11-28T16:08:25.249971Z",
+        "last": "2021-12-23T15:04:44.101459Z",
+        "action": {
+            "count": 607
+        },
+        "battery": {
+            "count": 15952
+        },
+        "click": {
+            "count": 2656
+        },
+        "linkquality": {
+            "count": 15948
+        },
+        "voltage": {
+            "count": 15952
+        }
+    },
+    "living heat": {
+        "first": "2019-12-09T11:32:00.227273Z",
+        "last": "2021-12-23T15:04:49.815065Z",
+        "battery": {
+            "count": 242197
+        },
+        "current_heating_setpoint": {
+            "count": 242233
+        },
+        "eurotronic_error_status": {
+            "count": 242219
+        },
+        "eurotronic_system_mode": {
+            "count": 242196
+        },
+        "linkquality": {
+            "count": 242230
+        },
+        "local_temperature": {
+            "count": 242231
+        },
+        "occupied_heating_setpoint": {
+            "count": 242231
+        },
+        "pi_heating_demand": {
+            "count": 242234
+        },
+        "system_mode": {
+            "count": 234466
+        },
+        "unoccupied_heating_setpoint": {
+            "count": 242231
+        },
+        "update_available": {
+            "count": 18639
+        }
+    },
+    "living heat weather": {
+        "first": "2020-12-15T14:43:25.286878Z",
+        "last": "2021-12-23T15:05:36.788836Z",
+        "battery": {
+            "count": 645043
+        },
+        "humidity": {
+            "count": 645043
+        },
+        "linkquality": {
+            "count": 645040
+        },
+        "pressure": {
+            "count": 645043
+        },
+        "temperature": {
+            "count": 645043
+        },
+        "voltage": {
+            "count": 645043
+        }
+    },
+    "livingroom tag": {
+        "first": "2019-12-09T11:31:24.120529Z",
+        "last": "2021-12-23T15:05:24.224564Z",
+        "alive_count": {
+            "count": 97799
+        },
+        "battery": {
+            "count": 21179
+        },
+        "humidity": {
+            "count": 1911352
+        },
+        "light": {
+            "count": 2052402
+        },
+        "pressure": {
+            "count": 1911352
+        },
+        "reset": {
+            "count": 5
+        },
+        "rssi": {
+            "count": 97799
+        },
+        "temperature": {
+            "count": 1911352
+        },
+        "voltage": {
+            "count": 79741
+        }
+    },
+    "livingroom window tag": {
+        "first": "2019-12-09T11:31:10.169344Z",
+        "last": "2021-11-28T12:16:30.098468Z",
+        "alive_count": {
+            "count": 97143
+        },
+        "battery": {
+            "count": 23605
+        },
+        "humidity": {
+            "count": 1885260
+        },
+        "light": {
+            "count": 2036305
+        },
+        "pressure": {
+            "count": 1885260
+        },
+        "reset": {
+            "count": 25020
+        },
+        "rssi": {
+            "count": 97143
+        },
+        "temperature": {
+            "count": 1885260
+        },
+        "voltage": {
+            "count": 94049
+        }
+    },
+    "office heat": {
+        "first": "2020-01-04T08:33:21.978228Z",
+        "last": "2021-12-23T15:04:43.346956Z",
+        "battery": {
+            "count": 331706
+        },
+        "current_heating_setpoint": {
+            "count": 331717
+        },
+        "eurotronic_error_status": {
+            "count": 331712
+        },
+        "eurotronic_system_mode": {
+            "count": 331713
+        },
+        "linkquality": {
+            "count": 331704
+        },
+        "local_temperature": {
+            "count": 331717
+        },
+        "occupied_heating_setpoint": {
+            "count": 331717
+        },
+        "pi_heating_demand": {
+            "count": 331717
+        },
+        "system_mode": {
+            "count": 329044
+        },
+        "unoccupied_heating_setpoint": {
+            "count": 331717
+        },
+        "update_available": {
+            "count": 17485
+        }
+    },
+    "office heat weather": {
+        "first": "2020-12-13T18:32:13.686226Z",
+        "last": "2021-12-23T15:05:10.085905Z",
+        "battery": {
+            "count": 277295
+        },
+        "humidity": {
+            "count": 277295
+        },
+        "linkquality": {
+            "count": 277292
+        },
+        "pressure": {
+            "count": 277295
+        },
+        "temperature": {
+            "count": 277295
+        },
+        "voltage": {
+            "count": 277295
+        }
+    },
+    "office pc power": {
+        "first": "2021-09-20T18:10:38.250816Z",
+        "last": "2021-11-13T13:49:39.932966Z",
+        "current": {
+            "count": 464774
+        },
+        "linkquality": {
+            "count": 464774
+        },
+        "power": {
+            "count": 464774
+        },
+        "state": {
+            "count": 464764
+        },
+        "voltage": {
+            "count": 464774
+        }
+    },
+    "office switch": {
+        "first": "2020-06-13T19:20:08.459334Z",
+        "last": "2021-12-23T14:19:13.380237Z",
+        "action": {
+            "count": 3306
+        },
+        "battery": {
+            "count": 24805
+        },
+        "click": {
+            "count": 4327
+        },
+        "linkquality": {
+            "count": 24805
+        },
+        "voltage": {
+            "count": 24805
+        }
+    },
+    "office tag": {
+        "first": "2019-12-09T11:31:10.382315Z",
+        "last": "2021-12-23T15:05:32.581491Z",
+        "alive_count": {
+            "count": 72531
+        },
+        "battery": {
+            "count": 19100
+        },
+        "humidity": {
+            "count": 1381206
+        },
+        "light": {
+            "count": 1561955
+        },
+        "pressure": {
+            "count": 1381206
+        },
+        "reset": {
+            "count": 22180
+        },
+        "rssi": {
+            "count": 72531
+        },
+        "temperature": {
+            "count": 1381206
+        },
+        "voltage": {
+            "count": 71924
+        }
+    },
+    "office weather": {
+        "first": "2019-12-09T11:40:53.924090Z",
+        "last": "2021-11-29T21:03:29.194716Z",
+        "battery": {
+            "count": 36505
+        },
+        "humidity": {
+            "count": 36505
+        },
+        "linkquality": {
+            "count": 36505
+        },
+        "pressure": {
+            "count": 36505
+        },
+        "temperature": {
+            "count": 36505
+        },
+        "voltage": {
+            "count": 36505
+        }
+    },
+    "office window left": {
+        "first": "2020-06-13T19:25:49.981590Z",
+        "last": "2021-12-23T14:40:24.116068Z",
+        "battery": {
+            "count": 17003
+        },
+        "contact": {
+            "count": 17003
+        },
+        "linkquality": {
+            "count": 17003
+        },
+        "temperature": {
+            "count": 1849
+        },
+        "voltage": {
+            "count": 17003
+        }
+    },
+    "office window right": {
+        "first": "2020-06-13T19:06:27.160776Z",
+        "last": "2021-12-23T14:41:25.154926Z",
+        "battery": {
+            "count": 17849
+        },
+        "contact": {
+            "count": 17849
+        },
+        "linkquality": {
+            "count": 17849
+        },
+        "temperature": {
+            "count": 1864
+        },
+        "voltage": {
+            "count": 17849
+        }
+    },
+    "pc socket": {
+        "first": "2021-12-10T16:55:40.800455Z",
+        "last": "2021-12-23T15:05:33.638255Z",
+        "current": {
+            "count": 72120
+        },
+        "energy": {
+            "count": 72120
+        },
+        "linkquality": {
+            "count": 72119
+        },
+        "power": {
+            "count": 72120
+        },
+        "state": {
+            "count": 72120
+        },
+        "voltage": {
+            "count": 72120
+        }
+    },
+    "poster socket": {
+        "first": "2021-12-10T16:55:33.804985Z",
+        "last": "2021-12-23T15:05:33.502775Z",
+        "current": {
+            "count": 36618
+        },
+        "energy": {
+            "count": 36618
+        },
+        "linkquality": {
+            "count": 36617
+        },
+        "power": {
+            "count": 36618
+        },
+        "state": {
+            "count": 36618
+        },
+        "voltage": {
+            "count": 36618
+        }
+    },
+    "servers weather": {
+        "first": "2020-08-25T17:14:51.138436Z",
+        "last": "2021-12-23T15:00:20.644106Z",
+        "battery": {
+            "count": 48277
+        },
+        "humidity": {
+            "count": 48277
+        },
+        "linkquality": {
+            "count": 48277
+        },
+        "pressure": {
+            "count": 48277
+        },
+        "temperature": {
+            "count": 48277
+        },
+        "voltage": {
+            "count": 48277
+        }
+    },
+    "shelly bathroom fan": {
+        "first": "2020-06-13T19:46:10.202554Z",
+        "last": "2021-12-23T15:05:37.482657Z",
+        "energy": {
+            "count": 1633159
+        },
+        "power": {
+            "count": 1611583
+        }
+    },
+    "shelly bathroom light": {
+        "first": "2020-06-13T19:46:10.166999Z",
+        "last": "2021-12-23T15:05:37.465475Z",
+        "energy": {
+            "count": 1622678
+        },
+        "power": {
+            "count": 1614887
+        }
+    },
+    "shelly bed": {
+        "first": "2020-07-02T19:19:02.702305Z",
+        "last": "2021-12-23T15:05:33.789392Z",
+        "energy": {
+            "count": 546254
+        },
+        "power": {
+            "count": 552369
+        }
+    },
+    "shelly dell pc": {
+        "first": "2020-06-13T19:46:10.260472Z",
+        "last": "2021-12-13T09:26:28.667560Z",
+        "energy": {
+            "count": 4511931
+        },
+        "power": {
+            "count": 4503591
+        }
+    },
+    "shelly dish washer": {
+        "first": "2020-06-13T19:46:10.460249Z",
+        "last": "2021-12-23T15:05:23.648256Z",
+        "energy": {
+            "count": 1804627
+        },
+        "power": {
+            "count": 1657423
+        }
+    },
+    "shelly dryer": {
+        "first": "2020-06-13T19:46:10.430027Z",
+        "last": "2021-12-23T15:05:25.160976Z",
+        "energy": {
+            "count": 1736348
+        },
+        "power": {
+            "count": 1596401
+        }
+    },
+    "shelly entrance": {
+        "first": "2020-06-13T19:46:10.288442Z",
+        "last": "2021-12-23T15:05:24.244539Z",
+        "energy": {
+            "count": 1821084
+        },
+        "power": {
+            "count": 1673891
+        }
+    },
+    "shelly ethernet repeater": {
+        "first": "2020-06-13T19:46:10.549582Z",
+        "last": "2021-12-23T15:05:24.921287Z",
+        "energy": {
+            "count": 558011
+        },
+        "power": {
+            "count": 835030
+        }
+    },
+    "shelly freezer": {
+        "first": "2020-06-13T19:46:10.489689Z",
+        "last": "2021-12-23T15:05:24.307893Z",
+        "energy": {
+            "count": 1795581
+        },
+        "power": {
+            "count": 1648198
+        }
+    },
+    "shelly fridge": {
+        "first": "2020-06-13T19:46:10.401641Z",
+        "last": "2021-12-23T15:05:24.474253Z",
+        "energy": {
+            "count": 1823163
+        },
+        "power": {
+            "count": 1675723
+        }
+    },
+    "shelly micro wave": {
+        "first": "2020-06-13T19:46:10.317253Z",
+        "last": "2021-12-23T15:05:24.685876Z",
+        "energy": {
+            "count": 1775602
+        },
+        "power": {
+            "count": 1628180
+        }
+    },
+    "shelly play tv sound": {
+        "first": "2020-06-13T19:46:10.372600Z",
+        "last": "2020-12-12T16:56:31.755683Z",
+        "energy": {
+            "count": 548276
+        },
+        "power": {
+            "count": 548348
+        }
+    },
+    "shelly printer": {
+        "first": "2021-04-19T17:38:50.958824Z",
+        "last": "2021-05-13T12:26:01.021711Z",
+        "energy": {
+            "count": 198
+        },
+        "power": {
+            "count": 198
+        }
+    },
+    "shelly retro light": {
+        "first": "2021-04-18T08:23:44.331337Z",
+        "last": "2021-09-12T09:56:51.725092Z",
+        "energy": {
+            "count": 408017
+        },
+        "power": {
+            "count": 407534
+        }
+    },
+    "shelly routers servers": {
+        "first": "2020-06-13T19:46:10.344318Z",
+        "last": "2021-12-23T15:05:41.804720Z",
+        "energy": {
+            "count": 1895469
+        },
+        "power": {
+            "count": 1748039
+        }
+    },
+    "shelly sonos front": {
+        "first": "2020-12-12T16:57:01.913138Z",
+        "last": "2021-12-23T15:05:24.692913Z",
+        "energy": {
+            "count": 431264
+        },
+        "power": {
+            "count": 1082671
+        }
+    },
+    "shelly sonos sat": {
+        "first": "2020-06-13T19:46:10.232100Z",
+        "last": "2021-09-12T09:56:48.894065Z",
+        "energy": {
+            "count": 755924
+        },
+        "power": {
+            "count": 1242344
+        }
+    },
+    "shelly tv": {
+        "first": "2020-12-12T16:57:08.377898Z",
+        "last": "2021-12-23T15:05:25.721522Z",
+        "energy": {
+            "count": 1462590
+        },
+        "power": {
+            "count": 1462714
+        }
+    },
+    "shelly washing machine": {
+        "first": "2020-06-13T19:46:10.520260Z",
+        "last": "2021-12-23T15:05:25.220288Z",
+        "energy": {
+            "count": 2023151
+        },
+        "power": {
+            "count": 1875777
+        }
+    },
+    "toilet switch": {
+        "first": "2021-09-18T18:43:10.143087Z",
+        "last": "2021-12-23T14:43:15.459980Z",
+        "action": {
+            "count": 1070
+        },
+        "battery": {
+            "count": 6798
+        },
+        "click": {
+            "count": 1048
+        },
+        "linkquality": {
+            "count": 6794
+        },
+        "voltage": {
+            "count": 6798
+        }
+    }
+}
