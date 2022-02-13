@@ -6,10 +6,12 @@ import { useRouter } from 'next/router'
 
 const pages = [
   {name:'heat',href:'/heat'},
-  {name:'sonos',href:'/sonos'},
+  {name:'son',href:'/sonos'},
+  {name:'amb',href:'/history'},
+  {name:'en',href:'/energy'},
   {name:'heating',href:'/heating'},
-  {name:'24h',href:'/history'},
-  {name:'3h',href:'/3h'},
+  {name:'en30',href:'/energy_month'},
+  {name:'amb3h',href:'/3h'},
 ]
 
 const AntTabs = styled(Tabs)({
@@ -28,7 +30,6 @@ function NavTabs() {
   };
 
   const current_path_index = pages.findIndex((page)=>(page.href == router.pathname))
-  console.log(current_path_index)
   if(current_path_index != -1){
     if(current_path_index != value){
       setValue(current_path_index)
@@ -42,12 +43,13 @@ function NavTabs() {
         onChange={handleChange}
         variant="scrollable"
         scrollButtons="auto"
+        allowScrollButtonsMobile
         aria-label="scrollable auto tabs example"
       >
         {pages.map((page,index)=>
           <Link href={page.href} key={index}>
                     <Tab label={
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1,color: 'white', display: 'block' }}>
+                        <Typography component="div" sx={{ flexGrow: 1,color: 'white', display: 'block' }}>
                           {page.name}
                         </Typography>
                         } />
