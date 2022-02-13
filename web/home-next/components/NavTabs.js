@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 const pages = [
   {name:'heat',href:'/heat'},
   {name:'son',href:'/sonos'},
+  {name:'pow',href:'/power'},
   {name:'amb',href:'/history'},
   {name:'en',href:'/energy'},
   {name:'heating',href:'/heating'},
@@ -15,9 +16,10 @@ const pages = [
 ]
 
 const AntTabs = styled(Tabs)({
-  borderBottom: '1px solid #e8e8e8',
+  borderBottom: '3px solid #1976D2',
   '& .MuiTabs-indicator': {
     backgroundColor: 'white',
+    height:5
   },
 });
 

@@ -1,120 +1,159 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import { styled } from '@mui/material/styles';
-import {    Stack,FormControlLabel, Switch, Container,
-            Button, Box, Slider,Snackbar, Alert} from '@mui/material';
+import {    FormControlLabel, Switch, Container,Paper, Box, Grid,
+            Card, CardMedia,CardContent,CardActions,
+             Typography,Stack} from '@mui/material';
 import { connect } from "mqtt"
+import BoltIcon from '@mui/icons-material/Bolt';
+import { SportsHockeyTwoTone } from '@mui/icons-material';
 
 var mqtt_url = "ws://10.0.0.31:1884";
-const sonos_url = 'http://10.0.0.31:5005/livingroom'
-const safety_volume_jump_percent = 30
-const connect_options = {clientId : 'next_sonos_'+Math.random().toString(16).substr(2, 8)}
+const connect_options = {clientId : 'next_power_'+Math.random().toString(16).substr(2, 8)}
 const subscribe_options = {qos:2}
 const publish_options = {qos:2, retain:false}
-const mqtt_subscriptions = ["lzig/sonos front socket","lzig/sonos rear socket"]
-const mqtt_control = {
-    "front":"lzig/sonos front socket/set",
-    "rear":"lzig/sonos rear socket/set",
+
+const initial_sockets = {
+    pc:{
+        topic:"lzig/pc socket",
+        control:"lzig/pc socket/set",
+        media_on:"/next/pc.png",
+        media_off:"/next/pc.png",
+        state:false,power:0,disable:false
+    },
+    lifx:{
+        topic:"lzig/lifx socket",
+        control:"lzig/lifx socket/set",
+        media_on:"/next/lifx.png",
+        media_off:"/next/lifx-dark.png",
+        state:false,power:0,disable:false
+    },
+    poster:{
+        topic:"lzig/poster socket",
+        control:"lzig/poster socket/set",
+        media_on:"/next/poster.png",
+        media_off:"/next/poster-dark.png",
+        state:false,power:0,disable:false
+    },
+    mesh:{
+        topic:"lzig/wifi mesh socket",
+        control:"lzig/wifi mesh socket/set",
+        media_on:"/next/wifi-on.png",
+        media_off:"/next/wifi-off.png",
+        state:false,power:0,disable:false
+    },
+    //"waching machine":  {topic:"",state:false,power:0,disable:true},
+    //dryer:              {topic:"",state:false,power:0,disable:true},
+    //"dish washer":      {topic:"",state:false,power:0,disable:true},
+    //microwave:          {topic:"",state:false,power:0,disable:true},
 }
+
+const mqtt_subscriptions = Object.entries(initial_sockets).map(([name,socket])=>socket.topic)
+
 let client = null
 
-function delay(ms) {return new Promise(resolve => setTimeout(resolve, ms));}
-    
-async function getVolume(){
-    const response = await fetch(`${sonos_url}/state`)
-    if(response.ok){
-        const state = await response.json()
-        return state.volume
-    }else{
-        return Promise.reject(response.statusText)
-    }
+function Socket({name,socket}){
+    return(
+        <Grid item>
+        <Box >
+        <Paper elevation={3} >
+            <Box p={2}>
+                <FormControlLabel 
+                label={name}
+                control={<Switch checked={socket.state}/>}
+                />
+
+            </Box>
+        </Paper>
+        </Box>
+        </Grid>
+    )
 }
 
-async function rest_setVolume(volume){
-    const response = await fetch(`${sonos_url}/volume/${volume}`)
-    const resp = await response.json()
-    if(("status" in resp) && (resp.status == "success")){
-        console.log(`success`);
-    }else{
-        console.log(`fail`);
-    }
+function SocketCard({name,socket,onChange}){
+    return(
+        <Grid item>
+            <Card sx={{ maxWidth: 345 }}>
+                <CardMedia
+                component="img"
+                height="100"
+                image={socket.state?socket.media_on:socket.media_off}
+                alt={name}
+                />
+                <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">{name}</Typography>
+                </CardContent>
+                <CardActions>
+                    <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        spacing={8}
+                        >
+                    <FormControlLabel 
+                    datakey={name}
+                    label={""}
+                    control={<Switch checked={socket.state}/>}
+                    onChange={(e)=>{onChange(e.target,name)}}
+                    />
+                    {socket.power?<Stack direction="row">
+                                <BoltIcon/>
+                                <Typography>{socket.power} W</Typography>
+                                </Stack>:
+                                <></>
+                            }
+                    </Stack>
+                </CardActions>
+            </Card>        
+        </Grid>
+    )
 }
 
-const WideSlider = styled(Slider)(({theme})=>({
-    height:20,
-    '& .MuiSlider-track': {
-        border: 'none',
-        height:20
-      },
-    '& .MuiSlider-rail': {
-        opacity: 0.5,
-        backgroundColor: '#bfbfbf',
-      },
-      '& .MuiSlider-thumb': {
-        height: 68,
-        width: 24,
-        backgroundColor: '#fff',
-        border: '2px solid currentColor',
-        '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
-          boxShadow: 'inherit',
-        },
-        '&:before': {
-          display: 'none',
-        },
-      },
-      '& .MuiSlider-valueLabel': {
-        lineHeight: 1.2,
-        fontSize: 12,
-        background: 'unset',
-        padding: 0,
-        width: 32,
-        height: 32,
-        borderRadius: '50% 50% 50% 0',
-        backgroundColor: '#1976D2',
-        transformOrigin: 'bottom left',
-        transform: 'translate(50%, -100%) rotate(-45deg) scale(0)',
-        '&:before': { display: 'none' },
-        '&.MuiSlider-valueLabelOpen': {
-          transform: 'translate(50%, -100%) rotate(-45deg) scale(1)',
-        },
-        '& > *': {
-          transform: 'rotate(45deg)',
-        },
-      },
-}))
-
-const OnButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText('#1976D2'),
-    backgroundColor: '#1976D2',
-    '&:hover': {backgroundColor: '#0C3C68'},
-  }));
-const OffButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText('#BDBDBD'),
-    backgroundColor: '#BDBDBD',
-    '&:hover': {backgroundColor: '#757575'},
-}));
+function reducer(state, action){
+    let result = {}
+    if(action.data){
+        if("state" in action.data){
+            result[action.name] = state[action.name]
+            result[action.name].state = (action.data.state == "ON")
+            //console.log(`${action.name} is now ${result[action.name].state}`)
+        }
+        if("power" in action.data){
+            result[action.name] = state[action.name]
+            result[action.name].power = action.data.power
+            //console.log(`${action.name} is at ${result[action.name].power}`)
+        }
+    }
+    else if("checked" in action){
+        const socket = state[action.name]
+        result[action.name] = socket
+        result[action.name].state = action.checked
+        if(action.checked){
+            client.publish(socket.control,`{"state":"ON"}`,publish_options)
+        }else{
+            client.publish(socket.control,`{"state":"OFF"}`,publish_options)
+        }
+        console.log("now send mqtt command")
+    }
+    return {...state, ...result}
+}
 
 export default function PowerControl(){
     const [mqtt,setMqtt] = useState("nothing")
     const [checked_mqtt,setCheckedMqtt] = useState(false)
-    const [checked_front,setCheckedFront] = useState(false)
-    const [checked_rear,setCheckedRear] = useState(false)
-    const [available,setAvailable] = useState(false)
-    const [speakerVolume,setSpeakerVolume] = useState(0)
-    const [sliderVolume,setSliderVolume] = useState(0)
-    const [limitWarning, setLimitWarning] = useState(false);
-    const [limitMessage, setLimitMessage] = useState("volume limit");
+    const [sockets, dispatch] = useReducer(reducer, initial_sockets)
 
-    function updateVolume(){
-        console.log('updating volume');
-        getVolume().then((volume)=>{
-            console.log(`fetched volume = ${volume} => Available`);
-            setAvailable(true)
-            setSliderVolume(volume)
-            setSpeakerVolume(volume)
-        }).catch((error)=>{
-            console.log(`getVolume fetch failed with error '${error}' => Not Available`);
-            setAvailable(false)
+    function receive_data(topic,data){
+        //console.log(`received : '${topic}'`)
+        Object.entries(sockets).forEach(([name,socket],index)=>{
+            //console.log(`check if '${name}' in ${topic}`)
+            if(topic.includes(name)){
+                dispatch({name, data})
+            }
         })
+    }
+
+    function onChange(target,name){
+        console.log(`${name} is now at ${target.checked}`)
+        dispatch({name,checked:target.checked})
     }
 
     useEffect(()=>{
@@ -168,21 +207,9 @@ export default function PowerControl(){
                 if(data === undefined){
                     console.log(`undefined msg : '${msg}'`)
                 }
-                else if("state" in data){
-                    const data_state = data.state.includes("ON")
-                    if(topic.includes("front")){
-                        console.log(`Front state = ${data_state}`)
-                        setCheckedFront(data_state)
-                    }
-                    else if(topic.includes("rear")){
-                        console.log(`Rear state = ${data_state}`)
-                        setCheckedRear(data_state)
-                    }
+                else{
+                    receive_data(topic,data);
                 }
-            })
-            updateVolume()
-            delay(1000).then(()=>{
-                updateVolume()
             })
         }else{
             console.log("client already initialized")
@@ -192,83 +219,18 @@ export default function PowerControl(){
             client = null
         }
     }, [])
-    function switch_on(e){
-        client.publish(mqtt_control.front,`{"state":"ON"}`,publish_options)
-        client.publish(mqtt_control.rear,`{"state":"ON"}`,publish_options)
-        if(!available){
-            delay(6000).then(()=>{
-                updateVolume()
-                delay(8000).then(()=>{
-                    updateVolume()
-                })
-            })
-        }
-    }
-    function switch_off(e){
-        client.publish(mqtt_control.front,`{"state":"OFF"}`,publish_options)
-        client.publish(mqtt_control.rear,`{"state":"OFF"}`,publish_options)
-        setAvailable(false)
-    }
-    function handleSliderChange(newValue){
-        const volume_diff = parseInt(newValue) - parseInt(speakerVolume)
-        console.log(`volume diff = ${newValue} - ${speakerVolume} = ${volume_diff}`);
-        if((volume_diff) < safety_volume_jump_percent){
-            setSpeakerVolume(newValue)
-            rest_setVolume(newValue)
-            console.log(`published volume at '${newValue}'`)
-        }else{
-            const warning_message = `safety jump too high from ${speakerVolume} to ${newValue}`
-            setSliderVolume(speakerVolume)
-            setLimitMessage(warning_message)
-            setLimitWarning(true)
-        }
-    }
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-          return;
-        }
-        setLimitWarning(false);
-      };
       return (
-        <Container maxWidth="sm">
-        <Stack direction="column" justifyContent="center" alignItems="center" spacing={1}>
-            <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-            <OffButton variant="contained" color="error"  onClick={switch_off} sx={{height:60}}>Switch Off</OffButton>
-                <Stack direction="column" justifyContent="center" alignItems="flex-start" spacing={0}>
-                    <FormControlLabel 
-                        label="Front"
-                        control={<Switch checked={checked_front} disabled/>}
-                    />
-                    <FormControlLabel 
-                        label="Rear"
-                        control={<Switch checked={checked_rear} disabled/>} 
-                    />
-                </Stack>
-                <OnButton variant="contained" onClick={switch_on} sx={{height:60}}>Switch On</OnButton>
-            </Stack>
-            <Box sx={{width:300}} pt={6}>
-                <WideSlider value={sliderVolume}
-                    disabled={!available}
-                    min={0}
-                    max={100}
-                    onChange={(e,newValue)=>{
-                        setSliderVolume(newValue)
-                    }}
-                    onChangeCommitted={(e,newValue)=>{
-                        handleSliderChange(newValue)
-                    }}
-                    aria-label="Small steps"
-                    valueLabelDisplay="on"
-                />
-            </Box>
+        <Container >
+            <Grid pt={1} container direction="row"
+            justifyContent="center" alignItems="center" spacing={{ xs: 2, md: 3 }}>
+                {Object.entries(sockets).map(([name,socket],index)=>(
+                    <SocketCard name={name} socket={socket} onChange={onChange} key={index}/>
+                    ))}
+            </Grid>
             <FormControlLabel 
                 label={mqtt} 
                 control={<Switch checked={checked_mqtt} disabled/>} 
             />
-        </Stack>
-        <Snackbar open={limitWarning} onClose={handleClose} autoHideDuration={2000}>
-            <Alert severity="warning" sx={{ width: '100%' }}>{limitMessage}</Alert>
-       </Snackbar>
       </Container>
     );
 }
