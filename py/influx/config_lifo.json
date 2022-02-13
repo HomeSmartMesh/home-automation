@@ -45,6 +45,11 @@
                             "lzig/office pc power",
                             "lzig/pc socket",
                             "lzig/poster socket",
+                            "lzig/sonos front socket",
+                            "lzig/sonos rear socket",
+                            "lzig/poster socket",
+                            "lzig/lifx socket",
+                            "lzig/wifi mesh socket",
                             "thread_tags/#"
                                     ],
         "names":{
