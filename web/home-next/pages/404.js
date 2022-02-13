@@ -1,14 +1,13 @@
 import Link from 'next/link'
-import Layout from '../components/Layout'
+import {Button,Typography} from '@mui/material';
 
 export default function NotFoundPage() {
   return (
       <div >
-        <h1>
-          404
-        </h1>
-        <h4>Sorry, there is nothing here</h4>
-        <Link href='/heat'>Go To Heat</Link>
+        <Typography variant="h1">404</Typography>
+        <Typography variant="h4">Sorry, there is nothing here</Typography>
+        <Button variant="contained"><Link href='/heat'>Go To Heat</Link></Button>
+        
       </div>
   )
 }
