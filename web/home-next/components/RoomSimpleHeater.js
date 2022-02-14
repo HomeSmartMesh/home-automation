@@ -10,6 +10,7 @@ import WeekendIcon from '@mui/icons-material/Weekend';
 import LocalHotelIcon from '@mui/icons-material/LocalHotel';
 import ComputerIcon from '@mui/icons-material/Computer';
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
+import Drop from '../public/drop.svg';
 
 import { styled } from '@mui/material/styles';
 import CircularProgress, {circularProgressClasses} from '@mui/material/CircularProgress';
@@ -106,6 +107,10 @@ export default function RoomHeater({ room_id,room, onChange }) {
     handle_temperature = "handle "+room.heater.data.local_temperature.toFixed(1)+"°"
   }
 
+  let room_humidity = ""
+  if(room.ambient.humidity != 0){
+    room_humidity = room.ambient.humidity.toFixed(1)+"%"
+  }
   let room_temperature = ""
   if(room.ambient.temperature != 0){
     room_temperature = room.ambient.temperature.toFixed(1)+"°"
@@ -144,6 +149,10 @@ export default function RoomHeater({ room_id,room, onChange }) {
           <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
           {get_icon()}
           <MeetingRoom  sx={{display: window_open?'block':'none'}}/>
+          </Stack>
+          <Stack direction="row" justifyContent="center" alignItems="center" spacing={1} mt={1}>
+            <Drop height={20}/>
+            <Typography>{room_humidity}</Typography>
           </Stack>
           <Stack direction="column" justifyContent="flex-start" alignItems="center" spacing={1}>
           <Box pr={0} pb={2} pt={6} sx={{height:400}}>

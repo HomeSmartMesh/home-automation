@@ -13,33 +13,33 @@ const subscribe_options = {qos:2}
 const publish_options = {qos:2, retain:false}
 
 const initial_sockets = {
-    pc:{
-        topic:"lzig/pc socket",
-        control:"lzig/pc socket/set",
-        media_on:"/next/pc.png",
-        media_off:"/next/pc.png",
-        state:false,power:0,disable:false
+    poster:{
+        topic:"lzig/poster socket",
+        control:"lzig/poster socket/set",
+        media_on:"/next/poster.png",
+        media_off:"/next/poster-dark.png",
+        state:false,power:0,disabled:false
     },
     lifx:{
         topic:"lzig/lifx socket",
         control:"lzig/lifx socket/set",
         media_on:"/next/lifx.png",
         media_off:"/next/lifx-dark.png",
-        state:false,power:0,disable:false
-    },
-    poster:{
-        topic:"lzig/poster socket",
-        control:"lzig/poster socket/set",
-        media_on:"/next/poster.png",
-        media_off:"/next/poster-dark.png",
-        state:false,power:0,disable:false
+        state:false,power:0,disabled:false
     },
     mesh:{
         topic:"lzig/wifi mesh socket",
         control:"lzig/wifi mesh socket/set",
         media_on:"/next/wifi-on.png",
         media_off:"/next/wifi-off.png",
-        state:false,power:0,disable:false
+        state:false,power:0,disabled:false
+    },
+    pc:{
+        topic:"lzig/pc socket",
+        control:"lzig/pc socket/set",
+        media_on:"/next/pc.png",
+        media_off:"/next/pc.png",
+        state:false,power:0,disabled:true
     },
     //"waching machine":  {topic:"",state:false,power:0,disable:true},
     //dryer:              {topic:"",state:false,power:0,disable:true},
@@ -50,24 +50,6 @@ const initial_sockets = {
 const mqtt_subscriptions = Object.entries(initial_sockets).map(([name,socket])=>socket.topic)
 
 let client = null
-
-function Socket({name,socket}){
-    return(
-        <Grid item>
-        <Box >
-        <Paper elevation={3} >
-            <Box p={2}>
-                <FormControlLabel 
-                label={name}
-                control={<Switch checked={socket.state}/>}
-                />
-
-            </Box>
-        </Paper>
-        </Box>
-        </Grid>
-    )
-}
 
 function SocketCard({name,socket,onChange}){
     return(
@@ -92,7 +74,7 @@ function SocketCard({name,socket,onChange}){
                     <FormControlLabel 
                     datakey={name}
                     label={""}
-                    control={<Switch checked={socket.state}/>}
+                    control={<Switch checked={socket.state} disabled={socket.disabled}/>}
                     onChange={(e)=>{onChange(e.target,name)}}
                     />
                     {socket.power?<Stack direction="row">

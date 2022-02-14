@@ -20,7 +20,8 @@ const initial_state = {
         },
         ambient:{
             topic:"nrf/livingroom tag",
-            temperature:0
+            temperature:0,
+            humidity:0
         },
         metal:{
             topic:"lzig/living heat weather",
@@ -36,7 +37,8 @@ const initial_state = {
         },
         ambient:{
             topic:"nrf/bedroom tag",
-            temperature:0
+            temperature:0,
+            humidity:0
         },
         metal:{
             topic:"lzig/bedroom heat weather",
@@ -52,7 +54,8 @@ const initial_state = {
         },
         ambient:{
             topic:"nrf/kitchen tag",
-            temperature:0
+            temperature:0,
+            humidity:0
         },
         metal:{
             topic:"lzig/kitchen heat weather",
@@ -68,7 +71,8 @@ const initial_state = {
         },
         ambient:{
             topic:"nrf/office tag",
-            temperature:0
+            temperature:0,
+            humidity:0
         },
         metal:{
             topic:"lzig/office heat weather",
@@ -103,6 +107,7 @@ function reducer(state, action){
     if("temperature" in action){
         result[action.room_id] = state[action.room_id]
         result[action.room_id].ambient.temperature = action.temperature
+        result[action.room_id].ambient.humidity = action.humidity
     }else if("heater" in action){
         result[action.room_id] = state[action.room_id]
         result[action.room_id].heater.data = action.heater
@@ -129,7 +134,7 @@ export default function PowerControl(){
                 dispatch({room_id:id, heater:data})
             }else if(topic == room.ambient.topic){
                 if("temperature" in data){
-                    dispatch({room_id:id, temperature:data.temperature})
+                    dispatch({room_id:id, temperature:data.temperature, humidity:data.humidity})
                 }
             }else if(topic == room.metal.topic){
                 dispatch({room_id:id, metal:data})
