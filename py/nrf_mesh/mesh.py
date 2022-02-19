@@ -202,7 +202,8 @@ def publish(msg):
         else:
             json_payload["button"] = "up"
     elif(inv_pid[int(msg["pid"])] == "reset"):
-        json_payload["reset"] = float(msg["reset"])
+        if("reset" in msg):
+            json_payload["reset"] = float(msg["reset"])
     pub[topic] = json_payload
     return pub
 
