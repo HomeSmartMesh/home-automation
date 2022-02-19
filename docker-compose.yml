@@ -86,11 +86,10 @@ services:
       - "80:80"
     volumes:
       - ${PWD}/containers/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ${PWD}/containers/nginx/404.html:/etc/nginx/404.html:ro
+      - ${PWD}/containers/nginx/_next:/etc/nginx/_next:ro
       - ${PWD}/web/overview/public:/usr/share/nginx/html/home:ro
-      - ${PWD}/web/zigbee_graph_view:/usr/share/nginx/html/zigbee:ro
-      - ${PWD}/web/bed_heating:/usr/share/nginx/html/bed:ro
       - ${PWD}/web/heating:/usr/share/nginx/html/heat:ro
-      - ${PWD}/web/leds_panel:/usr/share/nginx/html/leds:ro
       - ${PWD}/web/home-next/out:/usr/share/nginx/html/next:ro
       - ${PWD}/../smart_home_3d_webapp:/usr/share/nginx/html/3d:ro
       - ${PWD}/../nRF52_Mesh/nodes.json:/usr/share/nginx/html/nodes.json:ro
