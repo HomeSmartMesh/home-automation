@@ -1,0 +1,852 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 3,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "aliasColors": {
+          "Balcony": "light-blue",
+          "Bathroom": "red",
+          "Bedroom": "purple",
+          "Kitchen": "orange",
+          "Livingroom": "dark-green",
+          "Livingroom window": "super-light-green",
+          "balcony": "super-light-blue",
+          "bedroom": "dark-purple",
+          "blue desk": "blue",
+          "kitchen": "orange",
+          "livingroom": "dark-green",
+          "livingroom window": "super-light-green",
+          "white trio": "rgb(255, 255, 255)"
+        },
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 0,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 23,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "hiddenSeries": false,
+        "id": 4,
+        "legend": {
+          "avg": false,
+          "current": true,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.3.4",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "bedroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"alive_count\") FROM \"bedroom tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "livingroom window",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"alive_count\") FROM \"livingroom window tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "livingroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"alive_count\") FROM \"livingroom tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "balcony",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"alive_count\") FROM \"balcony tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "D",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "bathroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"alive_count\") FROM \"bathroom tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "E",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "office",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"alive_count\") FROM \"office tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "F",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "kitchen",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"alive_count\") FROM \"kitchen tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "G",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "hallway",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"alive_count\") FROM \"hallway tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "H",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Alive count",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": "",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": "",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "aliasColors": {
+          "Balcony": "light-blue",
+          "Bathroom": "red",
+          "Bedroom": "purple",
+          "Kitchen": "orange",
+          "Livingroom": "dark-green",
+          "Livingroom window": "super-light-green",
+          "balcony": "super-light-blue",
+          "bedroom": "dark-purple",
+          "blue desk": "blue",
+          "kitchen": "orange",
+          "livingroom": "dark-green",
+          "livingroom window": "super-light-green",
+          "white trio": "rgb(255, 255, 255)"
+        },
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 0,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 23
+        },
+        "hiddenSeries": false,
+        "id": 5,
+        "legend": {
+          "avg": false,
+          "current": true,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": false,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.3.4",
+        "pointradius": 1,
+        "points": true,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "bedroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"reset\") FROM \"bedroom tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "livingroom window",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"reset\") FROM \"livingroom window tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "livingroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"reset\") FROM \"livingroom tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "balcony",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"reset\") FROM \"balcony tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "D",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "bathroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"reset\") FROM \"bathroom tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "E",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "office",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"reset\") FROM \"office tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "F",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "kitchen",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"reset\") FROM \"kitchen tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "G",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "hallway",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"reset\") FROM \"hallway tag\" WHERE $timeFilter GROUP BY time(2h)",
+            "rawQuery": true,
+            "refId": "H",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Reset",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": "",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": "",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      }
+    ],
+    "schemaVersion": 34,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-1y",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "Alive Year",
+    "uid": "4etMs9iGk",
+    "version": 2,
+    "weekStart": ""
+  }

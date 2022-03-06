@@ -1,0 +1,1750 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 6,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "aliasColors": {
+          "Balcony": "super-light-blue",
+          "Bathroom": "red",
+          "Bedroom": "purple",
+          "Bedroom Handle": "dark-orange",
+          "Hallway": "yellow",
+          "Kitchen": "orange",
+          "Living heater": "super-light-green",
+          "Livingroom": "dark-green",
+          "Livingroom window": "super-light-green",
+          "Office": "dark-blue",
+          "Office heater": "blue"
+        },
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "decimals": 1,
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 0,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "hiddenSeries": false,
+        "id": 2,
+        "legend": {
+          "avg": false,
+          "current": true,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.3.4",
+        "pointradius": 0.5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "Bedroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"temperature\" FROM \"bedroom tag\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Livingroom window",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"temperature\" FROM \"livingroom window tag\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Livingroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"temperature\" FROM \"livingroom tag\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Balcony",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"temperature\" FROM \"balcony tag\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "D",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Bathroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"temperature\" FROM \"bathroom tag\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "E",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Office",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"temperature\" FROM \"office tag\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "F",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Kitchen",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"temperature\" FROM \"kitchen tag\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "G",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Hallway",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"temperature\" FROM \"hallway tag\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "H",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Room Temperature",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "celsius",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": "",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "aliasColors": {
+          "Balcony": "super-light-blue",
+          "Bedroom": "purple",
+          "Bedroom heater": "purple",
+          "Hallway": "yellow",
+          "Kitchen": "orange",
+          "Living heater": "super-light-green",
+          "Livingroom": "dark-green",
+          "Livingroom window": "super-light-green",
+          "Office": "dark-blue",
+          "Office heater": "blue"
+        },
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "decimals": 1,
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 0,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 7
+        },
+        "hiddenSeries": false,
+        "id": 9,
+        "legend": {
+          "avg": false,
+          "current": true,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.3.4",
+        "pointradius": 0.5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "Living heater",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"temperature\" FROM \"living heat weather\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Office heater",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"temperature\" FROM \"office heat weather\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Bedroom heater",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"temperature\" FROM \"bedroom heat weather\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Heater Temperature",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "celsius",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": "",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "aliasColors": {
+          "Bathroom": "red",
+          "Bathroom set": "dark-red",
+          "Bedroom": "purple",
+          "Bedroom set": "dark-purple",
+          "Kitchen": "orange",
+          "Kitchen set": "dark-orange",
+          "Livingroom": "green",
+          "Livingroom set": "dark-green",
+          "Office": "blue",
+          "Office set": "dark-blue"
+        },
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "decimals": 1,
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 0,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 13
+        },
+        "hiddenSeries": false,
+        "id": 8,
+        "legend": {
+          "avg": false,
+          "current": true,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.3.4",
+        "pointradius": 4,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "Bathroom set",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"current_heating_setpoint\" FROM \"bathroom heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Bedroom set",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"current_heating_setpoint\" FROM \"bedroom heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Livingroom set",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"current_heating_setpoint\" FROM \"living heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Kitchen set",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"current_heating_setpoint\" FROM \"kitchen heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "D",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Office set",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"current_heating_setpoint\" FROM \"office heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "E",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Bathroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"local_temperature\" FROM \"bathroom heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "F",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Bedroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"local_temperature\" FROM \"bedroom heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "G",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Livingroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"local_temperature\" FROM \"living heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "H",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Kitchen",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"local_temperature\" FROM \"kitchen heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "I",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Office",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"local_temperature\" FROM \"office heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "J",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Heater Handle",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "celsius",
+            "label": "",
+            "logBase": 1,
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "aliasColors": {
+          "bathroom": "red",
+          "bedroom": "purple",
+          "livingroom": "green",
+          "office": "dark-blue",
+          "upstairs heat": "#bf1b00"
+        },
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 19
+        },
+        "hiddenSeries": false,
+        "id": 4,
+        "legend": {
+          "avg": false,
+          "current": true,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.3.4",
+        "pointradius": 5,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "livingroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"pi_heating_demand\" FROM \"living heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "bedroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"pi_heating_demand\" FROM \"bedroom heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "bathroom",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"pi_heating_demand\" FROM \"bathroom heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "kitchen",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"pi_heating_demand\" FROM \"kitchen heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "D",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "office",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"pi_heating_demand\" FROM \"office heat\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "F",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Heating",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 0,
+            "format": "short",
+            "label": "",
+            "logBase": 1,
+            "max": "100",
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "displayMode": "auto"
+            },
+            "links": [],
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 24,
+          "x": 0,
+          "y": 25
+        },
+        "id": 6,
+        "options": {
+          "footer": {
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true
+        },
+        "pluginVersion": "8.3.4",
+        "targets": [
+          {
+            "alias": "Bedroom",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "VfRMvNWgz"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"contact\" FROM \"bedroom window\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Kitchen",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "VfRMvNWgz"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"contact\" FROM \"kitchen window\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "D",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Living left",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "VfRMvNWgz"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"contact\" FROM \"balcony window left\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "F",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Living right",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "VfRMvNWgz"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"contact\" FROM \"balcony window right\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "E",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "balc door",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "VfRMvNWgz"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"contact\" FROM \"balcony door\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "G",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Office right",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "VfRMvNWgz"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"contact\" FROM \"office window right\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Office left",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "VfRMvNWgz"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"contact\" FROM \"office window left\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "title": "Windows",
+        "type": "table"
+      }
+    ],
+    "schemaVersion": 34,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "Heating Monitor",
+    "uid": "Ju9enUJWk",
+    "version": 2,
+    "weekStart": ""
+  }
