@@ -1,5 +1,10 @@
 raspberry pi server for home automation. For developers, startups, students and hobbyist who want to understand the basics of home automation and IoT and use it for their own projects and products. Networks devices using Thread, Zigbee, wifi are are centralized with mqtt then controlled with services based on python and node.js scripts interacting with web apps as user Front End.
 
+# Discussions
+get support, give feedback or simply chat to brainstorm about ideas right here on github with s special forum for this project
+
+https://github.com/HomeSmartMesh/raspi/discussions
+
 # Webapp
 This webapp from the [web/home-next](./web/home-next/) directory is based on [next.js](https://nextjs.org/), [Material UI](https://mui.com/) and [MQTT.js](https://github.com/mqttjs/MQTT.js#readme).
 * The Heat panel controls the temperature with `Eurotronics` Zigbee valves running on [Zigbee2mqtt](https://zigbee2mqtt.io/). The room humidity is also shown from [nRF custom sensors](https://github.com/nRFMesh/nRF52_Mesh)
