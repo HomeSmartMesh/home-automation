@@ -1,5 +1,12 @@
 # Docker compose commands
 
+cleaning docker, removes even running containers
+```bash
+docker rm -vf $(docker ps -aq)
+docker rmi -f $(docker images -aq)
+docker volume prune -f
+```
+
 ```bash
 dc -f current.yml up -d
 dc -f current.yml up -d --remove-orphans
