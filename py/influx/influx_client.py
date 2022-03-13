@@ -60,6 +60,9 @@ def mqtt_on_message(client, userdata, msg):
         elif( len(topic_parts) == 2 ):
             sensor = topic_parts[1]
             fields = json.loads(payload)
+            for key in list(fields.keys()):
+                if (fields[key] is None):
+                    del fields[key]
             if("voltage" in fields):
                 fields["voltage"] = float(fields["voltage"]) #convert voltage from milivolts to Volts
             check_all_types(fields)
