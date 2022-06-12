@@ -94,7 +94,7 @@ function check_topics_alive(){
   let now = Date.now()
   let nrf_age_minutes = (now - last_nrf)/(60*1000)
   
-  if(nrf_age_minutes > config.alive_minutes_list.nrf){
+  if((nrf_age_minutes > config.alive_minutes_list.nrf)&&(nrf_alerted == false)){
     alert(` ⏳ nrf > not seen for ${(nrf_age_minutes).toFixed(0)} minutes`)
     nrf_alerted = true
   }else{

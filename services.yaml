@@ -17,7 +17,7 @@ webapps:
     - zigbee_graph_view
     - next-home-control
 python:
-    - nrf2mqtt
+    - nrf_mesh
     - udp2mqtt
     - mqtt2influx
     - bathroom_fan
