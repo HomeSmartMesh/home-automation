@@ -1,83 +1,83 @@
 {
     "Balcony tag": {
         "first": "2019-12-09T11:31:16.495100Z",
-        "last": "2020-06-13T17:32:39.061829Z",
+        "last": "2020-06-13T18:49:19.401180Z",
         "alive_count": {
-            "count": 10873
+            "count": 10880
         },
         "battery": {
-            "count": 11708
+            "count": 11715
         },
         "humidity": {
-            "count": 196897
+            "count": 197051
         },
         "light": {
-            "count": 238638
+            "count": 238805
         },
         "pressure": {
-            "count": 196897
+            "count": 197051
         },
         "reset": {
             "count": 1593
         },
         "rssi": {
-            "count": 10873
+            "count": 10880
         },
         "temperature": {
-            "count": 196897
+            "count": 197051
         }
     },
     "Bathroom tag": {
         "first": "2019-12-09T11:31:48.998206Z",
-        "last": "2020-06-13T17:32:58.099834Z",
+        "last": "2020-06-13T18:49:17.788541Z",
         "alive_count": {
-            "count": 20258
+            "count": 20265
         },
         "battery": {
-            "count": 21698
+            "count": 21705
         },
         "humidity": {
-            "count": 383482
+            "count": 383623
         },
         "light": {
-            "count": 447570
+            "count": 447732
         },
         "pressure": {
-            "count": 383482
+            "count": 383623
         },
         "rssi": {
-            "count": 20258
+            "count": 20265
         },
         "temperature": {
-            "count": 383482
+            "count": 383623
         }
     },
     "Bedroom tag": {
         "first": "2019-12-09T11:31:16.601582Z",
-        "last": "2020-06-13T17:32:34.512028Z",
+        "last": "2020-06-13T18:49:14.756431Z",
         "alive_count": {
-            "count": 20856
+            "count": 20861
         },
         "battery": {
-            "count": 22267
+            "count": 22274
         },
         "humidity": {
-            "count": 388003
+            "count": 388136
         },
         "light": {
-            "count": 456497
+            "count": 456627
         },
         "pressure": {
-            "count": 388003
+            "count": 388136
         },
         "reset": {
             "count": 14
         },
         "rssi": {
-            "count": 20856
+            "count": 20861
         },
         "temperature": {
-            "count": 388003
+            "count": 388136
         }
     },
     "Flora1": {
@@ -129,124 +129,124 @@
     },
     "Kitchen tag": {
         "first": "2019-12-09T11:31:20.308359Z",
-        "last": "2020-06-13T17:32:36.236974Z",
+        "last": "2020-06-13T18:48:56.645545Z",
         "alive_count": {
-            "count": 20481
+            "count": 20487
         },
         "battery": {
-            "count": 21234
+            "count": 21239
         },
         "humidity": {
-            "count": 378004
+            "count": 378118
         },
         "light": {
-            "count": 442857
+            "count": 443008
         },
         "pressure": {
-            "count": 378004
+            "count": 378118
         },
         "rssi": {
-            "count": 20481
+            "count": 20487
         },
         "temperature": {
-            "count": 378004
+            "count": 378118
         }
     },
     "Livingroom tag": {
         "first": "2019-12-09T11:31:24.120529Z",
-        "last": "2020-06-13T17:33:10.242145Z",
+        "last": "2020-06-13T18:49:08.134209Z",
         "alive_count": {
-            "count": 20081
+            "count": 20087
         },
         "battery": {
-            "count": 21110
+            "count": 21114
         },
         "humidity": {
-            "count": 388316
+            "count": 388413
         },
         "light": {
-            "count": 434414
+            "count": 434524
         },
         "pressure": {
-            "count": 388316
+            "count": 388413
         },
         "rssi": {
-            "count": 20081
+            "count": 20087
         },
         "temperature": {
-            "count": 388316
+            "count": 388413
         }
     },
     "Livingroom window tag": {
         "first": "2019-12-09T11:31:10.169344Z",
-        "last": "2020-06-13T17:32:36.130550Z",
+        "last": "2020-06-13T18:49:16.371453Z",
         "alive_count": {
-            "count": 22454
+            "count": 22462
         },
         "battery": {
-            "count": 23512
+            "count": 23521
         },
         "humidity": {
-            "count": 434035
+            "count": 434179
         },
         "light": {
-            "count": 481513
+            "count": 481665
         },
         "pressure": {
-            "count": 434035
+            "count": 434179
         },
         "rssi": {
-            "count": 22454
+            "count": 22462
         },
         "temperature": {
-            "count": 434035
+            "count": 434179
         }
     },
     "Office tag": {
         "first": "2019-12-09T11:31:10.382315Z",
-        "last": "2020-06-13T17:32:51.685803Z",
+        "last": "2020-06-13T18:49:12.046563Z",
         "alive_count": {
-            "count": 17385
+            "count": 17390
         },
         "battery": {
-            "count": 19030
+            "count": 19036
         },
         "humidity": {
-            "count": 333631
+            "count": 333759
         },
         "light": {
-            "count": 384357
+            "count": 384507
         },
         "pressure": {
-            "count": 333631
+            "count": 333759
         },
         "rssi": {
-            "count": 17385
+            "count": 17390
         },
         "temperature": {
-            "count": 333631
+            "count": 333759
         }
     },
     "balcony weather": {
         "first": "2019-12-09T11:49:54.950159Z",
-        "last": "2020-06-13T17:20:07.040211Z",
+        "last": "2020-06-13T18:42:41.355763Z",
         "battery": {
-            "count": 54100
+            "count": 54111
         },
         "humidity": {
-            "count": 54100
+            "count": 54111
         },
         "linkquality": {
-            "count": 54100
+            "count": 54111
         },
         "pressure": {
-            "count": 54100
+            "count": 54111
         },
         "temperature": {
-            "count": 54100
+            "count": 54111
         },
         "voltage": {
-            "count": 54100
+            "count": 54111
         }
     },
     "bathroom heat": {
@@ -282,24 +282,24 @@
     },
     "bed weather": {
         "first": "2019-12-09T11:37:06.917561Z",
-        "last": "2020-06-13T17:20:26.406115Z",
+        "last": "2020-06-13T18:42:59.430799Z",
         "battery": {
-            "count": 45140
+            "count": 45147
         },
         "humidity": {
-            "count": 45140
+            "count": 45147
         },
         "linkquality": {
-            "count": 45140
+            "count": 45147
         },
         "pressure": {
-            "count": 45140
+            "count": 45147
         },
         "temperature": {
-            "count": 45140
+            "count": 45147
         },
         "voltage": {
-            "count": 45140
+            "count": 45147
         }
     },
     "bedroom heat": {
@@ -428,24 +428,24 @@
     },
     "office weather": {
         "first": "2019-12-09T11:40:53.924090Z",
-        "last": "2020-06-13T17:26:54.747689Z",
+        "last": "2020-06-13T18:41:06.932360Z",
         "battery": {
-            "count": 31401
+            "count": 31408
         },
         "humidity": {
-            "count": 31401
+            "count": 31408
         },
         "linkquality": {
-            "count": 31401
+            "count": 31408
         },
         "pressure": {
-            "count": 31401
+            "count": 31408
         },
         "temperature": {
-            "count": 31401
+            "count": 31408
         },
         "voltage": {
-            "count": 31401
+            "count": 31408
         }
     }
 }
