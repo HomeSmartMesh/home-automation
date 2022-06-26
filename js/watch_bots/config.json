@@ -23,7 +23,6 @@
                 "nrf/kitchen tag"
             ],
             "aqara":[
-                "lzig/bed weather",
                 "lzig/bedroom window",
                 "lzig/kitchen window",
                 "lzig/office switch",
@@ -56,7 +55,7 @@
         }
     },
     "alive_minutes_sensor":{
-        "nrf":15,
+        "nrf":65,
         "aqara":65,
         "eurotronics":120
     },
