@@ -4,11 +4,10 @@
   "description": "controlling smart socket for starting a PC and an ethernet repeater",
   "main": "pc.js",
   "dependencies": {
-    "mqtt": "^3.0.0",
-    "winston": "^3.3.3",
-    "bl": ">=1.2.3"
+    "bl": ">=1.2.3",
+    "mqtt": "^4.3.7",
+    "winston": "^3.3.3"
   },
-  "devDependencies": {},
   "scripts": {
     "run": "node pc.js"
   },

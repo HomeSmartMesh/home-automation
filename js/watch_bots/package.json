@@ -4,11 +4,10 @@
   "description": "telegraf bots for chating with the home",
   "main": "hover_poll.js",
   "dependencies": {
-    "mqtt": "^3.0.0",
+    "mqtt": "^4.3.7",
     "telegraf": "^3.38.0",
     "winston": "^3.3.3"
   },
-  "devDependencies": {},
   "scripts": {
     "run": "node run.js",
     "debug": "node --nolazy run.js"
