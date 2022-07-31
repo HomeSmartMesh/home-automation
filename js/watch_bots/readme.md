@@ -14,9 +14,11 @@ Note : [pm2](https://pm2.keymetrics.io/docs/usage/quick-start/) is a one line to
 
 # get bot token
 * chat with botfather /newbot
-* click on botfathers bot link to chet with it
+* click on botfathers bot link to chat with it
 * send many messages required to trigger the api response
 * https://api.telegram.org/bot<YourBOTToken>/getUpdates
+## recovery
+* see chat history with botfather
 
 # Config
 The idea is to configure as many sensors with as less declaration redunduncy as possible. You first declare lists of MQTT topics, then configure alert parameters for each list only once.
