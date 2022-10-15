@@ -27,18 +27,21 @@ def heater_notify(name,command):
     return
 
 def status_notify(notif):
-    if(notif == "windows closed"):
-        requests.put(config["status"]["blue"]["off"])
-        print("status blue off")
-    elif(notif == "window open"):
-        requests.put(config["status"]["blue"]["on"])
-        print("status blue on")
-    elif(notif == "heaters off"):
-        requests.put(config["status"]["red"]["off"])
-        print("heaters off")
-    elif(notif == "heater on"):
-        requests.put(config["status"]["red"]["on"])
-        print("heater on")
+    try:
+        if(notif == "windows closed"):
+            requests.put(config["status"]["blue"]["off"])
+            print("status blue off")
+        elif(notif == "window open"):
+            requests.put(config["status"]["blue"]["on"])
+            print("status blue on")
+        elif(notif == "heaters off"):
+            requests.put(config["status"]["red"]["off"])
+            print("heaters off")
+        elif(notif == "heater on"):
+            requests.put(config["status"]["red"]["on"])
+            print("heater on")
+    except requests.exceptions.ConnectionError as e:
+        log.error("mqtt_on_message> CoonectionError Exception :%s"%e)
     return
 
 def check_all_contacts(states):
@@ -100,8 +103,6 @@ def mqtt_on_message(client, userdata, msg):
                 heater_status(name,msg.payload)
         else:
             log.debug(f"topic: {msg.topic} : heat")
-    except requests.exceptions.ConnectionError as e:
-        log.error("mqtt_on_message> CoonectionError Exception :%s"%e)
     except Exception as e:
         log.error("mqtt_on_message> Exception :%s"%e)
     return
