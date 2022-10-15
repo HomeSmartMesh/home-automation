@@ -1,33 +1,54 @@
-container:
-    - mosquitto
-    - influx
-    - grafana
-    - zigbee2mqtt
-    - homeassistant
-    - nginx
-    - zigAssMano
-    - zigAssLifo
-    - deconz
-webapps:
-    - overview
-    - bed_heating
-    - heating
-    - leds_panel
-    - mesh_view
-    - zigbee_graph_view
-    - next-home-control
-python:
-    - nrf_mesh
-    - udp2mqtt
-    - mqtt2influx
-    - bathroom_fan
-    - huelight_control
-    - home_status
-nodejs:
-    - lapse
-    - lifx
-    - pc_power
-    - watch_bots
-    - roll
-native:
-    - openthread
+used:
+    python:
+        - heat_cut : 'py/heating' cuts a rooms heat when a room's window is open
+        - nrf_mesh: custom RF devices to mqtt
+        - influx_mqtt: 'py/influx' mqtt 2 influx
+        - bathroom: manages the bathroom fan and light from switch and sensors
+        - hue : hue light control
+        - home_status: entrance shelly leds for heaing 'red' and open windows 'blue'
+    nodejs:
+        - zigbee2mqtt
+        - pc_power
+        - watch_bots
+        - roll
+    native:
+        - influxdb
+        - docker
+    docker:
+        - mosquitto: eclipse-mosquitto
+        - nginx
+
+available:
+    webapps:
+        - overview
+        - bed_heating
+        - heating
+        - leds_panel
+        - mesh_view
+        - zigbee_graph_view
+        - next-home-control
+    python:
+        - heat_cut : cuts a rooms heat when a room's window is open
+        - nrf_mesh
+        - influx_mqtt: mqtt 2 influx
+        - bathroom_fan
+        - hue : hue light control
+        - home_status
+        - thread_tags: udp2mqtt
+    nodejs:
+        - zigbee2mqtt
+        - lapse
+        - lifx
+        - pc_power
+        - watch_bots
+        - roll
+    native:
+        - influxdb
+        - openthread : https://www.homesmartmesh.com/docs/networks/thread/#raspberry-pi
+    docker:
+        - influxdb
+        - grafana
+        - homeassistant
+        - zigAssMano
+        - zigAssLifo
+        - deconz

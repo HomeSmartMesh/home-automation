@@ -359,26 +359,31 @@ def mqtt_on_message(client, userdata, msg):
         log.error("mqtt_on_message> Exception :%s"%e)
     return
 
+def check_bridge():
+    if(cfg.ping(config["bridges"]["LivingRoom"])):
+        file_path=config["bridges"]["username_config"]
+        log.info(f"Bridge Connection using config '{file_path}'")
+        b = Bridge(ip=config["bridges"]["LivingRoom"],config_file_path=file_path)
+        b.connect()
+        log.info("Light Objects retrieval")
+        lights = b.get_light_objects('name')
+        log.info("Hue Lights available :")
+        for name, light in lights.items():
+            log.info(name)
+        return True
+    else:
+        log.info("Bridge ip not responding")
+        return False
+
+
 # -------------------- main -------------------- 
 config = cfg.configure_log(__file__)
 
 # -------------------- Philips Hue Client -------------------- 
 log.info("Check Bridge Presence")
 
-if(cfg.ping(config["bridges"]["LivingRoom"])):
-    file_path=config["bridges"]["username_config"]
-    log.info(f"Bridge Connection using config '{file_path}'")
-    b = Bridge(ip=config["bridges"]["LivingRoom"],config_file_path=file_path)
-    b.connect()
-    log.info("Light Objects retrieval")
-    lights = b.get_light_objects('name')
-    log.info("Hue Lights available :")
-    for name, light in lights.items():
-        log.info(name)
-    
-else:
-    log.info("Bridge ip not responding")
-
+while(not check_bridge()):
+    sleep(10)
 
 # -------------------- Mqtt Client -------------------- 
 #will start a separate thread for looping

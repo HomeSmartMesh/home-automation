@@ -1,0 +1,11 @@
+used:
+    - overview: http://10.0.0.31/home/
+    - home_3d: http://10.0.0.31/3d/
+    - next-home-control: http://10.0.0.31/next/
+    - heating: http://10.0.0.31/heat/
+available:
+    - bed_heating
+    - mesh_view
+    - zigbee_graph_view
+    - leds_panel: http://10.0.0.2/
+    - led_bar: http://10.0.0.24/

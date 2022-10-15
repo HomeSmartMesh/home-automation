@@ -5,6 +5,24 @@ import socket
 from collections import OrderedDict
 import datetime
 
+from platform   import system as system_name  # Returns the system/OS name
+from subprocess import call   as system_call  # Execute a shell command
+
+def ping(host):
+    """
+    Returns True if host (str) responds to a ping request.
+    Remember that a host may not respond to a ping (ICMP) request even if the host name is valid.
+    """
+
+    # Ping command count option as function of OS
+    param = '-n' if system_name().lower()=='windows' else '-c'
+
+    # Building the command. Ex: "ping -c 1 google.com"
+    command = ['ping', param, '1', host]
+
+    # Pinging
+    return system_call(command) == 0
+
 # -------------------- config -------------------- 
 def get_local_json():
     """fetches the config.json file in the local directory
@@ -43,9 +61,11 @@ def configure_log(logger_name):
         "Critical"  :50
     }
     #if(os.path.isfile(config["logfile"])):
+    logfile = config["logfile"].replace("(date)",datetime.datetime.now().strftime('-%Y.%m.%d'))
+    log.info(f"logging in file '{logfile}'")
     for handler in log.root.handlers[:]:
         log.root.removeHandler(handler)
-    log.basicConfig(    filename=config["logfile"],
+    log.basicConfig(    filename=logfile,
                         level=log_level_map[config["level"]],
                         format='%(asctime)s %(name)s %(levelname)-8s %(message)s',
                         datefmt='%d %H:%M:%S'

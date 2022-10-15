@@ -100,6 +100,8 @@ def mqtt_on_message(client, userdata, msg):
                 heater_status(name,msg.payload)
         else:
             log.debug(f"topic: {msg.topic} : heat")
+    except requests.exceptions.ConnectionError as e:
+        log.error("mqtt_on_message> CoonectionError Exception :%s"%e)
     except Exception as e:
         log.error("mqtt_on_message> Exception :%s"%e)
     return
@@ -122,7 +124,10 @@ status_notify("windows closed")
 clientMQTT = mqtt_start(config,mqtt_on_message,True)
 
 
-
+#TODO handle exception
+# requests.exceptions.ConnectionError:
+# HTTPConnectionPool(host='10.0.0.48', port=80): Max retries exceeded 
+# url: /settings/?led_power_disable=true
 
 while(True):
     sleep(0.2)
