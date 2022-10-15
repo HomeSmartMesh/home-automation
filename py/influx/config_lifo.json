@@ -51,6 +51,7 @@
                             "lzig/poster socket",
                             "lzig/lifx socket",
                             "lzig/wifi mesh socket",
+                            "lzig/floody",
                             "thread_tags/#"
                                     ],
         "names":{
