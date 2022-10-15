@@ -2,11 +2,8 @@
   "name": "home-next",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build && next export",
-    "start": "next start -p 4000",
-    "lint": "next lint"
-  },
+    "dev": "next dev", "build": "next build && next export", "start": "next start ", "lint": "next lint"
+p  },
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
