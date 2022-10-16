@@ -148,7 +148,7 @@ function watch_topics(data){
             alert(`${data.topic}>🔋 ${sensor} = ${value} is below minimum ${watch_params.minimum}`)
             topics_map[data.topic].battery_status = "alerted"
           }
-        }else{
+        }else if (value > watch_params.back){
           if(topics_map[data.topic].battery_status == "alerted"){
             info(`${data.topic}> ${sensor} = ${value} back above minimum ${watch_params.minimum}`)
             topics_map[data.topic].battery_status = "healthy"

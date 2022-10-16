@@ -40,17 +40,20 @@
     "watch":{
         "nrf":{
             "voltage":{
-                "minimum":2.1
+                "minimum":2.1,
+                "back":2.5
             }
         },
         "aqara":{
             "voltage":{
-                "minimum":1800
+                "minimum":1800,
+                "back":2500
             }
         },
         "eurotronics":{
             "battery":{
-                "minimum":15
+                "minimum":15,
+                "back":30
             }
         }
     },
