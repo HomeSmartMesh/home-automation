@@ -32,6 +32,9 @@
                 "lzig/balcony door",
                 "lzig/office window left",
                 "lzig/office window right"
+            ],
+            "shelly":[
+                "shellies/shellyswitch25-B8A4EE"
             ]
         },
         "publish" :true,
@@ -60,7 +63,8 @@
     "alive_minutes_sensor":{
         "nrf":65,
         "aqara":65,
-        "eurotronics":120
+        "eurotronics":120,
+        "shelly":10
     },
     "alive_minutes_list":{
         "nrf":1
