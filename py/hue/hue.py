@@ -360,6 +360,8 @@ def mqtt_on_message(client, userdata, msg):
     return
 
 def check_bridge():
+    global b
+    global lights
     if(cfg.ping(config["bridges"]["LivingRoom"])):
         file_path=config["bridges"]["username_config"]
         log.info(f"Bridge Connection using config '{file_path}'")
@@ -375,7 +377,8 @@ def check_bridge():
         log.info("Bridge ip not responding")
         return False
 
-
+b = None
+lights = None
 # -------------------- main -------------------- 
 config = cfg.configure_log(__file__)
 
