@@ -34,7 +34,7 @@
                 "lzig/office window right"
             ],
             "shelly":[
-                "shellies/shellyswitch25-B8A4EE"
+                "shellies/shellyswitch25-B8A4EE/relay/0/power"
             ]
         },
         "publish" :true,
