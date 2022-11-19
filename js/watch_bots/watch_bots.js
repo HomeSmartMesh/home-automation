@@ -123,7 +123,11 @@ function watch_topics(data){
       logger.debug(`nrf > upate`)
     }
   }
-  if(data.msg.hasOwnProperty("last_seen")){
+  if(!data.msg.hasOwnProperty("last_seen")){
+    let last_seen = Date.now();
+    topics_map[data.topic].last_seen = last_seen
+  }
+  else{
     let last_seen = new Date(Date.parse(data.msg.last_seen));
     //no stats will be processed in the watch
     topics_map[data.topic].last_seen = last_seen
