@@ -139,6 +139,9 @@ function watch_topics(data){
       }
     }
   }
+  if(!config.watch.hasOwnProperty(list)){ //allows topics that have alive only
+    return
+  }
   for(let [sensor,watch_params] of Object.entries(config.watch[list])){
     if(data.msg.hasOwnProperty(sensor)){
       let value = data.msg[sensor]
