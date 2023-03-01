@@ -65,24 +65,3 @@ while True:
     payload = '{'+parts[1].rstrip('\n')
     log.info(f"'{topic}' => {payload}")
     clientMQTT.publish(topic, payload)
-
-
-
-'homeassistant/sensor/25B8E0117530C478/duration/config'
-{
-    'name': 'Thread Sensor Tag (duration)', 
-    'obj_id': 'thread_sensor_tag_25B8E0117530C478_alive', 
-    '~': 'homeassistant/sensor/25B8E0117530C478', 
-    'uniq_id': '25B8E0117530C478#alive', 
-    'state_topic': '~/state', 
-    'unit_of_measurement': 'ms', 
-    'device_class': 'duration', 
-    'value_template': '{{ value_json.alive }}', 
-    'force_update': True, 
-    'device': {
-        'identifiers': ['25B8E0117530C478'], 
-        'manufacturer': 'open-things.de', 
-        'model': 'Thread Sensor Tag', 
-        'name': 'Thread Sensor Tag [25B8E0117530C478]'
-    }
-}
