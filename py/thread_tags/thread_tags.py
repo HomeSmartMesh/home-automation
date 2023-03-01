@@ -23,7 +23,7 @@ def generate_config_payload(uid, device_class, valuetag, unit_of_measurement):
         "force_update": True,
         "device": {
             "identifiers": [
-                strr(uid)
+                str(uid)
             ],
             "manufacturer": "open-things.de",
             "model": "Thread Sensor Tag",
