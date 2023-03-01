@@ -4,13 +4,14 @@ import logging as log
 import cfg
 from mqtt import mqtt_start
 import time
+import json
 
 UDP_IP = "::" # = 0.0.0.0 u IPv4
 UDP_PORT = 4242
 
 def generate_config_payload(uid, device_class, valuetag, unit_of_measurement):
     #{"alive":8589,"voltage":3.245,"light":2266.726,"temperature":-0.56,"humidity":59.12,"pressure":1027.39}
-    return str({
+    return {
         "name": "Thread Sensor Tag ("+device_class+")",
         "obj_id": "thread_sensor_tag_"+uid+"_"+valuetag,
         "~": "homeassistant/sensor/"+uid,
@@ -28,13 +29,13 @@ def generate_config_payload(uid, device_class, valuetag, unit_of_measurement):
             "model": "Thread Sensor Tag",
             "name": "Thread Sensor Tag ["+uid+"]"
         }
-    })
+    }
 
 def send_config_message(uid, device_class, valuetag, unit_of_measurement):
     payload = generate_config_payload(uid, device_class, valuetag, unit_of_measurement)
     topic = "homeassistant/sensor/"+uid+"/"+device_class+"/config"
     log.info(f"'{topic}' => '{payload}'")
-    clientMQTT.publish(topic, payload, retain=True)
+    clientMQTT.publish(topic, json.dumps(payload), retain=True)
 
 def send_all_config_messages(uid):
     send_config_message(uid, "duration", "alive", "ms")
@@ -64,3 +65,24 @@ while True:
     payload = '{'+parts[1].rstrip('\n')
     log.info(f"'{topic}' => {payload}")
     clientMQTT.publish(topic, payload)
+
+
+
+'homeassistant/sensor/25B8E0117530C478/duration/config'
+{
+    'name': 'Thread Sensor Tag (duration)', 
+    'obj_id': 'thread_sensor_tag_25B8E0117530C478_alive', 
+    '~': 'homeassistant/sensor/25B8E0117530C478', 
+    'uniq_id': '25B8E0117530C478#alive', 
+    'state_topic': '~/state', 
+    'unit_of_measurement': 'ms', 
+    'device_class': 'duration', 
+    'value_template': '{{ value_json.alive }}', 
+    'force_update': True, 
+    'device': {
+        'identifiers': ['25B8E0117530C478'], 
+        'manufacturer': 'open-things.de', 
+        'model': 'Thread Sensor Tag', 
+        'name': 'Thread Sensor Tag [25B8E0117530C478]'
+    }
+}
