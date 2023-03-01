@@ -1,24 +1,49 @@
-#https://pypi.python.org/pypi/paho-mqtt/1.1
 import paho.mqtt.client as mqtt
 import socket 
 import logging as log
 import cfg
 from mqtt import mqtt_start
 import time
-
-def friendly_topic(topic):
-    if('/' not in topic):
-        return topic
-    base_topic = topic.split('/')[0]
-    long_name =  topic.split('/')[1]
-    if(long_name in config["friendlyNames"]):
-        name = config["friendlyNames"][long_name]
-    else:
-        name = long_name
-    return base_topic+'/'+name
+import json
 
 UDP_IP = "::" # = 0.0.0.0 u IPv4
 UDP_PORT = 4242
+
+def generate_config_payload(uid, device_class, valuetag, unit_of_measurement):
+    #{"alive":8589,"voltage":3.245,"light":2266.726,"temperature":-0.56,"humidity":59.12,"pressure":1027.39}
+    return {
+        "name": device_class.capitalize(),
+        "obj_id": "thread_sensor_tag_"+uid+"_"+valuetag,
+        "~": "homeassistant/sensor/"+uid,
+        "uniq_id": uid+"#"+valuetag,
+        "state_topic": "~/state",
+        "unit_of_measurement": unit_of_measurement,
+        "device_class": device_class,
+        "value_template": "{{ value_json."+valuetag+" }}",
+        "force_update": True,
+        "device": {
+            "identifiers": [
+                str(uid)
+            ],
+            "manufacturer": "open-things.de",
+            "model": "Thread Sensor Tag",
+            "name": "Thread Sensor Tag ["+uid+"]"
+        }
+    }
+
+def send_config_message(uid, device_class, valuetag, unit_of_measurement):
+    payload = generate_config_payload(uid, device_class, valuetag, unit_of_measurement)
+    topic = "homeassistant/sensor/"+uid+"/"+device_class+"/config"
+    log.info(f"'{topic}' => '{payload}'")
+    clientMQTT.publish(topic, json.dumps(payload), retain=True)
+
+def send_all_config_messages(uid):
+    send_config_message(uid, "duration",    "alive",        "ms")
+    send_config_message(uid, "voltage",     "voltage",      "V")
+    send_config_message(uid, "temperature", "temperature",  "°C")
+    send_config_message(uid, "humidity",    "humidity",     "%")
+    send_config_message(uid, "pressure",    "pressure",     "Pa")
+    send_config_message(uid, "illuminance", "light",        "lx")
 
 sock = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) # UDP
 sock.bind((UDP_IP, UDP_PORT))
@@ -31,8 +56,12 @@ clientMQTT = mqtt_start(config,None,True)
 while True:
     data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
     message = data.decode("utf-8")
+    log.info("udp message: " + message)
     parts = message.split("{")
-    topic = friendly_topic(parts[0])
+    uid = parts[0].split('/')[1]
+    send_all_config_messages(uid)
+
+    topic = "homeassistant/sensor/"+uid+"/state"
     payload = '{'+parts[1].rstrip('\n')
     log.info(f"'{topic}' => {payload}")
-    clientMQTT.publish(topic,payload)
+    clientMQTT.publish(topic, payload)

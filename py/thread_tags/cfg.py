@@ -1,4 +1,4 @@
-import sys,os
+import sys, os, os.path
 import json
 import logging as log
 import socket
@@ -62,14 +62,19 @@ def configure_log(logger_name):
     }
     #if(os.path.isfile(config["logfile"])):
     logfile = config["logfile"].replace("(date)",datetime.datetime.now().strftime('-%Y.%m.%d'))
-    log.info(f"logging in file '{logfile}'")
+
+    if not os.path.exists("var/log/thread/"):
+        os.makedirs("var/log/thread/")
+
+    print(f"logging in file '{logfile}'")
     for handler in log.root.handlers[:]:
         log.root.removeHandler(handler)
-    log.basicConfig(    filename=logfile,
+    log.basicConfig(
+                        filename=logfile,
                         level=log_level_map[config["level"]],
                         format='%(asctime)s %(name)s %(levelname)-8s %(message)s',
                         datefmt='%d %H:%M:%S'
-                        )
+                    )
     log.getLogger('').addHandler(log.StreamHandler())
     log.info("====> '%s' started logging with level '%s' @ '%s'"%(logger_name,config["level"],str(datetime.datetime.utcnow())))
     #else:
