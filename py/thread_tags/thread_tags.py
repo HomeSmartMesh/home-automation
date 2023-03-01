@@ -19,7 +19,7 @@ def generate_config_payload(uid, device_class, valuetag, unit_of_measurement):
         "unit_of_measurement": unit_of_measurement,
         "device_class": device_class,
         "value_template": "{{ value_json."+valuetag+" }}",
-        "force_update": true,
+        "force_update": True,
         "device": {
             "identifiers": [
                 uid
