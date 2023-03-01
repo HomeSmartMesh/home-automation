@@ -1,4 +1,4 @@
-import sys,os
+import sys, os, os.path
 import json
 import logging as log
 import socket
@@ -62,6 +62,10 @@ def configure_log(logger_name):
     }
     #if(os.path.isfile(config["logfile"])):
     logfile = config["logfile"].replace("(date)",datetime.datetime.now().strftime('-%Y.%m.%d'))
+
+    if not os.path.exists("var/log/thread/"):
+        os.makedirs("var/log/thread/")
+
     print(f"logging in file '{logfile}'")
     for handler in log.root.handlers[:]:
         log.root.removeHandler(handler)
