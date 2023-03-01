@@ -73,8 +73,7 @@ def configure_log(logger_name):
                         filename=logfile,
                         level=log_level_map[config["level"]],
                         format='%(asctime)s %(name)s %(levelname)-8s %(message)s',
-                        datefmt='%d %H:%M:%S',
-                        force=True
+                        datefmt='%d %H:%M:%S'
                     )
     log.getLogger('').addHandler(log.StreamHandler())
     log.info("====> '%s' started logging with level '%s' @ '%s'"%(logger_name,config["level"],str(datetime.datetime.utcnow())))
