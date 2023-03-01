@@ -34,7 +34,7 @@ def send_config_message(uid, device_class, valuetag, unit_of_measurement):
     payload = generate_config_payload(uid, device_class, valuetag, unit_of_measurement)
     topic = "homeassistant/sensor/"+uid+"/"+device_class+"/config"
     log.info(f"'{topic}' => '{payload}'")
-    clientMQTT.publish(topic, payload)
+    clientMQTT.publish(topic, payload, retain=True)
 
 def send_all_config_messages(uid):
     send_config_message(uid, "duration", "alive", "ms")
