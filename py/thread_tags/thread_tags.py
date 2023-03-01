@@ -12,7 +12,7 @@ UDP_PORT = 4242
 def generate_config_payload(uid, device_class, valuetag, unit_of_measurement):
     #{"alive":8589,"voltage":3.245,"light":2266.726,"temperature":-0.56,"humidity":59.12,"pressure":1027.39}
     return {
-        "name": device_class+"[+"uid"+]",
+        "name": device_class+"["+uid+"]",
         "obj_id": "thread_sensor_tag_"+uid+"_"+valuetag,
         "~": "homeassistant/sensor/"+uid,
         "uniq_id": uid+"#"+valuetag,
