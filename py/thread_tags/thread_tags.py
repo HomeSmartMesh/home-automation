@@ -23,7 +23,7 @@ def generate_config_payload(uid, device_class, valuetag, unit_of_measurement):
         "force_update": True,
         "device": {
             "identifiers": [
-                uid
+                strr(uid)
             ],
             "manufacturer": "open-things.de",
             "model": "Thread Sensor Tag",
@@ -38,12 +38,12 @@ def send_config_message(uid, device_class, valuetag, unit_of_measurement):
     clientMQTT.publish(topic, json.dumps(payload), retain=True)
 
 def send_all_config_messages(uid):
-    send_config_message(uid, "duration", "alive", "ms")
-    send_config_message(uid, "battery", "voltage", "V")
-    send_config_message(uid, "temperature", "temperature", "°C")
-    send_config_message(uid, "humidity", "humidity", "%")
-    send_config_message(uid, "presssure", "pressure", "Pa")
-    send_config_message(uid, "illuminance", "light", "lx")
+    send_config_message(uid, "duration",    "alive",        "ms")
+    send_config_message(uid, "battery",     "voltage",      "V")
+    send_config_message(uid, "temperature", "temperature",  "°C")
+    send_config_message(uid, "humidity",    "humidity",     "%")
+    send_config_message(uid, "pressure",    "pressure",     "Pa")
+    send_config_message(uid, "illuminance", "light",        "lx")
 
 sock = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) # UDP
 sock.bind((UDP_IP, UDP_PORT))
