@@ -39,7 +39,7 @@ def send_config_message(uid, device_class, valuetag, unit_of_measurement):
 
 def send_all_config_messages(uid):
     send_config_message(uid, "duration",    "alive",        "ms")
-    send_config_message(uid, "battery",     "voltage",      "V")
+    send_config_message(uid, "voltage",     "voltage",      "V")
     send_config_message(uid, "temperature", "temperature",  "°C")
     send_config_message(uid, "humidity",    "humidity",     "%")
     send_config_message(uid, "pressure",    "pressure",     "Pa")
