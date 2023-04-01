@@ -1,4 +1,6 @@
 paho-mqtt
 influxdb
-requests
-pandas
+urllib3 == 1.23
+requests == 2.19.1
+numpy
+pandas==1.5.3

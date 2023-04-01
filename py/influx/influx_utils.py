@@ -184,6 +184,9 @@ def check():
 def get_pandas(measurement):
     return client.query(f'select * from "{measurement}"')
 
+def get_pandas_range(measurement,start,stop):
+    return client.query(f'select * from "{measurement}" where time >= \'{start}\' and time < \'{stop}\'')
+
 def get_measurements_list():
     res = []
     lists = client.get_list_measurements()
