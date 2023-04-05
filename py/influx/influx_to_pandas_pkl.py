@@ -5,17 +5,18 @@ def get_measurements():
 
     measurements = itl.get_measurements_list()
     print(measurements)
-    utl.save_json("measurements.json",measurements)
+    utl.save_json("measurements_silent.json",measurements)
     return
 
 def backup_measurements():
-    measurements = utl.load_json("measurements.json")
+    measurements = utl.load_json("measurements_silent.json")
     for measure in measurements:
         print(f"fetching '{measure}'")
         #res = itl.get_pandas_range(measure,'2022-01-01 00:00:00','2023-01-01 00:00:00')
         #res = itl.get_pandas_range(measure,'2022-01-01 00:00:00','2022-07-01 00:00:00')
         #res = itl.get_pandas_range(measure,'2022-07-01 00:00:00','2023-01-01 00:00:00')
-        res = itl.get_pandas_range(measure,'2023-01-01 00:00:00','2023-04-01 00:00:00')
+        #res = itl.get_pandas_range(measure,'2023-01-01 00:00:00','2023-04-01 00:00:00')
+        res = itl.get_pandas(measure)
         if(measure in res):
             df = res[measure]
             print(df)
@@ -31,5 +32,5 @@ def backup_measurements():
 db_client_config = utl.load_json("backup_config.json")
 itl.create_pandas(db_client_config)
 
-get_measurements()
+#get_measurements()
 backup_measurements()
