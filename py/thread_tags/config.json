@@ -1,4 +1,7 @@
-{  
+{
+    "thread":{
+        "port":4141
+    },
     "mqtt":{
         "host":"localhost",
         "port":1883,
@@ -9,12 +12,13 @@
         "publish" :true,
         "subscribe" :false
     },
+    "homeassistant":true,
     "friendlyNames":{
         "7009D837C7BB557A":"01",
         "631F80C39437F2F3":"02"
     },
     "log":{
-        "logfile":"/var/log/thread/thread_tags(date).log",
+        "logfile":"./log/thread_tags(date).log",
         "level":"Info"
     }
 }
