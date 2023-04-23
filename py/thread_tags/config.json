@@ -1,6 +1,6 @@
 {
     "thread":{
-        "port":4141
+        "port":4242
     },
     "mqtt":{
         "host":"localhost",
