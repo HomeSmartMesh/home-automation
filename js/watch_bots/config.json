@@ -1,5 +1,4 @@
-{  
-    "mqtt":{
+{ "mqtt":{
         "host":"mqtt_broquer",
         "port":1883,
         "keepalive":60,
@@ -62,8 +61,8 @@
     },
     "alive_minutes_sensor":{
         "nrf":65,
-        "aqara":65,
-        "eurotronics":120,
+        "aqara":165,
+        "eurotronics":440,
         "shelly":10
     },
     "alive_minutes_list":{
