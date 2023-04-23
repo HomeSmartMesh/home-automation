@@ -68,4 +68,5 @@ def run():
         clientMQTT.publish(topic, payload)
     return
 
-run()
+if __name__ == '__main__':
+    run()
