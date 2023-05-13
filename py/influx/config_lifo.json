@@ -3,7 +3,7 @@
         "host":"localhost",
         "port":1883,
         "keepalive":60,
-        "client_id":"influx2mqtt",
+        "client_id":"lifo_influx2mqtt",
         "subscriptions":[   "lzig/living heat",
                             "lzig/kitchen heat",
                             "lzig/bedroom heat",
@@ -115,7 +115,7 @@
         ]              
     },
     "influxdb":{
-        "host":"localhost",
+        "host":"10.0.0.3",
         "port":8086,
         "db":"mqtt"
     },
