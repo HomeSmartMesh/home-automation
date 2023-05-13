@@ -43,22 +43,12 @@ def mqtt_on_message(client, userdata, msg):
     try:
         post = None
         payload = msg.payload.decode('utf-8')
-        if( (len(topic_parts) == 3) and (topic_parts[0] == "Nodes") ):
-            nodeid = topic_parts[1]
-            sensor = topic_parts[2]
-            measurement = "node"+nodeid
-            value = float(payload)
-            post = [
-                {
-                    "measurement": measurement,
-                    "time": datetime.datetime.utcnow(),
-                    "fields": {
-                        sensor: value
-                    }
-                }
-            ]
-        elif( len(topic_parts) == 2 ):
-            sensor = topic_parts[1]
+        if(   ( len(topic_parts) == 2 ) or 
+                (( len(topic_parts) == 3 ) and (topic_parts[0] == "thingy_53")) ):
+            if(len(topic_parts) == 3):
+                sensor = topic_parts[1]+'-'+topic_parts[2]
+            else:
+                sensor = topic_parts[1]
             fields = json.loads(payload)
             for key in list(fields.keys()):
                 if (fields[key] is None):

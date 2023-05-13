@@ -52,7 +52,8 @@
                             "lzig/lifx socket",
                             "lzig/wifi mesh socket",
                             "lzig/floody",
-                            "thread_tags/#"
+                            "thread_tags/#",
+                            "thingy_53/#"
                                     ],
         "names":{
             "shellies/shellyplug-s-01E2B5/relay/0/power":"shelly dryer",
