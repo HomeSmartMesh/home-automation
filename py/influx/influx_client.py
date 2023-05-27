@@ -260,7 +260,7 @@ def mqtt_on_message(client, userdata, msg):
             post = construct_shellies(msg.topic,payload)
         elif(topic_parts[0] == "nrf"):
             post = construct_nrf(topic_parts,payload)
-        elif(topic_parts[0] == "thingy_53"):
+        elif(topic_parts[0] == "thread_tags"):
             post = construct_thread_tags(topic_parts,payload)
         elif(topic_parts[0] == "lzig"):
             post = construct_lzig(topic_parts,payload)
