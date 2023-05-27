@@ -91,6 +91,7 @@
     },
     "rooms":{
         "livingroom":[
+            "tester1",
             "shelly routers servers",
             "shelly tv",
             "sonos rear socket",
@@ -114,7 +115,6 @@
             "shelly bathroom fan"
         ],
         "office":[
-            "tester1",
             "lifx socket",
             "pc socket"
         ]
