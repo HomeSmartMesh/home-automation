@@ -4,20 +4,68 @@
         "port":1883,
         "keepalive":60,
         "client_id":"influx2mqtt",
+        "subscriptions":[   "lzig/living heat",
+                            "lzig/kitchen heat",
+                            "lzig/bedroom heat",
+                            "lzig/office heat",
+                            "lzig/bathroom heat",
+                            "lzig/office heat weather",
+                            "lzig/living heat weather",
+                            "lzig/bedroom heat weather",
+                            "lzig/fridge weather",
+                            "lzig/freezer weather",
+                            "lzig/servers weather",
+                            "lzig/office weather",
+                            "lzig/office weather aaa",
+                            "lzig/bedroom switch",
+            			    "lzig/living double switch",
+                            "lzig/office switch",
+                            "lzig/hallway entrance switch",
+                            "lzig/hallway corridor switch",
+                            "lzig/hallway living switch",
+                            "lzig/toilet switch",
+                            "lzig/bedroom window",
+                            "lzig/kitchen window",
+                            "lzig/balcony window left",
+                            "lzig/balcony window right",
+                            "lzig/office window left",
+                            "lzig/office window right",
+            			    "lzig/bedroom roll",
+                            "lzig/balcony door",
+                            "lzig/day light",
+                            "lzig/office pc power",
+                            "lzig/pc socket",
+                            "lzig/poster socket",
+                            "lzig/sonos front socket",
+                            "lzig/sonos rear socket",
+                            "lzig/poster socket",
+                            "lzig/lifx socket",
+                            "lzig/wifi mesh socket",
+                            "lzig/floody",
+                            "nrf/livingroom window tag",
+                            "nrf/hallway tag",
+                            "nrf/balcony tag",
+                            "nrf/bathroom tag",
+                            "nrf/livingroom tag",
+                            "nrf/office tag",
+                            "nrf/bedroom tag",
+                            "nrf/kitchen tag",
+                            "shellies/#",
+                            "thread_tags/#"
+                                    ],
         "publish" :false,
         "subscribe" :true,
-        "subscriptions":[
-            "nrf/#",
-            "lzig/#",
-            "thread_tags/#",
-            "shellies/#"
-        ]
+        "discard":[
+            "path",
+            "eurotronic_host_flags",
+            "occupancy",
+            "update"
+        ]              
     },
     "influxdb":{
-        "url":"http://10.0.0.91:8086",
-        "org":"hsm",
-        "bucket":"mqtt",
-        "mqtt_client_id":"py_influx"
+        "host":"localhost",
+        "port":8086,
+        "db":"mqtt"
     },
     "log":{
         "logfile":"/home/pi/share/influx_client_(date).log",
@@ -28,10 +76,6 @@
         "power"      :"float",
         "current"    :"float",
         "light"      :"float",
-        "light_red"     :"float",
-        "light_green"   :"float",
-        "light_blue"    :"float",
-        "light_ir"      :"float",
         "pressure"      :"float",
         "temperature"   :"float",
         "humidity"      :"float",
@@ -43,17 +87,7 @@
         "occupied_heating_setpoint":"float",
         "unoccupied_heating_setpoint":"float",
         "pi_heating_demand" :"int",
-        "rssi":"int",
-        "alive":"int",
-        "breath_voc":"float",
-        "co2_eq": "float",
-        "gas0":"float",
-        "iaq":"float",
-        "iaq_accuracy":"float",
-        "stabilization":"bool",
-        "runin":"bool",
-        "linkquality":"int",
-        "state":"boolstring"
+        "rssi":"int"
     },
     "topics_names":{
         "shellies/shellyplug-s-01E2B5/relay/0/power":"shelly dryer",
@@ -88,35 +122,5 @@
         "shellies/shellyswitch25-B8A4EE/relay/0/energy":"shelly bathroom light",
         "shellies/shellyswitch25-B8A4EE/relay/1/energy":"shelly bathroom fan",
         "shellies/shelly1pm-C45303/relay/0/energy":"shelly bed"
-    },
-    "rooms":{
-        "livingroom":[
-            "shelly routers servers",
-            "shelly tv",
-            "sonos rear socket",
-            "sonos front socket",
-            "wifi mesh socket"
-        ],
-        "hallway":[
-            "shelly entrance",
-            "cupboard light"
-        ],
-        "kitchen":[
-            "shelly fridge",
-            "shelly freezer",
-            "shelly micro wave",
-            "shelly dish washer"
-        ],
-        "bathroom":[
-            "shelly dryer",
-            "shelly washing machine",
-            "shelly bathroom light",
-            "shelly bathroom fan"
-        ],
-        "office":[
-            "tester",
-            "lifx socket",
-            "pc socket"
-        ]
     }
 }

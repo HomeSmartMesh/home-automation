@@ -16,6 +16,7 @@ def backup_measurements():
         #res = itl.get_pandas_range(measure,'2022-01-01 00:00:00','2022-07-01 00:00:00')
         #res = itl.get_pandas_range(measure,'2022-07-01 00:00:00','2023-01-01 00:00:00')
         #res = itl.get_pandas_range(measure,'2023-01-01 00:00:00','2023-04-01 00:00:00')
+        res = itl.get_pandas_range(measure,'2023-04-01 00:00:00','2023-05-27 00:00:00')
         res = itl.get_pandas(measure)
         if(measure in res):
             df = res[measure]

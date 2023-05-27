@@ -1,17 +1,12 @@
 {
     "mqtt":{
-        "host":"localhost",
+        "host":"10.0.0.31",
         "port":1883,
         "keepalive":60,
         "client_id":"influx2mqtt",
         "publish" :false,
         "subscribe" :true,
-        "subscriptions":[
-            "nrf/#",
-            "lzig/#",
-            "thread_tags/#",
-            "shellies/#"
-        ]
+        "subscriptions":["shellies/#"]
     },
     "influxdb":{
         "url":"http://10.0.0.91:8086",
@@ -20,8 +15,8 @@
         "mqtt_client_id":"py_influx"
     },
     "log":{
-        "logfile":"/home/pi/share/influx_client_(date).log",
-        "level":"Info"
+        "logfile":"influx_(date).log",
+        "level":"Debug"
     },
     "allow":{
         "energy"     :"float",
