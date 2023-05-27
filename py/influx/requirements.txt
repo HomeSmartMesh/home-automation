@@ -1,5 +1,5 @@
 paho-mqtt
-influxdb
+influxdb-client
 urllib3 == 1.23
 requests == 2.19.1
 numpy

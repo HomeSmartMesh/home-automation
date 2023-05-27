@@ -6,7 +6,7 @@
         "client_id":"influx2mqtt",
         "publish" :false,
         "subscribe" :true,
-        "subscriptions":["shellies/#"]
+        "subscriptions":["thingy_53/#"]
     },
     "influxdb":{
         "url":"http://10.0.0.91:8086",
@@ -15,7 +15,7 @@
         "mqtt_client_id":"py_influx"
     },
     "log":{
-        "logfile":"influx_(date).log",
+        "logfile":"influx(date).log",
         "level":"Debug"
     },
     "allow":{
@@ -109,7 +109,7 @@
             "shelly bathroom fan"
         ],
         "office":[
-            "tester",
+            "tester1",
             "lifx socket",
             "pc socket"
         ]
