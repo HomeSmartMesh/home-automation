@@ -1,0 +1,146 @@
+friendly_names:
+  topics:
+    shellies/shellyplug-s-01E2B5/relay/0/power: shelly dryer
+    shellies/shellyplug-s-B86655/relay/0/power: shelly fridge
+    shellies/shellyplug-s-B86BAA/relay/0/power: shelly freezer
+    shellies/shellyplug-s-51D82E/relay/0/power: shelly washing machine
+    shellies/shellyplug-s-B86270/relay/0/power: shelly micro wave
+    shellies/shellyplug-s-B85D8C/relay/0/power: shelly dish washer
+    shellies/shellyplug-s-B85CA1/relay/0/power: shelly routers servers
+    shellies/shellyplug-s-1697DA/relay/0/power: shelly tv
+    shellies/shellyplug-s-6A5CE5/relay/0/power: shelly sonos front
+    shellies/shellyplug-s-6A5DCF/relay/0/power: shelly ethernet repeater
+    shellies/shellyplug-s-B85CCA/relay/0/power: shelly dell pc
+    shellies/shellyplug-s-B85D90/relay/0/power: shelly sonos sat
+    shellies/shellyplug-s-021700/relay/0/power: shelly entrance
+    shellies/shellyswitch25-B8A4EE/relay/0/power: shelly bathroom light
+    shellies/shellyswitch25-B8A4EE/relay/1/power: shelly bathroom fan
+    shellies/shelly1pm-C45303/relay/0/power: shelly bed
+    shellies/shellyplug-s-01E2B5/relay/0/energy: shelly dryer
+    shellies/shellyplug-s-B86655/relay/0/energy: shelly fridge
+    shellies/shellyplug-s-B86BAA/relay/0/energy: shelly freezer
+    shellies/shellyplug-s-51D82E/relay/0/energy: shelly washing machine
+    shellies/shellyplug-s-B86270/relay/0/energy: shelly micro wave
+    shellies/shellyplug-s-B85D8C/relay/0/energy: shelly dish washer
+    shellies/shellyplug-s-B85CA1/relay/0/energy: shelly routers servers
+    shellies/shellyplug-s-1697DA/relay/0/energy: shelly tv
+    shellies/shellyplug-s-6A5CE5/relay/0/energy: shelly sonos front
+    shellies/shellyplug-s-6A5DCF/relay/0/energy: shelly ethernet repeater
+    shellies/shellyplug-s-B85CCA/relay/0/energy: shelly dell pc
+    shellies/shellyplug-s-B85D90/relay/0/energy: shelly sonos sat
+    shellies/shellyplug-s-021700/relay/0/energy: shelly entrance
+    shellies/shellyswitch25-B8A4EE/relay/0/energy: shelly bathroom light
+    shellies/shellyswitch25-B8A4EE/relay/1/energy: shelly bathroom fan
+    shellies/shelly1pm-C45303/relay/0/energy: shelly bed
+  zigbee:
+    '0x00124b0021b77899': coord cc2652
+    '0x00124b001d4a014b': power lifo
+    '0x00124b0018ed23a5': old coord lifo
+    '0x00158d000192dd3e': living heat
+    '0x00158d0004240973': office window right
+    '0x00158d0004237aad': office window left
+    '0x00158d00028f7fb5': office switch
+    '0x00158d00041a3bfe': bedroom window
+    '0x00158d00041a3b31': kitchen window
+    '0x00158d0001922d10': bathroom heat
+    '0xccccccfffee20ebd': tv button
+    '0x00158d0001922d4f': bedroom heat
+    '0x00158d000232c52c': entrance door
+    '0x680ae2fffe3ebf5c': bedroom roll
+    '0x680ae2fffeac9ea7': roll button 1
+    '0x842e14fffe1be08a': roll button 2
+    '0x00158d00024b3e45': retro light switch
+    '0x00158d00028cad58': bedroom switch
+    '0x04cf8cdf3c7b5bad': day light
+    '0x00158d000543fc96': office weather
+    '0x00158d00051e127b': servers weather
+    '0x00124b001d49f6ac': router office
+    '0x00158d00051e1276': bedroom heat weather
+    '0x00158d0001eb81c7': office button
+    '0x00158d00046514c5': hallway living switch
+    '0x00158d000454de0a': hallway entrance switch
+    '0x00158d00012a781d': hallway corridor switch
+    '0x00158d000171876f': toilet switch
+    '0x00158d0001e7a12b': test button
+    '0x00158d000255fb8b': floody
+    '0x00158d0001eb8fc9': pc button
+    '0x00158d0001922d22': office heat
+    '0x00158d0002a2c21c': bathroom fan button
+    '0x00158d0004570435': living double switch
+    '0x00158d00029078a2': bed nic button
+    '0x00158d0001ef6374': bed light button
+    '0x00158d0005484ec5': living heat weather
+    '0x00158d000272623b': balcony window left
+    '0x00158d0002760208': balcony window right
+    '0x00158d0002518c83': balcony door
+    '0x00158d0001eb9b32': sonos button
+    '0xcc86ecfffe4e9bc0': poster socket
+    '0x00158d0002b45474': hallway motion
+    '0x00158d0002753dec': living motion
+    '0x680ae2fffe39d18f': office motion
+    '0x00158d00026ecd6a': office heat weather
+    '0x804b50fffe1a447f': weather round display
+    '0xb4e3f9fffe07b4c2': weather squared display
+    '0x540f57fffe1667a2': pc socket
+    '0x540f57fffe19e9f3': lifx socket
+    '0xa4c1380bba7bd294': sonos rear socket
+    '0xa4c138ace79d4f0d': sonos front socket
+    '0xa4c138f28ef03998': wifi mesh socket
+    '0xa4c138d7bd6548ba': office weather aaa
+    '0x000d6ffffe9ccd6a': cupboard light
+    '0x00158d0001922ce9': kitchen heat
+rooms:
+  livingroom:
+  - tester1
+  - shelly routers servers
+  - shelly tv
+  - sonos rear socket
+  - sonos front socket
+  - wifi mesh socket
+  hallway:
+  - shelly entrance
+  - cupboard light
+  kitchen:
+  - shelly fridge
+  - shelly freezer
+  - shelly micro wave
+  - shelly dish washer
+  bathroom:
+  - shelly dryer
+  - shelly washing machine
+  - shelly bathroom light
+  - shelly bathroom fan
+  office:
+  - lifx socket
+  - pc socket
+allowed_fields:
+  energy: float
+  power:  float
+  current:  float
+  light:    float
+  light_red:  float
+  light_green:  float
+  light_blue:   float
+  light_ir: float
+  pressure: float
+  temperature: float
+  humidity: float
+  voltage:  float
+  battery:  int
+  moisture: int
+  conductivity: int
+  current_heating_setpoint:  float
+  occupied_heating_setpoint: float
+  unoccupied_heating_setpoint: float
+  pi_heating_demand : int
+  rssi:  int
+  alive: int
+  breath_voc: float
+  co2_eq: float
+  gas0: float
+  iaq: float
+  iaq_accuracy: float
+  stabilization: bool
+  runin: bool
+  linkquality: int
+  state: boolstring

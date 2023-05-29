@@ -5,3 +5,4 @@ requests == 2.19.1
 numpy
 pandas==1.5.3
 python-dotenv
+pyyaml

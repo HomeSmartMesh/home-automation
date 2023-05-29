@@ -6,7 +6,7 @@
         "client_id":"influx2mqtt",
         "publish" :false,
         "subscribe" :true,
-        "subscriptions":["thingy_53/#"]
+        "subscriptions":["thread_tags/#"]
     },
     "influxdb":{
         "url":"http://10.0.0.91:8086",
@@ -17,101 +17,5 @@
     "log":{
         "logfile":"influx(date).log",
         "level":"Debug"
-    },
-    "allow":{
-        "energy"     :"float",
-        "power"      :"float",
-        "current"    :"float",
-        "light"      :"float",
-        "light_red"     :"float",
-        "light_green"   :"float",
-        "light_blue"    :"float",
-        "light_ir"      :"float",
-        "pressure"      :"float",
-        "temperature"   :"float",
-        "humidity"      :"float",
-        "voltage"       :"float",
-        "battery"       :"int",
-        "moisture"      :"int",
-        "conductivity"  :"int",
-        "current_heating_setpoint"  :"float",
-        "occupied_heating_setpoint":"float",
-        "unoccupied_heating_setpoint":"float",
-        "pi_heating_demand" :"int",
-        "rssi":"int",
-        "alive":"int",
-        "breath_voc":"float",
-        "co2_eq": "float",
-        "gas0":"float",
-        "iaq":"float",
-        "iaq_accuracy":"float",
-        "stabilization":"bool",
-        "runin":"bool",
-        "linkquality":"int",
-        "state":"boolstring"
-    },
-    "topics_names":{
-        "shellies/shellyplug-s-01E2B5/relay/0/power":"shelly dryer",
-        "shellies/shellyplug-s-B86655/relay/0/power":"shelly fridge",
-        "shellies/shellyplug-s-B86BAA/relay/0/power":"shelly freezer",
-        "shellies/shellyplug-s-51D82E/relay/0/power":"shelly washing machine",
-        "shellies/shellyplug-s-B86270/relay/0/power":"shelly micro wave",
-        "shellies/shellyplug-s-B85D8C/relay/0/power":"shelly dish washer",
-        "shellies/shellyplug-s-B85CA1/relay/0/power":"shelly routers servers",
-        "shellies/shellyplug-s-1697DA/relay/0/power":"shelly tv",
-        "shellies/shellyplug-s-6A5CE5/relay/0/power":"shelly sonos front",
-        "shellies/shellyplug-s-6A5DCF/relay/0/power":"shelly ethernet repeater",
-        "shellies/shellyplug-s-B85CCA/relay/0/power":"shelly dell pc",
-        "shellies/shellyplug-s-B85D90/relay/0/power":"shelly sonos sat",
-        "shellies/shellyplug-s-021700/relay/0/power":"shelly entrance",
-        "shellies/shellyswitch25-B8A4EE/relay/0/power":"shelly bathroom light",
-        "shellies/shellyswitch25-B8A4EE/relay/1/power":"shelly bathroom fan",
-        "shellies/shelly1pm-C45303/relay/0/power":"shelly bed",
-        "shellies/shellyplug-s-01E2B5/relay/0/energy":"shelly dryer",
-        "shellies/shellyplug-s-B86655/relay/0/energy":"shelly fridge",
-        "shellies/shellyplug-s-B86BAA/relay/0/energy":"shelly freezer",
-        "shellies/shellyplug-s-51D82E/relay/0/energy":"shelly washing machine",
-        "shellies/shellyplug-s-B86270/relay/0/energy":"shelly micro wave",
-        "shellies/shellyplug-s-B85D8C/relay/0/energy":"shelly dish washer",
-        "shellies/shellyplug-s-B85CA1/relay/0/energy":"shelly routers servers",
-        "shellies/shellyplug-s-1697DA/relay/0/energy":"shelly tv",
-        "shellies/shellyplug-s-6A5CE5/relay/0/energy":"shelly sonos front",
-        "shellies/shellyplug-s-6A5DCF/relay/0/energy":"shelly ethernet repeater",
-        "shellies/shellyplug-s-B85CCA/relay/0/energy":"shelly dell pc",
-        "shellies/shellyplug-s-B85D90/relay/0/energy":"shelly sonos sat",
-        "shellies/shellyplug-s-021700/relay/0/energy":"shelly entrance",
-        "shellies/shellyswitch25-B8A4EE/relay/0/energy":"shelly bathroom light",
-        "shellies/shellyswitch25-B8A4EE/relay/1/energy":"shelly bathroom fan",
-        "shellies/shelly1pm-C45303/relay/0/energy":"shelly bed"
-    },
-    "rooms":{
-        "livingroom":[
-            "shelly routers servers",
-            "shelly tv",
-            "sonos rear socket",
-            "sonos front socket",
-            "wifi mesh socket"
-        ],
-        "hallway":[
-            "shelly entrance",
-            "cupboard light"
-        ],
-        "kitchen":[
-            "shelly fridge",
-            "shelly freezer",
-            "shelly micro wave",
-            "shelly dish washer"
-        ],
-        "bathroom":[
-            "shelly dryer",
-            "shelly washing machine",
-            "shelly bathroom light",
-            "shelly bathroom fan"
-        ],
-        "office":[
-            "tester1",
-            "lifx socket",
-            "pc socket"
-        ]
     }
 }

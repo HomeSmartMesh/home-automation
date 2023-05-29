@@ -13,10 +13,11 @@ import json
 from mqtt import mqtt_start
 import dateutil.parser
 from dotenv import load_dotenv
+import utils as utl
 
 def device_room(device):
     text = device.lower()
-    for name,room_list in config["rooms"].items():
+    for name,room_list in devices["rooms"].items():
         if(text in room_list):
             return name
     if("living" in text):
@@ -61,7 +62,7 @@ def set_type(fields,param,set_type):
     return
 
 def check_all_types(fields):
-    for type_name,type_val in config["allow"].items():
+    for type_name,type_val in devices["allowed_fields"].items():
         set_type(fields,type_name,type_val)
     return
 
@@ -69,7 +70,7 @@ def check_allowed_fields(fields):
     for key in list(fields.keys()):
         if (fields[key] is None):
             del fields[key]
-        if(key not in list(config["allow"].keys())):
+        if(key not in list(devices["allowed_fields"].keys())):
             del fields[key]
     return
 def last_seen_fresh(last_seen_text):
@@ -89,7 +90,7 @@ def check_last_seen_discard(fields,device):
         is_last_seen_fresh = last_seen_fresh(last_seen)
     if(is_last_seen_relevant) and (not is_last_seen_fresh):
         log.info("postdiscarded from "+device+" last seen at "+last_seen)
-    return
+    return is_last_seen_relevant
 
 def object_to_text(data):
     point = data["measurement"]
@@ -121,11 +122,11 @@ def post_message(point,topic):
 
 def construct_shellies(topic,payload):
     data_point = None
-    if(topic in config["topics_names"]):
+    if(topic in devices["friandly_names"]["topics"]):
         topic_parts = topic.split('/')
         sensor = topic_parts[4]
         value = float(payload)
-        device = config["topics_names"][topic]
+        device = devices["friandly_names"]["topics"][topic]
         data_point = {
                 "measurement": "socket",
                 "tags":{
@@ -274,6 +275,9 @@ def mqtt_on_message(client, userdata, msg):
 # -------------------- main -------------------- 
 load_dotenv()
 config = cfg.configure_log(__file__)
+root_path = os.path.join(os.path.dirname(__file__),"../..")
+
+devices = utl.load_yaml(os.path.join(root_path,"devices.yaml"))
 # -------------------- influxDB client -------------------- 
 bucket = config["influxdb"]["bucket"]
 org = config["influxdb"]["org"]

@@ -21,15 +21,14 @@ devices:
   '0x00158d000192dd3e':
     friendly_name: living heat
     retain: true
+    debounce: 0.5
+    optimistic: true
   '0x00158d0004240973':
     friendly_name: office window right
     retain: true
   '0x00158d0004237aad':
     friendly_name: office window left
     retain: true
-  '0x00158d0002476b04':
-    friendly_name: fridge weather
-    retain: false
   '0x00158d00028f7fb5':
     friendly_name: office switch
     retain: false
@@ -39,17 +38,18 @@ devices:
   '0x00158d00041a3b31':
     friendly_name: kitchen window
     retain: true
-  '0x00124b001c2f1279':
-    friendly_name: power router
-    retain: false
   '0x00158d0001922d10':
     friendly_name: bathroom heat
     retain: true
+    debounce: 0.5
+    optimistic: true
   '0xccccccfffee20ebd':
     friendly_name: tv button
   '0x00158d0001922d4f':
     friendly_name: bedroom heat
     retain: true
+    debounce: 0.5
+    optimistic: true
   '0x00158d000232c52c':
     friendly_name: entrance door
   '0x680ae2fffe3ebf5c':
@@ -65,16 +65,17 @@ devices:
   '0x04cf8cdf3c7b5bad':
     friendly_name: day light
   '0x00158d000543fc96':
-    friendly_name: freezer weather
+    friendly_name: office weather
   '0x00158d00051e127b':
     friendly_name: servers weather
-  '0x00158d0001922ce9':
-    friendly_name: kitchen heat
-    retain: true
   '0x00124b001d49f6ac':
     friendly_name: router office
   '0x00158d00051e1276':
     friendly_name: bedroom heat weather
+    optimistic: true
+    retain: true
+  '0x00158d0001eb81c7':
+    friendly_name: office button
   '0x00158d00046514c5':
     friendly_name: hallway living switch
   '0x00158d000454de0a':
@@ -83,60 +84,87 @@ devices:
     friendly_name: hallway corridor switch
   '0x00158d000171876f':
     friendly_name: toilet switch
-  '0x000d6ffffe09806c':
-    friendly_name: round dimmer
+  '0x00158d0001e7a12b':
+    friendly_name: test button
   '0x00158d000255fb8b':
     friendly_name: floody
-  '0x00124b001d4a012d':
-    friendly_name: mano power
-  '0x00158d0002a4f61e':
-    friendly_name: desk motion
-    retain: false
-  '0x00158d0001ef6374':
-    friendly_name: bed light button
-    retain: false
-  '0x00158d00026ecd6a':
-    friendly_name: office heat weather
+    homeassistant: {}
+    optimistic: true
     retain: true
-  '0x00158d000237df83':
-    friendly_name: fridge weather
-    retain: false
-  '0x00158d000272623b':
-    friendly_name: balcony window left
-    retain: true
-  '0x00158d0002760208':
-    friendly_name: balcony window right
-    retain: true
-  '0x00158d0002518c83':
-    friendly_name: balcony door
-    retain: true
-  '0x00158d0001eb81c7':
-    friendly_name: tree button
-    retain: false
-  '0x00158d0002a2c21c':
-    friendly_name: bathroom fan button
-    retain: false
   '0x00158d0001eb8fc9':
     friendly_name: pc button
-    retain: false
-  '0x00158d0001e7a12b':
-    friendly_name: bed heat button
-    retain: false
   '0x00158d0001922d22':
     friendly_name: office heat
+    debounce: 0.5
+    optimistic: true
     retain: true
-  '0x00158d0002a4f51d':
-    friendly_name: office chair vibration
-  '0x000d6ffffe9ccd6a':
-    friendly_name: cupboard light
-  '0x00158d0001eb9b32':
-    friendly_name: sonos button
+  '0x00158d0002a2c21c':
+    friendly_name: bathroom fan button
   '0x00158d0004570435':
     friendly_name: living double switch
   '0x00158d00029078a2':
     friendly_name: bed nic button
+  '0x00158d0001ef6374':
+    friendly_name: bed light button
   '0x00158d0005484ec5':
     friendly_name: living heat weather
+    optimistic: true
     retain: true
-  '0x00158d00028f8531':
-    friendly_name: '0x00158d00028f8531'
+  '0x00158d000272623b':
+    friendly_name: balcony window left
+  '0x00158d0002760208':
+    friendly_name: balcony window right
+  '0x00158d0002518c83':
+    friendly_name: balcony door
+  '0x00158d0001eb9b32':
+    friendly_name: sonos button
+  '0xcc86ecfffe4e9bc0':
+    friendly_name: poster socket
+    retain: true
+  '0x00158d0002b45474':
+    friendly_name: hallway motion
+  '0x00158d0002753dec':
+    friendly_name: living motion
+  '0x680ae2fffe39d18f':
+    friendly_name: office motion
+  '0x00158d00026ecd6a':
+    friendly_name: office heat weather
+    optimistic: true
+    retain: true
+  '0x804b50fffe1a447f':
+    friendly_name: weather round display
+  '0xb4e3f9fffe07b4c2':
+    friendly_name: weather squared display
+  '0x540f57fffe1667a2':
+    friendly_name: pc socket
+    optimistic: true
+    retain: true
+  '0x540f57fffe19e9f3':
+    friendly_name: lifx socket
+    optimistic: true
+    retain: true
+  '0xa4c1380bba7bd294':
+    friendly_name: sonos rear socket
+    optimistic: true
+    retain: true
+  '0xa4c138ace79d4f0d':
+    friendly_name: sonos front socket
+    optimistic: true
+    retain: true
+  '0xa4c138f28ef03998':
+    friendly_name: wifi mesh socket
+    optimistic: true
+    retain: true
+  '0xa4c138d7bd6548ba':
+    friendly_name: office weather aaa
+    optimistic: true
+    retain: true
+  '0x000d6ffffe9ccd6a':
+    friendly_name: cupboard light
+  '0x00158d0001922ce9':
+    friendly_name: kitchen heat
+    homeassistant: {}
+    optimistic: true
+    retain: true
+blocklist:
+  - '0xb4e3f9fffedc72e0'

@@ -1,4 +1,13 @@
 import json
+import yaml
+
+def load_yaml(fileName):
+    with open(fileName, "r") as stream:
+        try:
+            return yaml.safe_load(stream)
+        except yaml.YAMLError as e:
+            print(e)
+    return
 
 def load_json(fileName):
     return json.load(open(fileName))
