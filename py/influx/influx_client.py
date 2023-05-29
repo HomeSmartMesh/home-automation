@@ -192,8 +192,12 @@ def construct_thread_tags(topic_parts,payload):
     check_all_types(fields)
     if(check_last_seen_discard(fields,device)):
         return
+    if(len(topic_parts) == 3):
+        measurement = topic_parts[2]
+    else:
+        measurement = "ambient"#all in one so no specific measurement
     data_point = {
-            "measurement"   :topic_parts[2],
+            "measurement"   : measurement,
             "tags":{
                 "group"         :topic_parts[0],
                 "device"        :topic_parts[1],
