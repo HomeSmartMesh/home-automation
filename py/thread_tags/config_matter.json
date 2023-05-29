@@ -13,10 +13,6 @@
         "subscribe" :false
     },
     "homeassistant":false,
-    "friendlyNames":{
-        "7009D837C7BB557A":"01",
-        "631F80C39437F2F3":"02"
-    },
     "log":{
         "logfile":"./log/thread_tags(date).log",
         "level":"Info"
