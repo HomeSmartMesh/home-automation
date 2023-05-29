@@ -122,11 +122,11 @@ def post_message(point,topic):
 
 def construct_shellies(topic,payload):
     data_point = None
-    if(topic in devices["friandly_names"]["topics"]):
+    if(topic in devices["friendly_names"]["topics"]):
         topic_parts = topic.split('/')
         sensor = topic_parts[4]
         value = float(payload)
-        device = devices["friandly_names"]["topics"][topic]
+        device = devices["friendly_names"]["topics"][topic]
         data_point = {
                 "measurement": "socket",
                 "tags":{
