@@ -17,6 +17,20 @@ sudo systemctl start influx_mqtt.service
 sudo systemctl stop influx_mqtt.service
 ```
 
+# delete a measurement
+list org id
+```bash
+influx org list --token=''
+```
+
+```bash
+influx delete --bucket=mqtt \
+  --start='1970-01-01T00:00:00Z' \
+  --stop='2023-06-11T20:10:00Z' \
+  --predicate='_measurement="state"'\
+  --org-id='ID-16-bytes'\
+  --token=''
+```
 
 # influxDB
 ## influx queries examples
