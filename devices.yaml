@@ -2,6 +2,7 @@ friendly_names:
   thread_tags:
     "7009D837C7BB557A": sensortag01
     "631F80C39437F2F3": sensortag02
+    "56C4190F6E0D2750": sensortag03
   topics:
     shellies/shellyplug-s-01E2B5/relay/0/power: shelly dryer
     shellies/shellyplug-s-B86655/relay/0/power: shelly fridge
