@@ -105,6 +105,7 @@ rooms:
   - shelly entrance
   - cupboard light
   - sensortag02
+  - sensortag03
   kitchen:
   - shelly fridge
   - shelly freezer
