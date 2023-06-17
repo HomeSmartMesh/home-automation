@@ -3,6 +3,7 @@ friendly_names:
     "7009D837C7BB557A": sensortag01
     "631F80C39437F2F3": sensortag02
     "56C4190F6E0D2750": sensortag03
+    "EC10D98D0EB68BD": sensortag04
   topics:
     shellies/shellyplug-s-01E2B5/relay/0/power: shelly dryer
     shellies/shellyplug-s-B86655/relay/0/power: shelly fridge
@@ -106,6 +107,7 @@ rooms:
   - cupboard light
   - sensortag02
   - sensortag03
+  - sensortag04
   kitchen:
   - shelly fridge
   - shelly freezer
