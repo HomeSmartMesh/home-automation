@@ -105,6 +105,7 @@ rooms:
   hallway:
   - shelly entrance
   - cupboard light
+  - sensortag01
   - sensortag02
   - sensortag03
   - sensortag04
