@@ -9,10 +9,8 @@ import os
 import utils as utl
 
 def replace_friendly_names(topic,friendlyNames):
-    topics = topic.split('/')
-    name = topics[1]
-    if(name in friendlyNames):
-        return topics[0]+"/"+friendlyNames[name]
+    for name,friendly_name in friendlyNames:
+        topic.replace(name,friendly_name)
     return topic
 
 def run():
