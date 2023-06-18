@@ -280,8 +280,8 @@ def mqtt_on_message(client, userdata, msg):
         else:
             post = construct_generic(topic_parts,payload)
         if(post != None):
-            add_room(data_point,name)
-            add_device_model(data_point,name)
+            add_room(post,name)
+            add_device_model(post,name)
             post_message(post,msg.topic)
     except:
         log.exception("message")
