@@ -1,5 +1,6 @@
 friendly_names:
   thread_tags:
+    "34B4F6F2747442CA": "thingy02"
     "7009D837C7BB557A": sensortag01
     "631F80C39437F2F3": sensortag02
     "56C4190F6E0D2750": sensortag03
@@ -122,6 +123,7 @@ rooms:
   office:
   - lifx socket
   - pc socket
+  - thingy02
 allowed_fields:
   energy: float
   power:  float
