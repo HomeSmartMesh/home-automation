@@ -43,13 +43,15 @@ def name_device_model(model):
             return model
     return None
 
-def add_room(data_point,name):
+def add_room(data_point):
+    name = data_point["tags"]["name"]
     room = name_room(name)
     if(room is not None):
         data_point["tags"]["room"] = room
     return
 
-def add_device_model(data_point,name):
+def add_device_model(data_point):
+    name = data_point["tags"]["name"]
     device_model = name_device_model(name)
     if(device_model is not None):
         data_point["tags"]["model"] = device_model
@@ -260,6 +262,10 @@ def construct_generic(topic_parts,payload):
     data_point = {
             "measurement": name,
             "fields": fields
+            "tags":{
+                "group"         :topic_parts[0],
+                "name"        :topic_parts[1],
+            },
         }
     return data_point
 
@@ -280,8 +286,8 @@ def mqtt_on_message(client, userdata, msg):
         else:
             post = construct_generic(topic_parts,payload)
         if(post != None):
-            add_room(post,name)
-            add_device_model(post,name)
+            add_room(post)
+            add_device_model(post)
             post_message(post,msg.topic)
     except:
         log.exception("message")
