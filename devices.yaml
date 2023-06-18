@@ -1,6 +1,6 @@
 friendly_names:
   thread_tags:
-    "34B4F6F2747442CA": "thingy02"
+    "34B4F6F2747442CA": thingy02
     "7009D837C7BB557A": sensortag01
     "631F80C39437F2F3": sensortag02
     "56C4190F6E0D2750": sensortag03
@@ -124,6 +124,23 @@ rooms:
   - lifx socket
   - pc socket
   - thingy02
+models:
+  thread_sensortag:
+  - sensortag01
+  - sensortag02
+  - sensortag03
+  - sensortag04
+  thingy_53:
+  - tester01
+  - thingy02
+  simple_mesh:
+  - bedroom tag
+  - balcony tag
+  - livingroom tag
+  - livingroom window tag
+  - bathroom tag
+  - kitchen tag
+  - hallway tag
 allowed_fields:
   energy: float
   power:  float

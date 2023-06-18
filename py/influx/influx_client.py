@@ -15,8 +15,8 @@ import dateutil.parser
 from dotenv import load_dotenv
 import utils as utl
 
-def device_room(device):
-    text = device.lower()
+def name_room(name):
+    text = name.lower()
     for name,room_list in devices["rooms"].items():
         if(text in room_list):
             return name
@@ -36,10 +36,23 @@ def device_room(device):
         return "balcony"
     return None
 
-def add_room(data_point,device):
-    room = device_room(device)
+def name_device_model(model):
+    text = model.lower()
+    for model,models_list in devices["models"].items():
+        if(text in models_list):
+            return model
+    return None
+
+def add_room(data_point,name):
+    room = name_room(name)
     if(room is not None):
         data_point["tags"]["room"] = room
+    return
+
+def add_device_model(data_point,name):
+    device_model = name_device_model(name)
+    if(device_model is not None):
+        data_point["tags"]["model"] = device_model
     return
 
 def set_type(fields,param,set_type):
@@ -81,7 +94,7 @@ def last_seen_fresh(last_seen_text):
     else:
         return True
 
-def check_last_seen_discard(fields,device):
+def check_last_seen_discard(fields,name):
     is_last_seen_relevant = False
     if("last_seen" in fields):
         is_last_seen_relevant = True
@@ -89,7 +102,7 @@ def check_last_seen_discard(fields,device):
         del fields["last_seen"]
         is_last_seen_fresh = last_seen_fresh(last_seen)
     if(is_last_seen_relevant) and (not is_last_seen_fresh):
-        log.info("postdiscarded from "+device+" last seen at "+last_seen)
+        log.info("postdiscarded from "+name+" last seen at "+last_seen)
     return is_last_seen_relevant
 
 def object_to_text(data):
@@ -126,27 +139,26 @@ def construct_shellies(topic,payload):
         topic_parts = topic.split('/')
         sensor = topic_parts[4]
         value = float(payload)
-        device = devices["friendly_names"]["topics"][topic]
+        name = devices["friendly_names"]["topics"][topic]
         data_point = {
                 "measurement": "socket",
                 "tags":{
                     "group":"shellies",
-                    "device":device
+                    "name":name
                 },
                 "fields": {
                     sensor: value
                 }
             }
-        add_room(data_point,device)
     return data_point
 
 def construct_nrf(topic_parts,payload):
     data_point = None
-    device = topic_parts[1]
+    name = topic_parts[1]
     fields = json.loads(payload)
     check_allowed_fields(fields)
     check_all_types(fields)
-    if(check_last_seen_discard(fields,device)):
+    if(check_last_seen_discard(fields,name)):
         return
     if("temperature" in fields):
         data_point = {
@@ -178,19 +190,18 @@ def construct_nrf(topic_parts,payload):
         print(fields)
         return
     data_point["tags"] = {
-        "device":device,
+        "name":name,
         "group":topic_parts[0],
     }
-    add_room(data_point,device)
     return data_point
 
 def construct_thread_tags(topic_parts,payload):
     data_point = None
-    device = topic_parts[1]
+    name = topic_parts[1]
     fields = json.loads(payload)
     check_allowed_fields(fields)
     check_all_types(fields)
-    if(check_last_seen_discard(fields,device)):
+    if(check_last_seen_discard(fields,name)):
         return
     if(len(topic_parts) == 3):
         measurement = topic_parts[2]
@@ -200,22 +211,21 @@ def construct_thread_tags(topic_parts,payload):
             "measurement"   : measurement,
             "tags":{
                 "group"         :topic_parts[0],
-                "device"        :topic_parts[1],
+                "name"        :topic_parts[1],
             },
             "fields"        :fields
         }
-    add_room(data_point,device)
     return data_point
 
 def construct_lzig(topic_parts,payload):
     if(len(topic_parts) != 2):
         return
     data_point = None
-    device = topic_parts[1]
+    name = topic_parts[1]
     fields = json.loads(payload)
     check_allowed_fields(fields)
     check_all_types(fields)
-    if(check_last_seen_discard(fields,device)):
+    if(check_last_seen_discard(fields,name)):
         return
     if("temperature" in fields):
         measurement = "weather"
@@ -232,27 +242,25 @@ def construct_lzig(topic_parts,payload):
             "fields": fields,
             "tags":{
                 "group"         :topic_parts[0],
-                "device"        :topic_parts[1],
+                "name"        :topic_parts[1],
             },
         }
-    add_room(data_point,device)
     return data_point
 
 def construct_generic(topic_parts,payload):
     if(len(topic_parts) != 2):
         return
     data_point = None
-    device = topic_parts[1]
+    name = topic_parts[1]
     fields = json.loads(payload)
     check_allowed_fields(fields)
     check_all_types(fields)
-    if(check_last_seen_discard(fields,device)):
+    if(check_last_seen_discard(fields,name)):
         return
     data_point = {
-            "measurement": device,
+            "measurement": name,
             "fields": fields
         }
-    add_room(data_point,device)
     return data_point
 
 # -------------------- mqtt events -------------------- 
@@ -272,6 +280,8 @@ def mqtt_on_message(client, userdata, msg):
         else:
             post = construct_generic(topic_parts,payload)
         if(post != None):
+            add_room(data_point,name)
+            add_device_model(data_point,name)
             post_message(post,msg.topic)
     except:
         log.exception("message")
