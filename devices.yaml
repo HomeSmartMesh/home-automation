@@ -1,5 +1,6 @@
 friendly_names:
   thread_tags:
+    "A1BA16BBF3CB8103": thingy01
     "34B4F6F2747442CA": thingy02
     "7009D837C7BB557A": sensortag01
     "631F80C39437F2F3": sensortag02
@@ -97,7 +98,7 @@ friendly_names:
     '0x00158d0001922ce9': kitchen heat
 rooms:
   livingroom:
-  - tester1
+  - thingy01
   - shelly routers servers
   - shelly tv
   - sonos rear socket
@@ -131,7 +132,7 @@ models:
   - sensortag03
   - sensortag04
   thingy_53:
-  - tester01
+  - thingy01
   - thingy02
   simple_mesh:
   - bedroom tag
