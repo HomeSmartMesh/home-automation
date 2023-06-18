@@ -9,7 +9,7 @@ import os
 import utils as utl
 
 def replace_friendly_names(topic,friendlyNames):
-    for name,friendly_name in friendlyNames:
+    for name,friendly_name in friendlyNames.items():
         topic.replace(name,friendly_name)
     return topic
 
