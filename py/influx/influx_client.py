@@ -261,7 +261,7 @@ def construct_generic(topic_parts,payload):
         return
     data_point = {
             "measurement": name,
-            "fields": fields
+            "fields": fields,
             "tags":{
                 "group"         :topic_parts[0],
                 "name"        :topic_parts[1],
