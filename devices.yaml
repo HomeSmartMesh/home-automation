@@ -108,7 +108,6 @@ rooms:
   - shelly entrance
   - cupboard light
   - sensortag01
-  - sensortag02
   - sensortag03
   - sensortag04
   kitchen:
@@ -125,6 +124,8 @@ rooms:
   - lifx socket
   - pc socket
   - thingy02
+  balcony:
+  - sensortag02
 models:
   thread_sensortag:
   - sensortag01
