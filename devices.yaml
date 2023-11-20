@@ -108,7 +108,6 @@ rooms:
   - sonos rear socket
   - sonos front socket
   - wifi mesh socket
-  - Livingroom weather aaa
   hallway:
   - shelly entrance
   - cupboard light
@@ -132,7 +131,7 @@ rooms:
   balcony:
   - sensortag02
   bedroom:
-  - Bedroom weather aaa
+  - poster socket
 models:
   thread_sensortag:
   - sensortag01
