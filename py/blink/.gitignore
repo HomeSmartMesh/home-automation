@@ -4,3 +4,4 @@ venv
 images
 __pycache__
 Balcony.json
+cameras.json

@@ -1,9 +1,10 @@
+import asyncio
 from blinkpy.blinkpy import Blink
 
-blink = Blink()
-blink.start()
-blink.save("credentials.json")
+async def main():
+  blink = Blink()
+  await blink.start()
+  await blink.save("credentials.json")
+  return
 
-for name, camera in blink.cameras.items():
-  print(name)                   # Name of the camera
-  print(camera.attributes)      # Print available attributes of camera
+asyncio.run(main())
