@@ -3,7 +3,7 @@
         "port":4141
     },
     "mqtt":{
-        "host":"10.0.0.31",
+        "host":"localhost",
         "port":1883,
         "keepalive":60,
         "client_id":"thread_tags_silent",

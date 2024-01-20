@@ -132,6 +132,12 @@ rooms:
   - sensortag02
   bedroom:
   - poster socket
+functions:
+  weather:
+  - sensortag01
+  - sensortag02
+  - sensortag03
+  - sensortag04
 models:
   thread_sensortag:
   - sensortag01

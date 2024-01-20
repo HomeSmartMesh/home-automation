@@ -36,6 +36,24 @@ def name_room(name):
         return "balcony"
     return None
 
+def name_function(name):
+    text = name.lower()
+    func_list = []
+    for func,devices_list in devices["functions"].items():
+        if(text in devices_list):
+            func_list.append(func)
+    if("weather" in text):
+        func_list.append("weather")
+    elif("switch" in text):
+        func_list.append("switch")
+    elif("heat" in text):
+        func_list.append("heat")
+    elif("socket" in text):
+        func_list.append("socket")
+    elif("button" in text):
+        func_list.append("button")
+    return "-".join(func_list)
+
 def name_device_model(model):
     text = model.lower()
     for model,models_list in devices["models"].items():
@@ -48,6 +66,13 @@ def add_room(data_point):
     room = name_room(name)
     if(room is not None):
         data_point["tags"]["room"] = room
+    return
+
+def add_function(data_point):
+    name = data_point["tags"]["name"]
+    func_list_string = name_function(name)
+    if(func_list_string):
+        data_point["tags"]["function"] = func_list_string
     return
 
 def add_device_model(data_point):
@@ -288,6 +313,7 @@ def mqtt_on_message(client, userdata, msg):
         if(post != None):
             add_room(post)
             add_device_model(post)
+            add_function(post)
             post_message(post,msg.topic)
     except:
         log.exception("message")

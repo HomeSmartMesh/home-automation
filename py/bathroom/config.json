@@ -7,7 +7,7 @@
         "subscriptions":[   "shellies/shellyswitch25-B8A4EE/input/0",
                             "shellies/shellyswitch25-B8A4EE/relay/0",
                             "shellies/shellyswitch25-B8A4EE/relay/1",
-                            "nrf/bathroom tag",
+                            "lzig/bathroom weather",
                             "lzig/bathroom fan button"
                         ],
         "publications"  :[  "shellies/shellyswitch25-B8A4EE/relay/1/command"
