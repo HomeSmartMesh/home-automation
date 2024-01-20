@@ -46,7 +46,7 @@
         }
     },
     "log":{
-        "logfile":"/home/pi/share/heat_cut(date).log",
+        "logfile":"/home/wass/share/heat_cut(date).log",
         "level":"Info"
     }
 }

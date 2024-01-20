@@ -1,6 +1,6 @@
 {  
     "mqtt":{
-        "host":"mqtt_broquer",
+        "host":"localhost",
         "port":1883,
         "keepalive":60,
         "client_id":"pc_power_client",
@@ -30,7 +30,7 @@
         "retro_light_dimmer":   "esp/dimmer/request"
     },
     "log":{
-        "logfile":"/home/pi/share/pc_control (date).log",
+        "logfile":"/home/wass/share/pc_control (date).log",
         "exceptions_log_file":"pc_control_exceptions.log",
         "level":"info"
     }

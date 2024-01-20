@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=simple
-ExecStart=node /home/pi/raspi/js/pc_control/pc.js
+ExecStart=node /home/wass/raspi/js/pc_control/pc.js
 Restart=on-abort
 
 [Install]

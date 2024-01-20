@@ -24,7 +24,7 @@
     "button_fan_long_min":30,
     "humidity_sensor_timeout_min":12,
     "log":{
-        "logfile":"/home/pi/share/bathroom(date).log",
+        "logfile":"/home/wass/share/bathroom(date).log",
         "level":"Info"
     }
 }

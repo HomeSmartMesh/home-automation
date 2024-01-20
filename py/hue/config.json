@@ -1,10 +1,10 @@
 {  
     "bridges":{
-        "LivingRoom":"hue",
-        "username_config":"/home/pi/.python_hue"
+        "LivingRoom":"10.0.0.38",
+        "username_config":"/home/wass/.python_hue"
     },
     "mqtt":{
-        "host":"mqtt_broquer",
+        "host":"localhost",
         "port":1883,
         "keepalive":60,
         "client_id":"hue_client",
@@ -75,7 +75,7 @@
         }
     },
     "log":{
-        "logfile":"/home/pi/share/hue(date).log",
+        "logfile":"/home/wass/share/hue(date).log",
         "level":"Info"
     }
 }
