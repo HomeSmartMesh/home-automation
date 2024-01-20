@@ -4,6 +4,9 @@
 
     sudo /usr/bin/python3 -m pip install -r requirements.txt
 
+## init secret
+create `.env` file with INFLUXDB_TOKEN created with write access to the bucket defined in config
+
 ### run as a service
 
 ```bash

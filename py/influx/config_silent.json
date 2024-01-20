@@ -1,0 +1,26 @@
+{
+    "mqtt":{
+        "host":"localhost",
+        "port":1883,
+        "keepalive":60,
+        "client_id":"influx2mqtt",
+        "publish" :false,
+        "subscribe" :true,
+        "subscriptions":[
+            "nrf/#",
+            "lzig/#",
+            "thread_tags/#",
+            "shellies/#"
+        ]
+    },
+    "influxdb":{
+        "url":"http://localhost:8086",
+        "org":"hsm",
+        "bucket":"mqtt",
+        "mqtt_client_id":"py_influx"
+    },
+    "log":{
+        "logfile":"/home/wass/share/influx_client_(date).log",
+        "level":"Info"
+    }
+}
