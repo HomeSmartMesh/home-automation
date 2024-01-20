@@ -9,7 +9,7 @@
             "lzig/pc socket",
             "lzig/sonos button",
             "lzig/office chair vibration",
-            "lzig/retro light switch",
+            "lzig/retro button",
             "shellies/shelly1pm-C45303/relay/0",
             "esp/dimmer/request",
             "esp/dimmer/response"

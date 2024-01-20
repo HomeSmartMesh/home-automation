@@ -144,7 +144,7 @@ mqtt.Emitter.on('mqtt',(data)=>{
       retro_light(data.topic,data.msg)
     }else if(data.topic == config.status.retro_light_dimmer){
       retro_light(data.topic,JSON.parse(data.msg))
-    }else if(data.topic == "lzig/retro light switch"){
+    }else if(data.topic == "lzig/retro button"){
       retro_light(data.topic,JSON.parse(data.msg))
     }
   }catch(e){
