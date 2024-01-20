@@ -20,10 +20,10 @@ def name_room(name):
     for name,room_list in devices["rooms"].items():
         if(text in room_list):
             return name
-    if("living" in text):
-        return "livingroom"
-    elif("office" in text):
+    if("office" in text):
         return "office"
+    elif("living" in text):
+        return "livingroom"
     elif("bath" in text):
         return "bathroom"
     elif("bed" in text):

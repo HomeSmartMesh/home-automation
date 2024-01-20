@@ -43,7 +43,7 @@ friendly_names:
     '0x00124b0021b77899': coord cc2652
     '0x00124b001d4a014b': power lifo
     '0x00124b0018ed23a5': old coord lifo
-    '0x00124b001d49f6ac': router office
+    '0x00124b001d49f6ac': office router
     '0x804b50fffe1a447f': weather round display
     '0xb4e3f9fffe07b4c2': weather squared display
     '0xa4c138d7bd6548ba': office weather
