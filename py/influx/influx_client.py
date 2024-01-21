@@ -42,15 +42,15 @@ def name_function(name):
     for func,devices_list in devices["functions"].items():
         if(text in devices_list):
             func_list.append(func)
+    if("heat" in text):
+        func_list.append("heat")
     if("weather" in text):
         func_list.append("weather")
-    elif("switch" in text):
+    if("switch" in text):
         func_list.append("switch")
-    elif("heat" in text):
-        func_list.append("heat")
-    elif("socket" in text):
+    if("socket" in text):
         func_list.append("socket")
-    elif("button" in text):
+    if("button" in text):
         func_list.append("button")
     return "-".join(func_list)
 

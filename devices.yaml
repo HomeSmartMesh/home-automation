@@ -138,6 +138,18 @@ functions:
   - sensortag02
   - sensortag03
   - sensortag04
+  contact:
+  - office window right
+  - office window left
+  - balcony window right
+  - balcony window left
+  - balcony door
+  - bedroom window
+  - kitchen window
+  - entrance door
+  environment:
+  - thingy01
+  - thingy02
 models:
   thread_sensortag:
   - sensortag01
@@ -156,33 +168,34 @@ models:
   - kitchen tag
   - hallway tag
 allowed_fields:
-  energy: float
-  power:  float
+  alive: int
+  battery:  int
+  breath_voc: float
+  co2_eq: float
   current:  float
+  conductivity: int
+  current_heating_setpoint:  float
+  energy: float
+  gas0: float
+  humidity: float
+  iaq: float
+  iaq_accuracy: float
   light:    float
   light_red:  float
   light_green:  float
   light_blue:   float
   light_ir: float
+  linkquality: int
+  moisture: int
+  occupied_heating_setpoint: float
+  power:  float
   pressure: float
   temperature: float
-  humidity: float
   voltage:  float
-  battery:  int
-  moisture: int
-  conductivity: int
-  current_heating_setpoint:  float
-  occupied_heating_setpoint: float
-  unoccupied_heating_setpoint: float
   pi_heating_demand : int
   rssi:  int
-  alive: int
-  breath_voc: float
-  co2_eq: float
-  gas0: float
-  iaq: float
-  iaq_accuracy: float
-  stabilization: bool
   runin: bool
-  linkquality: int
+  stabilization: bool
   state: boolstring
+  unoccupied_heating_setpoint: float
+  illuminance_lux: float
