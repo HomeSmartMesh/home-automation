@@ -9,6 +9,7 @@
         "keepalive":60,
         "client_id":"hue_client",
         "subscriptions":[
+                            "lzig/bedroom double switch",
                             "lzig/bed light button",
                             "lzig/bed nic button",
                             "lzig/living double switch",
@@ -22,9 +23,27 @@
                         ],
         "actions"   :[],
         "publish" :true,
-        "subscribe" :true
+        "subscribe" :true,
+        "base_topic":"lzig"
     },
     "lightmap":{
+        "livingtop":{
+            "lights":[
+                "LivingTop1",
+                "LivingTop2",
+                "LivingTop3",
+                "LivingTop4",
+                "LivingTop5"
+            ]
+        },
+        "malms":{
+            "lights":[
+                "malms 1",
+                "malms 2",
+                "malms 3",
+                "malms 4"
+            ]
+        },
         "hallway":{
             "action":"light_list_clicks",
             "sensors":[
@@ -50,28 +69,22 @@
                 "Toilet2"
             ]
         },
-        "bedroom":{
-            "action":"light_hold_switch",
-            "sensors":[
-                "bedroom switch",
-                "bed light button",
-                "bed nic button"
-            ],
+        "bedroomtop":{
             "lights":[
                 "Bed Malm",
                 "Bed N",
                 "Bed W"
-            ],
+            ]
+        },
+        "bedroomambient":{
             "switches":[
                 "poster socket"
-            ],
-            "base_topic":"lzig"
+            ]
         },
         "office":{
             "switches":[
                 "lifx socket"
-            ],
-            "base_topic":"lzig"
+            ]
         }
     },
     "log":{

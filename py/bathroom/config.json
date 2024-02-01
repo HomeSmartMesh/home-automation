@@ -8,7 +8,8 @@
                             "shellies/shellyswitch25-B8A4EE/relay/0",
                             "shellies/shellyswitch25-B8A4EE/relay/1",
                             "lzig/bathroom weather",
-                            "lzig/bathroom fan button"
+                            "lzig/bathroom fan button",
+                            "thread_tags/thingy02/env"
                         ],
         "publications"  :[  "shellies/shellyswitch25-B8A4EE/relay/1/command"
                         ],

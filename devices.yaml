@@ -124,10 +124,10 @@ rooms:
   - shelly washing machine
   - shelly bathroom light
   - shelly bathroom fan
+  - thingy02
   office:
   - lifx socket
   - pc socket
-  - thingy02
   balcony:
   - sensortag02
   bedroom:

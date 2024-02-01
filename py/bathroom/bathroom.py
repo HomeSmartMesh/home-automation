@@ -164,7 +164,7 @@ def mqtt_on_message(client, userdata, msg):
             shelly_light_relay(msg.payload)
         elif(msg.topic == "shellies/shellyswitch25-B8A4EE/relay/1"):
             shelly_fan_relay(msg.payload)
-        elif(msg.topic == "lzig/bathroom weather"):
+        elif(msg.topic == "thread_tags/thingy02/env"):
             sensor_humidity(msg.payload)
         elif(msg.topic == "lzig/bathroom fan button"):
             button_fan(msg.payload)
