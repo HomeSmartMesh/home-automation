@@ -40,11 +40,9 @@ def room_lights_control(room_name,cmd):
             lights[light_name].on = False
     elif(cmd == "DIM"):
         for light_name in room["lights"]:
-            lights[light_name].on = False
             b.set_light(light_name, {'on' : True, 'bri' : 1})
     elif(cmd == "MID"):
         for light_name in room["lights"]:
-            lights[light_name].on = False
             b.set_light(light_name, {'on' : True, 'bri' : 128})
     elif(cmd == "BRIGHT"):
         for light_name in room["lights"]:
@@ -92,43 +90,25 @@ def bathroom_light_hue():
     log.debug("bathroom_light_hue> set light to min")
     return
 
-#right, left, right_long, both, both_long, right double
-def livroom_light_switch(payload):
-    #brightness 0-254
+def livingroom_light_double(payload):
     sensor = json.loads(payload)
-    if("click" in sensor):
-        log.info(f"living room light switch double> {sensor['click']}")
-        if(sensor["click"] == "right"):
-            if(lights["LivingTop1"].on):
-                room_light_brightness("livingtop",0)
-            else:
-                room_light_brightness("livingtop",180)
-        elif(sensor["click"] == "right_long"):
-            room_light_brightness("livingtop",1)
-        elif(sensor["click"] == "right_double"):
-            room_light_brightness("livingtop",254)
-        elif(sensor["click"] == "left"):
-            if(lights["malms 1"].on):
-                room_light_brightness("malms",0)
-            else:
-                room_light_brightness("malms",180)
-        elif(sensor["click"] == "left_long"):
-            room_light_brightness("malms",1)
-        elif(sensor["click"] == "left_double"):
-            room_light_brightness("malms",254)
-        elif(sensor["click"] == "both"):
-            if(lights["LivingTop1"].on):
-                room_light_brightness("malms",0)
-                room_light_brightness("livingtop",0)
-            else:
-                room_light_brightness("malms",180)
-                room_light_brightness("livingtop",180)
-        elif(sensor["click"] == "both_long"):
-            room_light_brightness("malms",1)
-            room_light_brightness("livingtop",1)
-        elif(sensor["click"] == "both_double"):
-            room_light_brightness("malms",254)
-            room_light_brightness("livingtop",254)
+    if(not "action" in sensor):
+        return
+    action = sensor["action"]
+    if(("right" in action) or ("both" in action)):
+        if("double" in action):
+            room_lights_control("livingtop","BRIGHT")
+        elif("hold" in action):
+            room_lights_control("livingtop","DIM")
+        else:
+            room_lights_control("livingtop","TOGGLE")
+    if(("left" in action) or ("both" in action)):
+        if("double" in action):
+            room_lights_control("malms","BRIGHT")
+        elif("hold" in action):
+            room_lights_control("malms","DIM")
+        else:
+            room_lights_control("malms","TOGGLE")
     return
 
 def bedroom_light_double(payload):
@@ -297,10 +277,10 @@ def mqtt_on_message(client, userdata, msg):
             if(sensor_name == "office switch"):
                 office_switch(msg.payload)
             elif(sensor_name == "living double switch"):
-                livroom_light_switch(msg.payload)
+                livingroom_light_double(msg.payload)
             elif(sensor_name == "bedroom double switch"):
                 bedroom_light_double(msg.payload)
-            elif(sensor_name in ["bedroom switch","bed nic button"]):
+            elif(sensor_name in ["bedroom switch","bed light button"]):
                 bedroom_light_switch(msg.payload)
             else:
                 for room_name,room in config["lightmap"].items():
