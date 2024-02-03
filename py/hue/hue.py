@@ -1,21 +1,13 @@
 #https://github.com/studioimaginaire/phue
-
-
 #https://pypi.python.org/pypi/paho-mqtt/1.1
-import paho.mqtt.client as mqtt
 import json
 from phue import Bridge
 #just to get host name
-import socket 
 from time import sleep
-import time
-from math import ceil
 import logging as log
-import sys,os
 import cfg
 from mqtt import mqtt_start
 import threading
-import time
 
 states = {}
 
@@ -29,6 +21,18 @@ def room_switches_control(room_name,cmd):
                 state_cmd = '{"state":"'+cmd+'"}'
                 clientMQTT.publish(topic,state_cmd)
 
+def switch_off(room_name):
+    log.info(f"{room_name} lights> delayed Switch OFF")
+    room = config["lightmap"][room_name]
+    for light_name in room["lights"]:
+        lights[light_name].on = False
+    return
+
+def delayed_switch_off(room_name):
+    timer = threading.Timer(5,switch_off, args=(room_name,))
+    timer.start()
+    return
+
 def room_lights_control(room_name,cmd):
     log.info(f"{room_name} lights> {cmd}")
     room = config["lightmap"][room_name]
@@ -36,8 +40,8 @@ def room_lights_control(room_name,cmd):
         for light_name in room["lights"]:
             lights[light_name].on = True
     elif(cmd == "OFF"):
-        for light_name in room["lights"]:
-            lights[light_name].on = False
+        room_lights_control(room_name,"DIM")
+        delayed_switch_off(room_name)
     elif(cmd == "DIM"):
         for light_name in room["lights"]:
             b.set_light(light_name, {'on' : True, 'bri' : 1})
