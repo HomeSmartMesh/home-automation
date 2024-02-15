@@ -191,6 +191,7 @@ allowed_fields:
   power:  float
   pressure: float
   temperature: float
+  local_temperature: float
   voltage:  float
   pi_heating_demand : int
   rssi:  int
