@@ -107,7 +107,7 @@ def check_all_types(fields):
     return
 
 def check_allowed_fields(fields):
-    for key in fields.keys():
+    for key in list(fields.keys()):#list is to copy and allow change
         if (fields[key] is None):
             del fields[key]
         if(key not in list(devices["allowed_fields"].keys())):
