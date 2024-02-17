@@ -171,11 +171,13 @@ allowed_fields:
   alive: int
   battery:  int
   breath_voc: float
+  co2: float
   co2_eq: float
   current:  float
   conductivity: int
   current_heating_setpoint:  float
   energy: float
+  formaldehyd: int
   gas0: float
   humidity: float
   iaq: float
@@ -188,10 +190,12 @@ allowed_fields:
   linkquality: int
   moisture: int
   occupied_heating_setpoint: float
+  pm25: int
   power:  float
   pressure: float
   temperature: float
   local_temperature: float
+  voc: int
   voltage:  float
   pi_heating_demand : int
   rssi:  int
@@ -200,3 +204,7 @@ allowed_fields:
   state: boolstring
   unoccupied_heating_setpoint: float
   illuminance_lux: float
+range:
+  pm25:
+    min: 0
+    max: 1000

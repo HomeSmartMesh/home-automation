@@ -107,7 +107,7 @@ def check_all_types(fields):
     return
 
 def check_allowed_fields(fields):
-    for key in list(fields.keys()):
+    for key in fields.keys():
         if (fields[key] is None):
             del fields[key]
         if(key not in list(devices["allowed_fields"].keys())):
@@ -131,6 +131,17 @@ def check_last_seen_discard(fields,name):
     if(is_last_seen_relevant) and (not is_last_seen_fresh):
         log.info("postdiscarded from "+name+" last seen at "+last_seen)
     return is_last_seen_relevant
+
+def check_range_discard(fields,name):
+    for key in fields.keys():
+        if(key in devices["range"]):
+            min = devices["range"][key]["min"]
+            max = devices["range"][key]["max"]
+            val = fields[key]
+            if((val < min) or (val > max)):
+                log.warning(f"val {val} out of range [{min},{max}] from {name}")
+                return True
+    return False
 
 def object_to_text(data):
     point = data["measurement"]
@@ -253,6 +264,8 @@ def construct_lzig(topic_parts,payload):
     check_allowed_fields(fields)
     check_all_types(fields)
     if(check_last_seen_discard(fields,name)):
+        return
+    if(check_range_discard(fields,name)):
         return
     if("temperature" in fields):
         measurement = "weather"
