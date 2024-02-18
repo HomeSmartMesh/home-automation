@@ -44,18 +44,16 @@ friendly_names:
     '0x00124b001d4a014b': power lifo
     '0x00124b0018ed23a5': old coord lifo
     '0x00124b001d49f6ac': office router
-    '0x804b50fffe1a447f': weather round display
     '0xb4e3f9fffe07b4c2': weather squared display
+    '0xa4c1381529fb2ebb': bathroom weather
     '0xa4c138d7bd6548ba': office weather
-    '0xa4c1381529fb2ebb': office heat weather
     '0xa4c1386a06d60149': livingroom weather
     '0xa4c138196b4c3f43': livingroom heater weather
     '0xa4c13873ef8be4ee': bedroom weather
-    '0x00158d00051e1276': bedroom heat weather
     '0x00158d000192dd3e': living heat
     '0x00158d0001922d4f': bedroom heat
     '0x00158d0001922d10': bathroom heat
-    '0x00158d0001922d22': office heat
+    '0x50325ffffe03470f': office heat
     '0x00158d0001922ce9': kitchen heat
     '0x00158d00028f7fb5': office switch
     '0x00158d00024b3e45': retro light switch
@@ -65,11 +63,11 @@ friendly_names:
     '0x00158d00012a781d': hallway corridor switch
     '0x00158d000171876f': toilet switch
     '0x00158d0004570435': living double switch
-    '0xccccccfffee20ebd': tv button
+    '0x00158d000aca3ac3': bedroom double switch
+    '0xccccccfffee20ebd': button
     '0x680ae2fffeac9ea7': roll button 1
     '0x842e14fffe1be08a': roll button 2
     '0x00158d0001eb81c7': office button
-    '0x00158d0001e7a12b': test button
     '0x00158d0001eb8fc9': pc button
     '0x00158d0002a2c21c': bathroom fan button
     '0x00158d00029078a2': bed nic button
@@ -87,7 +85,7 @@ friendly_names:
     '0x00158d0002753dec': living motion
     '0x680ae2fffe39d18f': office motion
     '0x00158d0001ef6374': bed light button
-    '0x04cf8cdf3c7b5bad': day light
+    '0x04cf8cdf3c7b5bad': office light
     '0x000d6ffffe9ccd6a': cupboard light
     '0x00158d000255fb8b': floody
     '0xcc86ecfffe4e9bc0': poster socket
@@ -96,10 +94,16 @@ friendly_names:
     '0xa4c1380bba7bd294': sonos rear socket
     '0xa4c138ace79d4f0d': sonos front socket
     '0xa4c138f28ef03998': wifi mesh socket
-    '0x00158d000543fc96': office weather CR
-    '0x00158d00051e127b': servers weather CR
+    '0xa4c138292a358f9d': office air
+  zigbee_unused:
+    '0x00158d00051e1276': bedroom heat weather CR
     '0x00158d0005484ec5': living heat weather CR
+    '0x00158d000543fc96': office weather CR
     '0x00158d00026ecd6a': office heat weather CR
+    '0x00158d00051e127b': servers weather CR
+    '0x00158d0001e7a12b': test button
+    '0x804b50fffe1a447f': weather round display
+    '0x00158d0001922d22': office heat Euro
 rooms:
   livingroom:
   - thingy01
