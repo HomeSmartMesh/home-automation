@@ -20,9 +20,11 @@ sensor:
     eco2:
       name: "Equivalent CO2"
       accuracy_decimals: 1
+      state_topic: esphome/bedroom env/co2_eq
     tvoc:
       name: "Total Volatile Organic Compounds"
       accuracy_decimals: 1
+      state_topic: esphome/bedroom env/tvoc
     store_baseline: yes
     address: 0x58
     update_interval: 10s
@@ -31,6 +33,7 @@ sensor:
     name: "BH1750 Illuminance"
     address: 0x23
     update_interval: 10s
+    state_topic: esphome/bedroom env/light
 
   - platform: bme280_i2c
     temperature:
@@ -50,12 +53,12 @@ ota:
   password: ""
 
 wifi:
-  ssid: "TW24"
-  password: ""
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "Bedroom-Env Fallback Hotspot"
-    password: ""
+    password: !secret wifi_ap_password
 
 captive_portal:

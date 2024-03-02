@@ -9,4 +9,3 @@
 
     activate
     esphome run bedroom-env/config.yaml
-    esphome run bedroom-air/config.yaml
