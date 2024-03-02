@@ -1,0 +1,48 @@
+esphome:
+  name: bedroom-env
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+i2c:
+  scl: 16
+  sda: 17
+  scan: true
+
+mqtt:
+  broker: 10.0.0.91
+  discovery: false
+  topic_prefix: esphome/bedroom env
+
+sensor:
+  - platform: bme280_i2c
+    temperature:
+      name: Temperature
+      oversampling: 16x
+      state_topic: esphome/bedroom env/temperature
+    pressure:
+      name: Pressure
+      state_topic: esphome/bedroom env/pressure
+    humidity:
+      name: Humidity
+      state_topic: esphome/bedroom env/humidity
+    address: 0x76
+    update_interval: 10s
+
+logger:
+  level: VERY_VERBOSE
+
+#ota:
+#  password: ""
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Bedroom-Env Fallback Hotspot"
+    password: !secret wifi_ap_password
+
+captive_portal:

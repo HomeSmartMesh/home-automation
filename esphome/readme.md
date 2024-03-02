@@ -9,3 +9,4 @@
 
     activate
     esphome run bedroom-env/config.yaml
+    esphome run mini/config.yaml
