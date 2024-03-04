@@ -35,6 +35,10 @@ influx delete --bucket=mqtt \
   --token=''
 ```
 
+```bash
+influx delete --bucket mqtt --org hsm --predicate '_measurement="env" AND name="office air"' --start '1970-01-01T00:00:00Z' --stop '2025-01-01T00:00:00Z'
+```
+
 # influxDB
 ## influx queries examples
 

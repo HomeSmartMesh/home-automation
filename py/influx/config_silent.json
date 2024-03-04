@@ -10,7 +10,8 @@
             "nrf/#",
             "lzig/#",
             "thread_tags/#",
-            "shellies/#"
+            "shellies/#",
+            "esphome/#"
         ]
     },
     "influxdb":{
