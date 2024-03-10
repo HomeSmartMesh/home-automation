@@ -157,6 +157,7 @@ functions:
   - thingy02
   - office air
   - air box
+  - nova-pm
 models:
   thread_sensortag:
   - sensortag01
@@ -197,7 +198,8 @@ allowed_fields:
   linkquality: int
   moisture: int
   occupied_heating_setpoint: float
-  pm25: int
+  pm10: float
+  pm25: float
   power:  float
   pressure: float
   temperature: float

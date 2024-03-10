@@ -267,7 +267,9 @@ def construct_lzig(topic_parts,payload):
         return
     if(check_range_discard(fields,name)):
         return
-    if("temperature" in fields):
+    if("pm25" in fields):
+        measurement = "air"
+    elif("temperature" in fields):
         measurement = "weather"
     elif("current" in fields):
         measurement = "socket"
@@ -287,9 +289,32 @@ def construct_lzig(topic_parts,payload):
         }
     return data_point
 
+def construct_esphome(topic_parts,payload):
+    if(len(topic_parts) != 4):
+        return
+    data_point = None
+    group = topic_parts[0]
+    name = topic_parts[1]
+    measurement = topic_parts[2]
+    field = topic_parts[3]
+    fields = {field:payload}
+    check_allowed_fields(fields)
+    check_all_types(fields)
+    if(not fields):
+        return None
+    data_point = {
+            "measurement":  measurement,
+            "fields"     :  fields,
+            "tags":{
+                "group" :   group,
+                "name"  :   name,
+            },
+        }
+    return data_point
+
 def construct_generic(topic_parts,payload):
     if(len(topic_parts) != 2):
-        return
+        return None
     data_point = None
     name = topic_parts[1]
     fields = json.loads(payload)
@@ -321,6 +346,8 @@ def mqtt_on_message(client, userdata, msg):
             post = construct_thread_tags(topic_parts,payload)
         elif(topic_parts[0] == "lzig"):
             post = construct_lzig(topic_parts,payload)
+        elif(topic_parts[0] == "esphome"):
+            post = construct_esphome(topic_parts,payload)
         else:
             post = construct_generic(topic_parts,payload)
         if(post != None):
