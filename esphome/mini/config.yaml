@@ -6,9 +6,11 @@ esp32:
   framework:
     type: arduino
 i2c:
-  scl: 16
-  sda: 17
-  scan: true
+  - id: bus_a
+    scl: 16
+    sda: 17
+    scan: false
+    frequency: 400kHz
 
 mqtt:
   broker: 10.0.0.91
@@ -16,15 +18,40 @@ mqtt:
   topic_prefix: esphome/bedroom env
 
 sensor:
+#  - platform: bh1750
+#    id: lux
+#    i2c_id: bus_a
+#    name: "BH1750 Illuminance"
+#    address: 0x23
+#    update_interval: 10s
+#    state_topic: esphome/bedroom env/light
+  - platform: sgp30
+    i2c_id: bus_a
+    eco2:
+      name: "Equivalent CO2"
+      id: eco2
+      accuracy_decimals: 1
+      state_topic: esphome/bedroom env/co2_eq
+    tvoc:
+      name: "Total Volatile Organic Compounds"
+      id: tvoc
+      accuracy_decimals: 1
+      state_topic: esphome/bedroom env/tvoc
+    store_baseline: yes
+    address: 0x58
+    update_interval: 1s
   - platform: bme280_i2c
     temperature:
+      id: temperature
       name: Temperature
       oversampling: 16x
       state_topic: esphome/bedroom env/temperature
     pressure:
+      id: pressure
       name: Pressure
       state_topic: esphome/bedroom env/pressure
     humidity:
+      id: humidity
       name: Humidity
       state_topic: esphome/bedroom env/humidity
     address: 0x76
@@ -46,3 +73,14 @@ wifi:
     password: !secret wifi_ap_password
 
 captive_portal:
+
+interval:
+  - interval: 20s
+    then:
+      - mqtt.publish:
+          topic: esphome/bedroom env/sensor_data
+          payload: !lambda |-
+            return "{\"eco2\":" + to_string(id(eco2).state) +
+                   ", \"temperature\":" + to_string(id(temperature).state) +
+                   ", \"humidity\":" + to_string(id(humidity).state) +
+                   ", \"pressure\":" + to_string(id(pressure).state) + "}";
