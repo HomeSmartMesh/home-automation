@@ -18,11 +18,21 @@ eurotronic_system_mode = {
     "child protection":7
 }
 
+tuya_window_mode = {
+    "disable open window":"OFF",
+    "set open window":"ON"
+}
+
 def heater_notify(name,command):
     topic = config["heatings"][name]["topic"]
-    json_msg = {"eurotronic_system_mode":2**(eurotronic_system_mode[command])}
-    text_msg = json.dumps(json_msg)
-    clientMQTT.publish(topic,text_msg)
+    if(config["heatings"][name]["type"] == "eurotronic"):
+        json_msg = {"eurotronic_system_mode":2**(eurotronic_system_mode[command])}
+        text_msg = json.dumps(json_msg)
+        clientMQTT.publish(topic,text_msg)
+    elif(config["heatings"][name]["type"] == "tuya"):
+        json_msg = {"open_window": tuya_window_mode[command]}
+        text_msg = json.dumps(json_msg)
+        clientMQTT.publish(topic,text_msg)
     return
 
 def check_all_contacts(apertures):

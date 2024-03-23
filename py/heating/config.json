@@ -18,6 +18,7 @@
     },
     "heatings":{
         "living heat":{
+            "type":"eurotronic",
             "topic":"lzig/living heat/set",
             "Apertures":[
                 "balcony door",
@@ -26,6 +27,7 @@
             ]
         },
         "office heat":{
+            "type":"tuya",
             "topic":"lzig/office heat/set",
             "Apertures":[
                 "office window right",
@@ -33,12 +35,14 @@
             ]
         },
         "bedroom heat":{
+            "type":"eurotronic",
             "topic":"lzig/bedroom heat/set",
             "Apertures":[
                 "bedroom window"
             ]
         },
         "kitchen heat":{
+            "type":"eurotronic",
             "topic":"lzig/kitchen heat/set",
             "Apertures":[
                 "kitchen window"

@@ -133,6 +133,7 @@ rooms:
   office:
   - lifx socket
   - pc socket
+  - sdcx-mini
   balcony:
   - sensortag02
   bedroom:
@@ -158,6 +159,8 @@ functions:
   - office air
   - air box
   - nova-pm
+  - pms5003t
+  - sdcx-mini
 models:
   thread_sensortag:
   - sensortag01
@@ -198,6 +201,7 @@ allowed_fields:
   linkquality: int
   moisture: int
   occupied_heating_setpoint: float
+  pm1: float
   pm10: float
   pm25: float
   power:  float
