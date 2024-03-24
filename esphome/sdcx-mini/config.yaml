@@ -1,0 +1,47 @@
+esphome:
+  name: sdcx-mini
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+i2c:
+  scl: 16
+  sda: 17
+  scan: false
+
+mqtt:
+  broker: 10.0.0.91
+  discovery: false
+  topic_prefix: esphome/sdcx-mini/air
+
+sensor:
+  - platform: scd4x
+    co2:
+      name: "Workshop CO2"
+      state_topic: esphome/sdcx-mini/air/co2
+    temperature:
+      name: "Workshop Temperature"
+      state_topic: esphome/sdcx-mini/env/temperature
+    humidity:
+      name: "Workshop Humidity"
+      state_topic: esphome/sdcx-mini/env/humidity
+    measurement_mode: single_shot
+
+#logger:
+#  level: VERY_VERBOSE
+
+ota:
+  password: ""
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Bedroom-Env Fallback Hotspot"
+    password: !secret wifi_ap_password
+
+captive_portal:

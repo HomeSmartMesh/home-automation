@@ -18,3 +18,5 @@
     esphome run pm-ttgo/config.yaml
     esphome run pm-c3/config.yaml
     esphome run pms-mini/config.yaml
+    esphome run sdcx-c3/config.yaml
+
