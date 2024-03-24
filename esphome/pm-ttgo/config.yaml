@@ -23,6 +23,7 @@ sensor:
     pm_10_0:
       name: "pm10"
       state_topic: esphome/nova-air/air/pm10
+      id: pm10
     update_interval: 5min
 
 #logger:
@@ -41,3 +42,10 @@ wifi:
     password: !secret wifi_ap_password
 
 captive_portal:
+
+interval:
+  - interval: 10min
+    then:
+      - mqtt.publish:
+          topic: esp/epaper/service
+          payload: !lambda 'char buffer[32]; sprintf(buffer, "%.1f", id(pm10).state); return std::string(buffer);'
