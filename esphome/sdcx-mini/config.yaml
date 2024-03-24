@@ -17,17 +17,26 @@ mqtt:
   topic_prefix: esphome/sdcx-mini/air
 
 sensor:
+  - platform: bme280_i2c
+    temperature:
+      name: "Workshop Temperature"
+      state_topic: esphome/sdcx-mini/env/temperature
+      oversampling: 16x
+    humidity:
+      name: "Workshop Humidity"
+      state_topic: esphome/sdcx-mini/env/humidity
+    pressure:
+      name: "Ambient Pressure"
+      id: bme_pressure
+      state_topic: esphome/sdcx-mini/env/pressure
+    address: 0x76
+
   - platform: scd4x
     co2:
       name: "Workshop CO2"
       state_topic: esphome/sdcx-mini/air/co2
-    temperature:
-      name: "Workshop Temperature"
-      state_topic: esphome/sdcx-mini/env/temperature
-    humidity:
-      name: "Workshop Humidity"
-      state_topic: esphome/sdcx-mini/env/humidity
     measurement_mode: single_shot
+    ambient_pressure_compensation_source: bme_pressure
 
 #logger:
 #  level: VERY_VERBOSE
