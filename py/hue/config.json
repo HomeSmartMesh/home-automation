@@ -18,7 +18,8 @@
                             "lzig/hallway living switch",
                             "lzig/hallway corridor switch",
                             "lzig/toilet switch",
-                            "lzig/poster socket"
+                            "lzig/poster socket",
+                            "lzig/bathroom double switch"
                         ],
         "actions"   :[],
         "publish" :true,
@@ -83,6 +84,11 @@
         "office":{
             "switches":[
                 "lifx socket"
+            ]
+        },
+        "bathroom":{
+            "lights":[
+                "Bathroom main"
             ]
         }
     },
