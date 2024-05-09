@@ -5,9 +5,7 @@
 import paho.mqtt.client as mqtt
 import json
 from time import sleep
-import time
 import logging as log
-import sys,os
 import cfg
 from mqtt import mqtt_start
 import threading
@@ -15,8 +13,10 @@ import threading
 input_timer = None
 
 def set_fan_relay(fan_val):
-    topic = "shellies/shellyswitch25-B8A4EE/relay/1/command"
-    clientMQTT.publish(topic,fan_val)
+    topic = "shellies/bathroom/rpc"
+    is_on = (fan_val == "on")
+    payload = {"src":"raspi","method":"Switch.Set","params":{"id":0,"on":is_on}}
+    clientMQTT.publish(topic,json.dumps(payload))
     log.debug(f"set_fan_relay> to {fan_val}. state = {state}")
     return
 
@@ -25,7 +25,7 @@ def stop_fan_relay_on_conditions():
     if(state["button_fan_timer_min"] != 0):
         log.info(f"stop_fan_relay_on_conditions> stop rejected, user timer running. state = {state}")
         return
-    if(state["input"] == True):
+    if(state["light"] == True):
         log.info(f"stop_fan_relay_on_conditions> stop rejected, (light) 'input' is on. state = {state}")
         return
     if(state["humidity_sensor_alive"]):
@@ -42,7 +42,7 @@ def stop_fan_relay_on_conditions():
 def input_timer_trigger():
     log.info(f"input_timer_trigger> trigger")
     #if input still active after the delay since its start, then start the fan
-    if(state["input"] == True):
+    if(state["light"] == True):
         set_fan_relay("on")
     return
 
@@ -75,41 +75,15 @@ def start_input_timer():
     log.info(f"start_input_timer> state = {state}")
     return
 
-def shelly_input(payload):
-    global state
-    input_state = int(payload)
-    if(input_state == 1) and (state["input"] == False):
-        log.info(f"shelly_input> =>1. state = {state}")
-        state["input"] = True
-        start_input_timer()
-    elif(input_state == 0) and (state["input"] == True):
-        log.info(f"shelly_input> =>0. state = {state}")
-        state["input"] = False
-        if(input_timer):
-            input_timer.cancel()
-        stop_fan_relay_on_conditions()
-    return
-
-def shelly_light_relay(payload):
-    global state
-    relay_state = payload.decode()
-    log.debug(f"shelly_light_relay> relay_state = {relay_state}. state = {state}")
-    if(relay_state == "on") and (state["light_relay"] == False):
-        state["light_relay"] = True
-        log.debug(f"shelly_light_relay> =>on. state = {state}")
-    elif(relay_state == "off") and (state["light_relay"] == True):
-        state["light_relay"] = False
-        log.debug(f"shelly_light_relay> =>off. state = {state}")
-    return
-
 def shelly_fan_relay(payload):
     global state
-    relay_state = payload.decode()
+    data = json.loads(payload)
+    relay_state = data["output"]
     log.debug(f"shelly_fan_relay> relay_state = {relay_state}. state = {state}")
-    if(relay_state == "on") and (state["fan_relay"] == False):
+    if(relay_state) and (state["fan_relay"] == False):
         state["fan_relay"] = True
         log.debug(f"shelly_fan_relay> =>on. state = {state}")
-    elif(relay_state == "off") and (state["fan_relay"] == True):
+    elif(not relay_state) and (state["fan_relay"] == True):
         state["fan_relay"] = False
         log.debug(f"shelly_fan_relay> =>off. state = {state}")
     return
@@ -126,7 +100,7 @@ def sensor_humidity(payload):
     stop = config["humidity"]["stop_fan"]
     start = config["humidity"]["start_fan"]
     if(old_humidity >= stop) and (humidity_level < stop):
-        if(state["input"] == False):
+        if(state["light"] == False):
             log.info(f"sensor_humidity> humidity down")
             stop_fan_relay_on_conditions()
     elif(old_humidity <= start) and (humidity_level > start):
@@ -136,11 +110,11 @@ def sensor_humidity(payload):
     state["humidity_sensor_timer_min"] = config["humidity_sensor_timeout_min"]
     return
 
-def button_fan(payload):
+def fan_action(action):
     global state
-    sensor = json.loads(payload)
-    if("click" in sensor and sensor["click"] == "single"):
+    if(action == "single"):
         log.info("button_fan> single click")
+        print(state)
         if(state["fan_relay"] == False):
             set_fan_relay("on")
             state["button_fan_timer_min"] = config["button_fan_short_min"]
@@ -148,26 +122,81 @@ def button_fan(payload):
         else:
             #user force stopping the fan on all conditions
             set_fan_relay("off")
-    elif("action" in sensor and sensor["action"] == "hold"):
+        return
+    if(action == "hold"):
         log.info("button_fan> long press")
         set_fan_relay("on")
         state["button_fan_timer_min"] = config["button_fan_long_min"]
         button_timer_trigger()
+        return
+    return
+
+def button_fan(payload):
+    global state
+    sensor = json.loads(payload)
+    if("click" in sensor and sensor["click"] == "single"):
+        fan_action("single")
+    elif("action" in sensor and sensor["action"] == "hold"):
+        fan_action("hold")
+    return
+
+def bathroom_light_double(payload):
+    sensor = json.loads(payload)
+    if(not "action" in sensor):
+        return
+    action = sensor["action"]
+    if(("left" in action) or ("both" in action)):
+        if("double" in action):
+            fan_action("double")#does nothing
+        elif("long" in action):
+            fan_action("hold")
+        else:
+            fan_action("single")
+    return
+
+def shelly_input(payload):
+    global state
+    input_state = int(payload)
+    if(input_state == 1) and (state["light"] == False):
+        log.info(f"shelly_input> =>1. state = {state}")
+        state["light"] = True
+        start_input_timer()
+    elif(input_state == 0) and (state["light"] == True):
+        log.info(f"shelly_input> =>0. state = {state}")
+        state["light"] = False
+        if(input_timer):
+            input_timer.cancel()
+        stop_fan_relay_on_conditions()
+    return
+
+def bathroom_light_state(payload):
+    light_state = payload.decode('utf-8')
+    if(light_state != "OFF") and (state["light"] == False):
+        log.info(f"light> =>1. state = {state}")
+        state["light"] = True
+        start_input_timer()
+    elif(light_state == "OFF") and (state["light"] == True):
+        log.info(f"light> =>0. state = {state}")
+        state["light"] = False
+        if(input_timer):
+            input_timer.cancel()
+        stop_fan_relay_on_conditions()
     return
 
 def mqtt_on_message(client, userdata, msg):
     try:
+        print(f"topic: {msg.topic}")
         topic_parts = msg.topic.split('/')
-        if(msg.topic == "shellies/shellyswitch25-B8A4EE/input/0"):
-            shelly_input(msg.payload)
-        elif(msg.topic == "shellies/shellyswitch25-B8A4EE/relay/0"):
-            shelly_light_relay(msg.payload)
-        elif(msg.topic == "shellies/shellyswitch25-B8A4EE/relay/1"):
+        if(msg.topic == "lzig/bathroom double switch"):
+            bathroom_light_double(msg.payload)
+        elif(msg.topic == "shellies/bathroom/status/switch:0"):
             shelly_fan_relay(msg.payload)
         elif(msg.topic == "thread_tags/thingy02/env"):
             sensor_humidity(msg.payload)
         elif(msg.topic == "lzig/bathroom fan button"):
             button_fan(msg.payload)
+        elif(msg.topic == "lights/bathroom"):
+            bathroom_light_state(msg.payload)
         else:
             log.error("unknown topic: "+msg.topic)
     except Exception as e:
@@ -182,9 +211,8 @@ config = cfg.configure_log(__file__)
 clientMQTT = mqtt_start(config,mqtt_on_message,True)
 
 state = {
-    "input":False,
+    "light":False,
     "fan_relay":False,
-    "light_relay":False,
     "humidity":50.0,
     "humidity_sensor_alive":True,
     "humidity_sensor_timer_min":config["humidity_sensor_timeout_min"],

@@ -21,7 +21,13 @@ def room_switches_control(room_name,cmd):
                 state_cmd = '{"state":"'+cmd+'"}'
                 clientMQTT.publish(topic,state_cmd)
 
+def update_broker_state(room_name,cmd):
+    if(cmd != "TOGGLE"):
+        clientMQTT.publish(f"lights/{room_name}",cmd)
+    return
+
 def switch_off(room_name):
+    update_broker_state(room_name,"OFF")
     log.info(f"{room_name} lights> delayed Switch OFF")
     room = config["lightmap"][room_name]
     for light_name in room["lights"]:
@@ -33,7 +39,8 @@ def delayed_switch_off(room_name):
     timer.start()
     return
 
-def room_lights_control(room_name,cmd):
+def room_lights_control(room_name,cmd,toggle_value="MID"):
+    update_broker_state(room_name,cmd)
     log.info(f"{room_name} lights> {cmd}")
     room = config["lightmap"][room_name]
     if(cmd == "ON"):
@@ -61,7 +68,7 @@ def room_lights_control(room_name,cmd):
         if(any_light_is_on):
             room_lights_control(room_name,"OFF")
         else:
-            room_lights_control(room_name,"MID")
+            room_lights_control(room_name,toggle_value)
         return
 
 def room_light_brightness(room_name,brightness):
@@ -80,19 +87,6 @@ def room_light_brightness(room_name,brightness):
 def room_control(room_name,cmd):
     room_lights_control(room_name,cmd)
     room_switches_control(room_name,cmd)
-
-def bathroom_shelly_light(cmd):
-    topic = "shellies/shellyswitch25-B8A4EE/relay/0/command"
-    clientMQTT.publish(topic,cmd)
-    log.debug(f"set_light_relay> to {cmd}")
-    return
-
-def bathroom_light_hue():
-    #switch on and brightness command together so that it does not go to previous level before adjusting the brightness
-    b.set_light("Bathroom main", {'on' : True, 'bri' : 1})
-    b.set_light("Bathroom main", {'on' : True, 'bri' : 1})
-    log.debug("bathroom_light_hue> set light to min")
-    return
 
 def livingroom_light_double(payload):
     sensor = json.loads(payload)
@@ -130,6 +124,20 @@ def bedroom_light_double(payload):
     if(("right" in action) or ("both" in action)):
             room_lights_control("bedroomtop","OFF")
             room_switches_control("bedroomambient","TOGGLE")
+    return
+
+def bathroom_light_double(payload):
+    sensor = json.loads(payload)
+    if(not "action" in sensor):
+        return
+    action = sensor["action"]
+    if(("right" in action) or ("both" in action)):
+        if("double" in action):
+            room_lights_control("bathroom","BRIGHT")
+        elif("long" in action):
+            room_lights_control("bathroom","DIM")
+        else:
+            room_lights_control("bathroom","TOGGLE","BRIGHT")
     return
 
 def bedroom_light_switch(payload):
@@ -286,6 +294,8 @@ def mqtt_on_message(client, userdata, msg):
                 bedroom_light_double(msg.payload)
             elif(sensor_name in ["bedroom switch","bed light button"]):
                 bedroom_light_switch(msg.payload)
+            elif(sensor_name == "bathroom double switch"):
+                bathroom_light_double(msg.payload)
             else:
                 for room_name,room in config["lightmap"].items():
                     if "sensors" in room:

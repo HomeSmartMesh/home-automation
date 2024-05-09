@@ -4,13 +4,14 @@
         "port":1883,
         "keepalive":60,
         "client_id":"bath_client",
-        "subscriptions":[   "shellies/shellyswitch25-B8A4EE/input/0",
-                            "shellies/shellyswitch25-B8A4EE/relay/0",
-                            "shellies/shellyswitch25-B8A4EE/relay/1",
+        "subscriptions":[   "shellies/bathroom/status/switch:0",
+                            "shellies/bathroom/status/input:0",
                             "lzig/bathroom fan button",
+                            "lzig/bathroom double switch",
+                            "lights/bathroom",
                             "thread_tags/thingy02/env"
                         ],
-        "publications"  :[  "shellies/shellyswitch25-B8A4EE/relay/1/command"
+        "publications"  :[  "shellies/bathroom/rpc"
                         ],
         "publish" :true,
         "subscribe" :true
@@ -25,6 +26,6 @@
     "humidity_sensor_timeout_min":12,
     "log":{
         "logfile":"/home/wass/share/bathroom(date).log",
-        "level":"Info"
+        "level":"Debug"
     }
 }

@@ -134,6 +134,7 @@ rooms:
   - lifx socket
   - pc socket
   - sdcx-mini
+  - air box
   balcony:
   - sensortag02
   bedroom:
