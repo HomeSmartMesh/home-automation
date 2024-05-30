@@ -1,6 +1,0 @@
-[submodule "web/overview/themes/book"]
-	path = web/overview/themes/book
-	url = https://github.com/WebSVG/hugo-book.git
-[submodule "web/overview/public"]
-	path = web/overview/public
-	url = https://github.com/HomeSmartMesh/home_webapps.git
