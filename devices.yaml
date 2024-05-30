@@ -7,38 +7,12 @@ friendly_names:
     "56C4190F6E0D2750": sensortag03
     "EC10D98D0EB68BD": sensortag04
   topics:
-    shellies/shellyplug-s-01E2B5/relay/0/power: shelly dryer
-    shellies/shellyplug-s-B86655/relay/0/power: shelly fridge
-    shellies/shellyplug-s-B86BAA/relay/0/power: shelly freezer
-    shellies/shellyplug-s-51D82E/relay/0/power: shelly washing machine
-    shellies/shellyplug-s-B86270/relay/0/power: shelly micro wave
-    shellies/shellyplug-s-B85D8C/relay/0/power: shelly dish washer
-    shellies/shellyplug-s-B85CA1/relay/0/power: shelly routers servers
-    shellies/shellyplug-s-1697DA/relay/0/power: shelly tv
-    shellies/shellyplug-s-6A5CE5/relay/0/power: shelly sonos front
-    shellies/shellyplug-s-6A5DCF/relay/0/power: shelly ethernet repeater
-    shellies/shellyplug-s-B85CCA/relay/0/power: shelly dell pc
-    shellies/shellyplug-s-B85D90/relay/0/power: shelly sonos sat
-    shellies/shellyplug-s-021700/relay/0/power: shelly entrance
-    shellies/shellyswitch25-B8A4EE/relay/0/power: shelly bathroom light
-    shellies/shellyswitch25-B8A4EE/relay/1/power: shelly bathroom fan
-    shellies/shelly1pm-C45303/relay/0/power: shelly bed
-    shellies/shellyplug-s-01E2B5/relay/0/energy: shelly dryer
-    shellies/shellyplug-s-B86655/relay/0/energy: shelly fridge
-    shellies/shellyplug-s-B86BAA/relay/0/energy: shelly freezer
-    shellies/shellyplug-s-51D82E/relay/0/energy: shelly washing machine
-    shellies/shellyplug-s-B86270/relay/0/energy: shelly micro wave
-    shellies/shellyplug-s-B85D8C/relay/0/energy: shelly dish washer
-    shellies/shellyplug-s-B85CA1/relay/0/energy: shelly routers servers
-    shellies/shellyplug-s-1697DA/relay/0/energy: shelly tv
-    shellies/shellyplug-s-6A5CE5/relay/0/energy: shelly sonos front
-    shellies/shellyplug-s-6A5DCF/relay/0/energy: shelly ethernet repeater
-    shellies/shellyplug-s-B85CCA/relay/0/energy: shelly dell pc
-    shellies/shellyplug-s-B85D90/relay/0/energy: shelly sonos sat
-    shellies/shellyplug-s-021700/relay/0/energy: shelly entrance
-    shellies/shellyswitch25-B8A4EE/relay/0/energy: shelly bathroom light
-    shellies/shellyswitch25-B8A4EE/relay/1/energy: shelly bathroom fan
-    shellies/shelly1pm-C45303/relay/0/energy: shelly bed
+    shellies/microwave/relay/0/power: shelly micro wave
+    shellies/microwave/relay/0/energy: shelly micro wave
+    shellies/dishwasher/relay/0/power: shelly dish washer
+    shellies/dishwasher/relay/0/energy: shelly dish washer
+    shellies/routers-servers/relay/0/power: shelly routers servers
+    shellies/routers-servers/relay/0/energy: shelly routers servers
   zigbee:
     '0x00124b0021b77899': coord cc2652
     '0x00124b001d4a014b': power lifo
