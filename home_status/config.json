@@ -1,6 +1,5 @@
 {  
     "mqtt":{
-        "host":"mqtt_broquer",
         "port":1883,
         "keepalive":60,
         "client_id":"home_status_client",
@@ -48,7 +47,7 @@
         }
     },
     "log":{
-        "logfile":"/home/pi/share/home_status(date).log",
+        "logfile":"/var/log/home_status/(date).log",
         "level":"Info"
     }
 }

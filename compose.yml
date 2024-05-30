@@ -3,8 +3,8 @@ services:
     #socket_domain ipv4 https://github.com/eclipse/mosquitto/issues/1004
     image: eclipse-mosquitto
     ports:
-      - "1883:1883"
-      - "1884:1884"
+      - 1883:1883
+      - 1884:1884
     volumes:
       - ${PWD}/containers/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
     restart: unless-stopped
@@ -17,10 +17,17 @@ services:
       - ${PWD}/containers/influxdb/data:/var/log/influx
     environment:
       - INFLUXDB_DB:=mqtt
+  home_status:
+    build: ./home_status
+    volumes:
+      - /var/log/home_status:/var/log/home_status
+    environment:
+      - BROKER=10.0.0.91
   chronograf:
     image: chronograf
     ports:
       - "8888:8888"
+
   grafana:
     image: grafana/grafana
     ports:

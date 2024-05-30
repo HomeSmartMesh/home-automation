@@ -1,9 +1,7 @@
 import paho.mqtt.client as mqtt
-import datetime
 import logging as log
-import cfg
-from time import sleep,time
-import json
+from time import sleep
+import os
 import socket
 
 conf = {}
@@ -36,9 +34,10 @@ def mqtt_start(config,mqtt_on_message,start_looping):
         connected = False
         while(not connected):
             try:
-                client.connect(config["mqtt"]["host"], config["mqtt"]["port"], config["mqtt"]["keepalive"])
+                host = os.environ.get("BROKER","mqtt_broquer")
+                client.connect(host, config["mqtt"]["port"], config["mqtt"]["keepalive"])
                 connected = True
-                log.info(  "mqtt> connected to "+config["mqtt"]["host"]+":"+str(config["mqtt"]["port"])+" with id: "+ cid )
+                log.info(  "mqtt> connected to "+host+":"+str(config["mqtt"]["port"])+" with id: "+ cid )
             except socket.error:
                 log.error("socket.error will try a reconnection in 10 s")
                 sleep(10)

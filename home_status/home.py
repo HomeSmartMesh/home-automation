@@ -1,12 +1,6 @@
-#https://github.com/studioimaginaire/phue
-
-
-#https://pypi.python.org/pypi/paho-mqtt/1.1
-import paho.mqtt.client as mqtt
 import json
 from time import sleep
 import logging as log
-import sys,os
 import cfg
 from mqtt import mqtt_start
 import requests
