@@ -83,12 +83,12 @@ rooms:
   livingroom:
   - thingy01
   - shelly routers servers
-  - shelly tv
+  - tv socket
   - sonos rear socket
   - sonos front socket
   - wifi mesh socket
   hallway:
-  - shelly entrance
+  - entrance socket
   - cupboard light
   - sensortag01
   - sensortag03
