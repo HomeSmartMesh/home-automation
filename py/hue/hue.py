@@ -325,7 +325,7 @@ def check_bridge():
         lights = b.get_light_objects('name')
         log.info("Hue Lights available :")
         for name, light in lights.items():
-            log.info(name)
+            log.info(f"{name} reachable {light.reachable}")
         return True
     else:
         log.info("Bridge ip not responding")

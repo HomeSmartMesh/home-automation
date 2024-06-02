@@ -5,7 +5,7 @@ After=multi-user.target
 [Service]
 Type=simple
 ExecStart=/usr/bin/python3 /home/wass/raspi/py/hue/hue.py
-Restart=on-abort
+Restart=always
 CPUSchedulingPolicy=fifo
 CPUSchedulingPriority=90
 
