@@ -1,0 +1,32 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+- job_name: system
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: varlogs
+      __path__: /var/log/host/*log
+- job_name: smarthome
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: smarthome
+      __path__: /var/log/share/*.log
+- job_name: zigbee
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: zigbee
+      __path__: /var/log/zigbee/**/*.log
