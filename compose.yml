@@ -68,11 +68,10 @@ services:
   promtail:
     image: grafana/promtail:2.9.2
     volumes:
-      - /var/log:/var/log/host
       - /home/wass/share:/var/log/share
       - /opt/zigbee2mqtt/data/log:/var/log/zigbee
-      - ./loki/promtail-config.yaml:/etc/promtail/config.yml
-    command: -config.file=/etc/promtail/config.yml
+      - ./loki/promtail-config.yaml:/mnt/config/promtail-config.yaml
+    command: -config.file=/mnt/config/promtail-config.yaml
     networks:
       - loki
 
