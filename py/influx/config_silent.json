@@ -7,7 +7,6 @@
         "publish" :false,
         "subscribe" :true,
         "subscriptions":[
-            "nrf/#",
             "lzig/#",
             "thread_tags/#",
             "shellies/#",

@@ -99,10 +99,7 @@ rooms:
   - shelly micro wave
   - shelly dish washer
   bathroom:
-  - shelly dryer
-  - shelly washing machine
-  - shelly bathroom light
-  - shelly bathroom fan
+  - dryer socket
   - thingy02
   office:
   - lifx socket
