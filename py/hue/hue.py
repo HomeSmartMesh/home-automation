@@ -288,6 +288,8 @@ def mqtt_on_message(client, userdata, msg):
             sensor_name = topic_parts[1]
             if(sensor_name == "office switch"):
                 office_switch(msg.payload)
+            elif(sensor_name == "office light button"):
+                office_switch(msg.payload)
             elif(sensor_name == "living double switch"):
                 livingroom_light_double(msg.payload)
             elif(sensor_name == "bedroom double switch"):

@@ -11,11 +11,9 @@ import cfg
 from mqtt import mqtt_start
 
 eurotronic_system_mode = {
-    "mirror display":1,
-    "boost":2,
-    "disable open window":4,
-    "set open window":5,
-    "child protection":7
+    "boost":"heat",
+    "disable open window":"auto",
+    "set open window":"off",
 }
 
 tuya_window_mode = {
@@ -26,7 +24,7 @@ tuya_window_mode = {
 def heater_notify(name,command):
     topic = config["heatings"][name]["topic"]
     if(config["heatings"][name]["type"] == "eurotronic"):
-        json_msg = {"eurotronic_system_mode":2**(eurotronic_system_mode[command])}
+        json_msg = {"system_mode":eurotronic_system_mode[command]}
         text_msg = json.dumps(json_msg)
         clientMQTT.publish(topic,text_msg)
     elif(config["heatings"][name]["type"] == "tuya"):
