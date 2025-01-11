@@ -16,17 +16,40 @@ scrape_configs:
 #    labels:
 #      job: varlogs
 #      __path__: /var/log/host/*log
-- job_name: smarthome
-  static_configs:
-  - targets:
-      - localhost
-    labels:
-      job: smarthome
-      __path__: /var/log/share/*.log
-- job_name: zigbee
-  static_configs:
-  - targets:
-      - localhost
-    labels:
-      job: zigbee
-      __path__: /var/log/zigbee/**/*.log
+  - job_name: smarthome
+    static_configs:
+    - targets:
+        - localhost
+      labels:
+        job: smarthome
+        __path__: /var/log/share/*.log
+  
+  - job_name: zigbee
+    static_configs:
+    - targets:
+        - localhost
+      labels:
+        job: zigbee
+        __path__: /var/log/zigbee/**/*.log
+  
+  - job_name: astro
+    journal:
+      max_age: 12h
+    relabel_configs:
+      # Keep only log lines whose systemd unit is astro.service
+      - source_labels: ['__journal__systemd_unit']
+        regex: astro\.service
+        action: keep
+
+      # Rename Promtail’s internal label __journal__systemd_unit to a simpler "unit"
+      - source_labels: ['__journal__systemd_unit']
+        target_label: 'unit'
+
+      - source_labels: []
+        target_label: 'host'
+        replacement: 'silent'
+
+      # 4) Add an extra label 'app'
+      - source_labels: []
+        target_label: 'app'
+        replacement: 'astro'
