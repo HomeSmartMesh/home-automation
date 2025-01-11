@@ -27,7 +27,7 @@
             ]
         },
         "office heat":{
-            "type":"tuya",
+            "type":"eurotronic",
             "topic":"lzig/office heat/set",
             "Apertures":[
                 "office window right",
