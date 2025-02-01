@@ -9,7 +9,7 @@ https://github.com/HomeSmartMesh/home-automation/discussions
 
 # Documentation
 
-https://www.homesmartmesh.com/frameworks/raspi-iot/
+https://homesmartmesh.github.io/frameworks/raspi/
 
 # Safety notice
 * Power Sockets have deadly voltage and should not be self altered
