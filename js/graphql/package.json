@@ -17,7 +17,7 @@
     "graphql": "^15.0.0",
     "graphql-subscriptions": "^1.1.0",
     "graphql-mqtt-subscriptions": "^1.2.0",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "apollo-server-express": "^2.14.2",
     "mqtt": "^4.0.0",
     "bl": ">=1.2.3"
