@@ -91,7 +91,6 @@ rooms:
   - entrance socket
   - cupboard light
   - sensortag01
-  - sensortag03
   - sensortag04
   kitchen:
   - shelly fridge
@@ -100,6 +99,7 @@ rooms:
   - shelly dish washer
   bathroom:
   - dryer socket
+  - washing machine socket
   - thingy02
   office:
   - lifx socket
@@ -107,7 +107,7 @@ rooms:
   - sdcx-mini
   - air box
   balcony:
-  - sensortag02
+  - sensortag03
   bedroom:
   - poster socket
 functions:

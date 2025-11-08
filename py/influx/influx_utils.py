@@ -1,11 +1,14 @@
 import datetime
-import json
+import os
 import math
 from typing import OrderedDict
-import influxdb
-from influxdb import DataFrameClient
+from influxdb_client import InfluxDBClient, Point, WritePrecision
+
 import requests
 import utils as utl
+from dotenv import load_dotenv
+
+load_dotenv()
 
 client = None
 config = None
@@ -188,8 +191,14 @@ def get_pandas_range(measurement,start,stop):
     return client.query(f'select * from "{measurement}" where time >= \'{start}\' and time < \'{stop}\'')
 
 def get_measurements_list():
+    if(client is None):
+        create_client()
     res = []
-    lists = client.get_list_measurements()
+    bucket = os.getenv("INFLUXDB_BUCKET", "mqtt")
+    query = f'import "influxdata/influxdb/v1"\n' \
+            f'v1.measurements(bucket: "{bucket}")'
+    records = client.query_api().query_stream(query)
+    lists = [{"name": r.get_value()} for r in records]
     for list_obj in lists:
         res.append(list_obj['name'])
     return res
@@ -219,14 +228,13 @@ def print_all():
         print(f"failed : InfluxDBClientError  '{str(e)}'" )
     return
 
-def create(conf):
+def create_client():
     global client
-    global config
-    config = conf
-    client = influxdb.InfluxDBClient( config["host"], 
-                                      config["port"], 
-                                      'root', 'root', 
-                                      config["db"])
+    client = InfluxDBClient(
+        url=os.getenv("INFLUXDB_URL", "http://localhost:8086"),
+        token=os.getenv("INFLUXDB_TOKEN"),
+        org=os.getenv("INFLUXDB_ORG", "hsm")
+    )
 
 def create_pandas(conf):
     global client
