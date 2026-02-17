@@ -17,6 +17,7 @@ services:
       - ${PWD}/containers/influxdb/data:/var/log/influx
     environment:
       - INFLUXDB_DB:=mqtt
+    restart: always
   home_status:
     build: ./home_status
     volumes:
