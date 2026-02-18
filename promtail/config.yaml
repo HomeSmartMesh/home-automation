@@ -6,7 +6,7 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  - url: http://loki:3100/loki/api/v1/push
+  - url: http://127.0.0.1:3100/loki/api/v1/push
 
 scrape_configs:
 #- job_name: system
@@ -54,3 +54,15 @@ scrape_configs:
         target_label: 'app'
         replacement: 'astro'
 
+  - job_name: systemd_services
+    journal:
+      max_age: 24h
+    relabel_configs:
+      - source_labels: ['__journal__systemd_unit']
+        regex: (thread_tags|heat_cut|influx_mqtt|bathroom|hue|zigbee2mqtt|pc_power|influxdb|mosquitto)\.service
+        action: keep
+      - source_labels: ['__journal__systemd_unit']
+        target_label: 'unit'
+      - source_labels: []
+        target_label: 'job'
+        replacement: 'systemd'

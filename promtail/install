@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Service-specific prerequisites for Promtail (apt repo + package).
+if ! command -v promtail >/dev/null 2>&1; then
+  if ! command -v curl >/dev/null 2>&1; then
+    apt-get update -y && apt-get install -y curl
+  fi
+  install -d -m 0755 /usr/share/keyrings || true
+  curl -fsSL https://apt.grafana.com/gpg.key | gpg --dearmor -o /usr/share/keyrings/grafana.gpg
+  printf '%s\n' "deb [signed-by=/usr/share/keyrings/grafana.gpg] https://apt.grafana.com stable main" > /etc/apt/sources.list.d/grafana.list
+  apt-get update -y
+  apt-get install -y promtail
+fi
+
+echo "Promtail package available: $(command -v promtail || echo 'not found')"
+
