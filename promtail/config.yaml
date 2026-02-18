@@ -53,3 +53,4 @@ scrape_configs:
       - source_labels: []
         target_label: 'app'
         replacement: 'astro'
+

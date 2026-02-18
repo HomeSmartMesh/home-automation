@@ -28,3 +28,11 @@ MIT
 curl https://raw.githubusercontent.com/HomeSmartMesh/raspi/master/get_raspi.sh -o get_raspi.sh
 sudo sh get_raspi.sh
 ```
+
+# Shell helpers
+Source the helper commands in every shell session by adding the snippet below to `~/.bashrc` (adjust the path if you cloned the repo elsewhere), then start a new shell and run `check`:
+
+```bash
+export RASPI_HOME=/home/wass/raspi
+source /home/wass/raspi/env.sh
+```

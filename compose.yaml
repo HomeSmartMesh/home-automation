@@ -1,0 +1,35 @@
+services:
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    network_mode: "host"
+    volumes:
+      - ${PWD}/containers/grafana/data:/var/lib/grafana
+      - ${PWD}/containers/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
+      - ${PWD}/containers/grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - "influx"
+    restart: always
+  loki:
+    image: grafana/loki:2.9.2
+    volumes:
+      - ./loki/config.yaml:/etc/loki/config.yaml
+    ports:
+      - 3100:3100
+    command: -config.file=/etc/loki/config.yaml
+    networks:
+      - loki
+
+  promtail:
+    image: grafana/promtail:2.9.2
+    volumes:
+      - /home/wass/share:/var/log/share
+      - /opt/zigbee2mqtt/data/log:/var/log/zigbee
+      - ./promtail/config.yaml:/mnt/config/config.yaml
+    command: -config.file=/mnt/config/config.yaml
+    networks:
+      - loki
+
+networks:
+  loki:

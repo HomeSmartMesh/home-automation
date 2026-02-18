@@ -1,24 +1,23 @@
 used:
-    python:
-        - thread_tags: './py' Thread sensor tags sending UDP packets to MQTT
-        - heat_cut : './py' cuts a rooms heat when a room's window is open
-        - influx_mqtt: './py' mqtt 2 influx
-        - bathroom: './py' manages the bathroom fan and light from switch and sensors
-        - hue : './py' hue light control
-        - home_status: entrance shelly leds for heaing 'red' and open windows 'blue'
-    nodejs:
-        - zigbee2mqtt
-        - pc_power
-        - watch_bots
-        - roll
-    native:
-        - influxdb
-        - docker
-    docker:
-        - mosquitto: eclipse-mosquitto
-        - nginx
+    - thread_tags: Thread sensor tags sending UDP packets to MQTT
+    - heat_cut : cuts a rooms heat when a room's window is open
+    - influx_mqtt: mqtt 2 influx
+    - bathroom: manages the bathroom fan and light from switch and sensors
+    - hue : hue light control
+    - zigbee2mqtt: 
+    - pc_power: 
+    - influxdb: 
+    - mosquitto: eclipse-mosquitto
 
-available:
+not_used:
+    - nrf_mesh
+    - roll
+    - lapse
+    - lifx
+    - watch_bots
+    - home_status
+
+other:
     webapps:
         - overview
         - bed_heating
@@ -36,13 +35,12 @@ available:
         - home_status
         - thread_tags: udp2mqtt
     nodejs:
-        - zigbee2mqtt
         - lapse
         - lifx
         - pc_power
         - watch_bots
         - roll
-    native:
+    installed:
         - influxdb
         - openthread : https://www.homesmartmesh.com/docs/networks/thread/#raspberry-pi
     docker:
