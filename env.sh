@@ -34,12 +34,34 @@ _raspi_print_service_status() {
     printf "%-20s %s\n" "${service}" "${status}"
 }
 
+_raspi_http_ready() {
+    local name="$1"
+    local url="$2"
+
+    if ! command -v curl >/dev/null 2>&1; then
+        printf "%-20s %s\n" "${name}" "no-curl"
+        return 0
+    fi
+
+    if curl -fsS -m 2 "${url}" >/dev/null 2>&1; then
+        printf "%-20s %s\n" "${name}" "ok"
+    else
+        printf "%-20s %s\n" "${name}" "fail"
+    fi
+}
+
 check() {
     local service
 
+    echo "Systemd:"
     for service in "${RASPI_SYSTEMD_SERVICES[@]}"; do
         _raspi_print_service_status "${service}"
     done
+
+    echo
+    echo "Health:"
+    _raspi_http_ready "loki" "http://127.0.0.1:3100/ready"
+    _raspi_http_ready "promtail" "http://127.0.0.1:9080/ready"
 }
 
 # Show listening ports for services in RASPI_SYSTEMD_SERVICES.
