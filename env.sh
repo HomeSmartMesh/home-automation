@@ -62,6 +62,9 @@ check() {
     echo "Health:"
     _raspi_http_ready "loki" "http://127.0.0.1:3100/ready"
     _raspi_http_ready "promtail" "http://127.0.0.1:9080/ready"
+    _raspi_http_ready "grafana" "http://127.0.0.1:3000/api/health"
+    _raspi_http_ready "influxdb" "http://127.0.0.1:8086/health"
+    _raspi_http_ready "zigbee2mqtt" "http://127.0.0.1:8030/"
 }
 
 # Show listening ports for services in RASPI_SYSTEMD_SERVICES.
