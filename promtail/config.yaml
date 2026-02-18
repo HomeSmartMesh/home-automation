@@ -24,13 +24,18 @@ scrape_configs:
         job: smarthome
         __path__: /var/log/share/*.log
   
-  - job_name: zigbee
-    static_configs:
-    - targets:
-        - localhost
-      labels:
-        job: zigbee
-        __path__: /var/log/zigbee/**/*.log
+  # NOTE: Zigbee2MQTT logs are already ingested via journald under the `systemd_services`
+  # job (label: unit="zigbee2mqtt.service"). Keeping file scraping enabled as well can
+  # create duplicate log streams/confusion in Grafana.
+  #
+  # If you explicitly want the file logs too, re-enable this block.
+  # - job_name: zigbee
+  #   static_configs:
+  #   - targets:
+  #       - localhost
+  #     labels:
+  #       job: zigbee
+  #       __path__: /opt/zigbee2mqtt/data/log/**/*.log
   
   - job_name: astro
     journal:
@@ -57,12 +62,21 @@ scrape_configs:
   - job_name: systemd_services
     journal:
       max_age: 24h
+    pipeline_stages:
+      - decolorize: {}
     relabel_configs:
       - source_labels: ['__journal__systemd_unit']
         regex: (thread_tags|heat_cut|influx_mqtt|bathroom|hue|zigbee2mqtt|pc_power|influxdb|mosquitto)\.service
         action: keep
       - source_labels: ['__journal__systemd_unit']
         target_label: 'unit'
+      - source_labels: ['__journal__systemd_unit']
+        target_label: 'app'
+        regex: '(.+)\\.service'
+        replacement: '$1'
+      - source_labels: []
+        target_label: 'host'
+        replacement: 'silent'
       - source_labels: []
         target_label: 'job'
         replacement: 'systemd'

@@ -3,6 +3,27 @@
 This folder contains small helper scripts to back up/restore Zigbee2MQTT state
 and to assist with coordinator firmware maintenance.
 
+Primary entrypoint:
+
+- `./z2m` (a Python CLI with subcommands)
+
+## Python deps (uv)
+
+There is a `pyproject.toml` in this folder for `uv`/pip-based installs.
+
+```bash
+cd /home/wass/raspi/zigbee2mqtt
+
+uv sync
+```
+
+Quick prereq check:
+
+```bash
+cd /home/wass/raspi/zigbee2mqtt
+./z2m check
+```
+
 ## Quick checks (what firmware is running?)
 
 From the server:
@@ -29,8 +50,10 @@ sudo systemctl start zigbee2mqtt
 
 ## Backups
 
-- `./backup.sh`: backs up `database.db` (Zigbee2MQTT device DB) only.
-- `./coordinator_backup.sh`: creates a coordinator/network backup (best effort).
+Examples:
+
+- `./z2m db backup`
+- `./z2m coordinator backup`
 
 Backups are written under `./backups/` by default.
 
@@ -39,16 +62,21 @@ These scripts operate on `/opt/zigbee2mqtt/data` if it exists; override via
 
 ## Restores
 
-- `./restore.sh`: restores `database.db` only.
-- `./coordinator_restore.sh`: restores `coordinator_backup.json` only.
+Examples:
+
+- `./z2m db restore ./backups/database.db.YYYYMMDD-HHMMSS`
+- `./z2m coordinator restore ./backups/coordinator-*/coordinator_backup.json`
 
 ## Firmware
 
-- `./firmware_backup.sh`: reads flash to a `.bin` file (requires `cc2538-bsl`).
-- `./firmware_restore.sh`: flashes a `.hex` (requires `cc2538-bsl`).
+Examples:
+
+- `./z2m firmware backup`
+- `./z2m firmware flash ./path/to/firmware.hex`
+- `./z2m firmware restore ./path/to/firmware.hex` (alias)
 
 For firmware upgrades, do:
 
-1. `./coordinator_backup.sh`
-2. `./firmware_restore.sh <new_firmware.hex>`
-3. `./coordinator_restore.sh <coordinator_backup.json>`
+1. `./z2m coordinator backup`
+2. `./z2m firmware flash <new_firmware.hex>`
+3. `./z2m coordinator restore <coordinator_backup.json>`

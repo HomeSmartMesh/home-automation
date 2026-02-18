@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+
+def _ensure_local_imports() -> None:
+    # Allow running from anywhere without installing the package.
+    # Adds the folder containing this script (zigbee2mqtt/) to sys.path.
+    here = Path(__file__).resolve().parent
+    sys.path.insert(0, str(here))
+
+
+def main() -> None:
+    _ensure_local_imports()
+    from z2m_tools.main import main as _main  # noqa: WPS433 (local import by design)
+
+    _main()
+
+
+if __name__ == "__main__":
+    main()
+
