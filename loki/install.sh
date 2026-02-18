@@ -15,15 +15,23 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 command -v loki >/dev/null 2>&1 || {
-  echo "WARN: /usr/bin/loki not found. Installing via apt (Grafana repo)" >&2
+  echo "INFO: /usr/bin/loki not found. Installing via Grafana apt repo" >&2
   if ! command -v curl >/dev/null 2>&1; then
     apt-get update && apt-get install -y curl
   fi
-  install -m 0644 /dev/null /etc/apt/sources.list.d/grafana.list || true
-  echo "deb https://apt.grafana.com stable main" >/etc/apt/sources.list.d/grafana.list
+  install -d -m 0755 /usr/share/keyrings
   curl -fsSL https://apt.grafana.com/gpg.key | gpg --dearmor -o /usr/share/keyrings/grafana.gpg
-  apt-get update && apt-get install -y loki
+  printf '%s\n' "deb [signed-by=/usr/share/keyrings/grafana.gpg] https://apt.grafana.com stable main" \
+    > /etc/apt/sources.list.d/grafana.list
+  apt-get update
+  apt-get install -y loki
 }
+
+# Verify binary exists after attempted install
+if ! command -v loki >/dev/null 2>&1; then
+  echo "ERROR: loki binary still not found after installation attempt. Check apt output and repo key." >&2
+  exit 1
+fi
 
 mkdir -p "${CONFIG_DST_DIR}"
 ln -sf "${CONFIG_SRC}" "${CONFIG_DST}"

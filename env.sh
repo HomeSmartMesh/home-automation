@@ -17,6 +17,8 @@ RASPI_SYSTEMD_SERVICES=(
     influxdb
     mosquitto
     grafana-server
+    loki
+    promtail
 )
 
 _raspi_print_service_status() {
