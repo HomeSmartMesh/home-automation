@@ -17,6 +17,12 @@ cd /home/wass/raspi/zigbee2mqtt
 uv sync
 ```
 
+### Optional extras
+
+- Firmware helpers (installs `cc2538-bsl`): `uv sync --extra firmware` (or `uv sync --all-extras`)
+
+Note: `uv sync` is exact by default. If you install an extra and later run plain `uv sync`, `uv` will uninstall the extra’s packages to match the base dependency set. If you want “sticky” extras, use `uv sync --inexact` or always include the extra.
+
 Quick prereq check:
 
 ```bash
@@ -72,8 +78,25 @@ Examples:
 Examples:
 
 - `./z2m firmware backup`
+- `./z2m firmware probe` (non-destructive bootloader probe + chip info)
+- `./z2m firmware flash` (defaults to `./firmware/coordinator.hex`)
 - `./z2m firmware flash ./path/to/firmware.hex`
-- `./z2m firmware restore ./path/to/firmware.hex` (alias)
+- `./z2m firmware restore` (alias; same defaults as `flash`)
+
+If you get a sync timeout, the stick is usually not in bootloader mode. Some USB dongles can be switched into bootloader automatically via RTS/DTR:
+
+- `./z2m firmware backup --bootloader-sonoff-usb`
+- `./z2m firmware flash firmware.hex --bootloader-sonoff-usb`
+
+By default, `./z2m firmware flash` uses a partial erase (`cc2538-bsl -W`) to avoid wiping the coordinator’s network state. If you want a totally clean slate (and you have a backup), add `--mass-erase`.
+
+If you're iterating/debugging, you may prefer to stop the service once and prevent the helper from repeatedly stopping/starting it:
+
+```bash
+sudo systemctl stop zigbee2mqtt
+./z2m firmware backup --no-stop --bootloader-sonoff-usb
+sudo systemctl start zigbee2mqtt
+```
 
 For firmware upgrades, do:
 

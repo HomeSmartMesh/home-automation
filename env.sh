@@ -200,3 +200,235 @@ config() {
         echo "No systemd unit found for ${svc}; linked config only." >&2
     fi
 }
+
+firmware() {
+    local action="${1:-}"
+    shift || true
+
+    local z2m_dir="${RASPI_HOME}/zigbee2mqtt"
+    local fw_dir="${z2m_dir}/firmware"
+    local fw_hex="${fw_dir}/coordinator.hex"
+
+    local fw_tag="Z-Stack_3.x.0_coordinator_20250321"
+    local fw_p_zip_url="https://github.com/Koenkk/Z-Stack-firmware/releases/download/${fw_tag}/CC1352P2_CC2652P_other_coordinator_20250321.zip"
+    local fw_p_hex="CC1352P2_CC2652P_other_coordinator_20250321.hex"
+    local fw_r_zip_url="https://github.com/Koenkk/Z-Stack-firmware/releases/download/${fw_tag}/CC2652R_coordinator_20250321.zip"
+    local fw_r_hex="CC2652R_coordinator_20250321.hex"
+
+    local _mm_was_active=0
+    _firmware_stop_modemmanager() {
+        if systemctl is-active --quiet ModemManager 2>/dev/null; then
+            _mm_was_active=1
+            echo "stopping ModemManager (can interfere with /dev/ttyUSB0)..."
+            sudo systemctl stop ModemManager
+        fi
+    }
+
+    _firmware_start_modemmanager() {
+        if [[ "${_mm_was_active}" -eq 1 ]]; then
+            echo "starting ModemManager..."
+            sudo systemctl start ModemManager
+            _mm_was_active=0
+        fi
+    }
+
+    _firmware_usage() {
+        cat >&2 <<'EOF'
+usage:
+  firmware flash
+  firmware id
+  firmware dump
+  firmware download
+  firmware select p|r
+
+notes:
+  - Firmware file flashed by default: zigbee2mqtt/firmware/coordinator.hex
+  - "p" = CC1352P2/CC2652P (most USB dongles)
+  - "r" = CC2652R
+EOF
+    }
+
+    _firmware_need_cmd() {
+        local cmd="$1"
+        if ! command -v "${cmd}" >/dev/null 2>&1; then
+            echo "error: missing required command: ${cmd}" >&2
+            return 1
+        fi
+        return 0
+    }
+
+    _firmware_uv_sync() {
+        _firmware_need_cmd uv || return 1
+
+        if [[ -x "${z2m_dir}/.venv/bin/python" ]]; then
+            if "${z2m_dir}/.venv/bin/python" -c 'import cc2538_bsl, intelhex' >/dev/null 2>&1; then
+                return 0
+            fi
+        fi
+
+        (cd "${z2m_dir}" && uv sync --extra firmware)
+    }
+
+    _firmware_download_variant() {
+        local variant="$1"
+        mkdir -p "${fw_dir}"
+        _firmware_need_cmd curl || return 1
+        _firmware_need_cmd unzip || return 1
+
+        local zip_path hex_path url
+        if [[ "${variant}" == "p" ]]; then
+            url="${fw_p_zip_url}"
+            zip_path="${fw_dir}/cc2652p.zip"
+            hex_path="${fw_dir}/${fw_p_hex}"
+        elif [[ "${variant}" == "r" ]]; then
+            url="${fw_r_zip_url}"
+            zip_path="${fw_dir}/cc2652r.zip"
+            hex_path="${fw_dir}/${fw_r_hex}"
+        else
+            echo "error: unknown variant: ${variant}" >&2
+            return 2
+        fi
+
+        if [[ -f "${hex_path}" ]]; then
+            return 0
+        fi
+
+        echo "downloading ${url}"
+        curl -fsSL -o "${zip_path}" "${url}"
+        unzip -o "${zip_path}" -d "${fw_dir}" >/dev/null
+        rm -f "${zip_path}" || true
+
+        if [[ ! -f "${hex_path}" ]]; then
+            echo "error: expected firmware hex not found after unzip: ${hex_path}" >&2
+            return 1
+        fi
+    }
+
+    _firmware_select_variant() {
+        local variant="$1"
+        _firmware_download_variant "${variant}" || return 1
+
+        if [[ "${variant}" == "p" ]]; then
+            cp -f "${fw_dir}/${fw_p_hex}" "${fw_hex}"
+        else
+            cp -f "${fw_dir}/${fw_r_hex}" "${fw_hex}"
+        fi
+
+        echo "selected firmware: ${fw_hex}"
+    }
+
+    case "${action}" in
+        download)
+            _firmware_download_variant p
+            _firmware_download_variant r
+            echo "downloaded into: ${fw_dir}"
+            ;;
+        id)
+            _firmware_uv_sync || return 1
+            echo "stopping zigbee2mqtt..."
+            sudo systemctl stop zigbee2mqtt
+            if systemctl is-active --quiet zigbee2mqtt; then
+                echo "error: zigbee2mqtt is still running; cannot probe while it holds the serial port" >&2
+                return 1
+            fi
+            _firmware_stop_modemmanager
+            read -r -p "Put the dongle into BSL/bootloader mode, then press Enter..." _
+
+            local requested_baud=""
+            local passthrough=()
+            while [[ $# -gt 0 ]]; do
+                case "$1" in
+                    --baud)
+                        requested_baud="${2:-}"
+                        passthrough+=("$1" "$2")
+                        shift 2
+                        ;;
+                    *)
+                        passthrough+=("$1")
+                        shift
+                        ;;
+                esac
+            done
+
+            if [[ -n "${requested_baud}" ]]; then
+                (cd "${z2m_dir}" && ./z2m firmware probe --no-stop "${passthrough[@]}")
+                local rc=$?
+                _firmware_start_modemmanager
+                return "${rc}"
+            fi
+
+            local b rc=0
+            for b in 500000 115200 1000000; do
+                echo "trying bootloader baud ${b}..."
+                (cd "${z2m_dir}" && ./z2m firmware probe --no-stop --baud "${b}" "${passthrough[@]}") && { _firmware_start_modemmanager; return 0; }
+                rc=$?
+            done
+            _firmware_start_modemmanager
+            return "${rc}"
+            ;;
+        dump)
+            _firmware_uv_sync || return 1
+            echo "stopping zigbee2mqtt..."
+            sudo systemctl stop zigbee2mqtt
+            if systemctl is-active --quiet zigbee2mqtt; then
+                echo "error: zigbee2mqtt is still running; cannot read while it holds the serial port" >&2
+                return 1
+            fi
+            _firmware_stop_modemmanager
+            read -r -p "Put the dongle into BSL/bootloader mode, then press Enter..." _
+            (cd "${z2m_dir}" && ./z2m firmware backup --no-stop "$@")
+            local rc=$?
+            _firmware_start_modemmanager
+            return "${rc}"
+            ;;
+        select)
+            local variant="${1:-}"
+            if [[ "${variant}" != "p" && "${variant}" != "r" ]]; then
+                _firmware_usage
+                return 2
+            fi
+            _firmware_select_variant "${variant}"
+            ;;
+        flash)
+            _firmware_uv_sync || return 1
+
+            if [[ ! -f "${fw_hex}" ]]; then
+                echo "note: ${fw_hex} is missing; defaulting to variant 'p' (CC1352P2/CC2652P)." >&2
+                echo "      If you have a CC2652R, run: firmware select r" >&2
+                _firmware_select_variant p || return 1
+            fi
+
+            echo "stopping zigbee2mqtt..."
+            sudo systemctl stop zigbee2mqtt
+            if systemctl is-active --quiet zigbee2mqtt; then
+                echo "error: zigbee2mqtt is still running; cannot flash while it holds the serial port" >&2
+                return 1
+            fi
+            _firmware_stop_modemmanager
+
+            read -r -p "Put the dongle into BSL/bootloader mode, then press Enter..." _
+
+            local rc=0
+            (cd "${z2m_dir}" && ./z2m firmware flash --no-stop "$@") || rc=$?
+
+            if [[ "${rc}" -eq 0 ]]; then
+                echo
+                echo "If Zigbee2MQTT can't reconnect after a flash, the dongle may need a power-cycle."
+                read -r -p "Unplug/replug the dongle in normal mode (no button), then press Enter..." _
+            fi
+
+            echo "starting zigbee2mqtt..."
+            sudo systemctl start zigbee2mqtt
+            _firmware_start_modemmanager
+            return "${rc}"
+            ;;
+        ""|-h|--help|help)
+            _firmware_usage
+            ;;
+        *)
+            echo "error: unknown firmware action: ${action}" >&2
+            _firmware_usage
+            return 2
+            ;;
+    esac
+}

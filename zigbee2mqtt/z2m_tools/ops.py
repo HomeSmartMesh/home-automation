@@ -18,6 +18,22 @@ from .common import (
     stop_service,
 )
 
+_CC2538_BSL_EXTRA_HELP = "optional extra 'firmware' (install with: uv sync --extra firmware)"
+
+
+def _require_cc2538_bsl() -> None:
+    try:
+        import cc2538_bsl  # type: ignore  # noqa: F401
+    except ModuleNotFoundError as e:
+        raise RuntimeError(f"cc2538-bsl is not installed ({_CC2538_BSL_EXTRA_HELP})") from e
+
+
+def _bootloader_baud_candidates(baud: str | None) -> list[str]:
+    if baud:
+        return [str(baud)]
+    # Common CC26xx/CC13xx UART BSL speeds.
+    return ["500000", "115200", "1000000"]
+
 
 def check() -> int:
     print(f"data_dir={data_dir()}")
@@ -28,16 +44,29 @@ def check() -> int:
         import cc2538_bsl  # type: ignore  # noqa: F401
 
         print("cc2538-bsl: python import OK")
-    except Exception as e:
-        print(f"cc2538-bsl: python import FAILED ({e})")
+        try:
+            import intelhex  # type: ignore  # noqa: F401
 
-    proc = subprocess.run(
-        [sys.executable, "-m", "cc2538_bsl.cc2538_bsl", "--help"],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        check=False,
-    )
-    print(f"cc2538-bsl: module CLI {'OK' if proc.returncode == 0 else 'FAILED'}")
+            print("intelhex: python import OK")
+        except ModuleNotFoundError:
+            print(f"intelhex: not installed ({_CC2538_BSL_EXTRA_HELP})")
+        except Exception as e:
+            print(f"intelhex: python import error ({e})")
+
+        proc = subprocess.run(
+            [sys.executable, "-m", "cc2538_bsl.cc2538_bsl", "--help"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+        print(f"cc2538-bsl: module CLI {'OK' if proc.returncode == 0 else 'FAILED'}")
+        return 0
+    except ModuleNotFoundError:
+        print(f"cc2538-bsl: not installed ({_CC2538_BSL_EXTRA_HELP})")
+    except Exception as e:
+        print(f"cc2538-bsl: python import error ({e})")
+
+    print("cc2538-bsl: module CLI SKIP (not installed)")
     return 0
 
 
@@ -173,7 +202,18 @@ def coordinator_restore(*, src: Path) -> int:
     return 0
 
 
-def firmware_backup(*, port: str | None, out: Path | None, length: str, baud: str | None) -> int:
+def firmware_backup(
+    *,
+    port: str | None,
+    out: Path | None,
+    length: str,
+    baud: str | None,
+    no_stop: bool,
+    bootloader_sonoff_usb: bool,
+    bootloader_active_high: bool,
+    bootloader_invert_lines: bool,
+) -> int:
+    _require_cc2538_bsl()
     ddir = data_dir()
     bdir = backup_dir()
     bdir.mkdir(parents=True, exist_ok=True)
@@ -188,30 +228,127 @@ def firmware_backup(*, port: str | None, out: Path | None, length: str, baud: st
     out_path = out or (bdir / f"firmware.{_ts()}.bin")
 
     was_active = service_is_active()
-    if was_active:
+    if was_active and no_stop:
+        print(f"warning: {service_name()} is running; serial access may fail or be unreliable", file=sys.stderr)
+    if was_active and not no_stop:
         print(f"stopping {service_name()}...")
         stop_service()
 
     try:
-        cmd = [sys.executable, "-m", "cc2538_bsl.cc2538_bsl", "-p", serial_port, "-r", "--len", str(length)]
+        cmd = [sys.executable, "-m", "cc2538_bsl.cc2538_bsl", "-q", "-p", serial_port, "-r", "--len", str(length)]
         if baud:
             cmd += ["-b", str(baud)]
+        if bootloader_sonoff_usb:
+            cmd += ["--bootloader-sonoff-usb"]
+        if bootloader_active_high:
+            cmd += ["--bootloader-active-high"]
+        if bootloader_invert_lines:
+            cmd += ["--bootloader-invert-lines"]
         cmd.append(str(out_path))
         print(f"reading {length} bytes from {serial_port} -> {out_path}")
         subprocess.run(cmd, check=True)
         print(f"wrote {out_path}")
         print(f"sha256 {sha256(out_path)}")
     finally:
-        if was_active:
+        if was_active and not no_stop:
             print(f"starting {service_name()}...")
             start_service()
 
     return 0
 
 
-def firmware_flash(*, hex_path: Path, port: str | None, baud: str | None) -> int:
+def firmware_probe(
+    *,
+    port: str | None,
+    baud: str | None,
+    no_stop: bool,
+    bootloader_sonoff_usb: bool,
+    bootloader_active_high: bool,
+    bootloader_invert_lines: bool,
+) -> int:
+    _require_cc2538_bsl()
+    ddir = data_dir()
+    bdir = backup_dir()
+    bdir.mkdir(parents=True, exist_ok=True)
+
+    serial_port = port
+    config = ddir / "configuration.yaml"
+    if not serial_port and config.exists():
+        serial_port = find_serial_port_from_config(config)
+    if not serial_port:
+        raise RuntimeError("could not determine serial port; pass --port /dev/ttyUSB0")
+
+    was_active = service_is_active()
+    if was_active and no_stop:
+        print(f"warning: {service_name()} is running; serial access may fail or be unreliable", file=sys.stderr)
+    if was_active and not no_stop:
+        print(f"stopping {service_name()}...")
+        stop_service()
+
+    try:
+        out_path = bdir / f"probe.{_ts()}.bin"
+        base_cmd = [
+            sys.executable,
+            "-m",
+            "cc2538_bsl.cc2538_bsl",
+            "-V",
+            "-p",
+            serial_port,
+            "-r",
+            "-l",
+            "4",
+        ]
+        if bootloader_sonoff_usb:
+            base_cmd += ["--bootloader-sonoff-usb"]
+        if bootloader_active_high:
+            base_cmd += ["--bootloader-active-high"]
+        if bootloader_invert_lines:
+            base_cmd += ["--bootloader-invert-lines"]
+
+        last = None
+        for b in _bootloader_baud_candidates(baud):
+            cmd = [*base_cmd, "-b", b, str(out_path)]
+            print(f"trying bootloader baud {b}...")
+            proc = subprocess.run(cmd, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+            if proc.returncode == 0:
+                if proc.stdout:
+                    print(proc.stdout, end="")
+                if proc.stderr:
+                    print(proc.stderr, end="", file=sys.stderr)
+                print(f"wrote {out_path}")
+                return 0
+            last = proc
+
+        if last is not None:
+            raise RuntimeError(
+                f"bootloader probe failed at bauds {', '.join(_bootloader_baud_candidates(baud))} "
+                f"(last rc={last.returncode})"
+            )
+    finally:
+        if was_active and not no_stop:
+            print(f"starting {service_name()}...")
+            start_service()
+
+    return 1
+
+
+def firmware_flash(
+    *,
+    hex_path: Path,
+    port: str | None,
+    baud: str | None,
+    no_stop: bool,
+    mass_erase: bool,
+    bootloader_sonoff_usb: bool,
+    bootloader_active_high: bool,
+    bootloader_invert_lines: bool,
+) -> int:
+    _require_cc2538_bsl()
     if not hex_path.exists():
-        raise FileNotFoundError(hex_path)
+        hint = ""
+        if hex_path.name == "coordinator.hex":
+            hint = " (missing default firmware; run: firmware select p|r)"
+        raise FileNotFoundError(f"{hex_path}{hint}")
 
     ddir = data_dir()
     serial_port = port
@@ -222,22 +359,34 @@ def firmware_flash(*, hex_path: Path, port: str | None, baud: str | None) -> int
         raise RuntimeError("could not determine serial port; pass --port /dev/ttyUSB0")
 
     was_active = service_is_active()
-    if was_active:
+    if was_active and no_stop:
+        print(f"warning: {service_name()} is running; flashing may fail or corrupt data", file=sys.stderr)
+    if was_active and not no_stop:
         print(f"stopping {service_name()}...")
         stop_service()
 
     try:
-        cmd = [sys.executable, "-m", "cc2538_bsl.cc2538_bsl", "-p", serial_port, "-e", "-w", "-v"]
+        cmd = [sys.executable, "-m", "cc2538_bsl.cc2538_bsl", "-q", "-p", serial_port]
+        if mass_erase:
+            cmd += ["-e", "-w"]
+        else:
+            cmd += ["-W"]
+        cmd += ["-v"]
         if baud:
             cmd += ["-b", str(baud)]
+        if bootloader_sonoff_usb:
+            cmd += ["--bootloader-sonoff-usb"]
+        if bootloader_active_high:
+            cmd += ["--bootloader-active-high"]
+        if bootloader_invert_lines:
+            cmd += ["--bootloader-invert-lines"]
         cmd.append(str(hex_path))
         print(f"flashing {hex_path} to {serial_port}")
         subprocess.run(cmd, check=True)
         print("flash complete")
     finally:
-        if was_active:
+        if was_active and not no_stop:
             print(f"starting {service_name()}...")
             start_service()
 
     return 0
-

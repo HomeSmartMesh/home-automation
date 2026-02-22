@@ -4,9 +4,14 @@ version = "0.1.0"
 description = "Local maintenance tools for Zigbee2MQTT (backup/restore, coordinator firmware helpers)."
 requires-python = ">=3.9"
 dependencies = [
-  "cc2538-bsl",
   "paho-mqtt",
   "PyYAML",
+]
+
+[project.optional-dependencies]
+firmware = [
+  "cc2538-bsl @ git+https://github.com/JelmerT/cc2538-bsl.git",
+  "intelhex",
 ]
 
 [project.scripts]
@@ -15,6 +20,9 @@ z2m = "z2m_tools.main:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["z2m_tools"]
