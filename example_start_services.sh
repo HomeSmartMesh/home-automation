@@ -55,12 +55,12 @@ sudo systemctl daemon-reload
 sudo systemctl enable lapse.service
 sudo systemctl start lapse.service
 
-sudo cp js/watch_bots/watch_bots.service /lib/systemd/system/
-sudo chmod 644 /lib/systemd/system/watch_bots.service
-sudo chmod +x js/watch_bots/watch_bots.js
+sudo cp watchbots/watchbots.service /lib/systemd/system/
+sudo chmod 644 /lib/systemd/system/watchbots.service
+sudo chmod +x watchbots/watchbots.js
 sudo systemctl daemon-reload
-sudo systemctl enable watch_bots.service
-sudo systemctl start watch_bots.service
+sudo systemctl enable watchbots.service
+sudo systemctl start watchbots.service
 
 sudo cp py/bathroom/bathroom.service /lib/systemd/system/
 sudo chmod 644 /lib/systemd/system/bathroom.service
@@ -93,4 +93,4 @@ lifx
 hue
 influx_mqtt
 lapse
-watch_bots
+watchbots

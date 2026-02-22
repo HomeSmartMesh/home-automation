@@ -6,6 +6,7 @@ used:
     - hue : hue light control
     - zigbee2mqtt: 
     - pc_power: 
+    - watchbots: Telegram bot to watch MQTT sensor liveliness + battery
     - influxdb: 
     - mosquitto: eclipse-mosquitto
 
@@ -14,7 +15,6 @@ not_used:
     - roll
     - lapse
     - lifx
-    - watch_bots
     - home_status
 
 other:
@@ -38,7 +38,7 @@ other:
         - lapse
         - lifx
         - pc_power
-        - watch_bots
+        - watchbots
         - roll
     installed:
         - influxdb

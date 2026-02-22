@@ -1,152 +1,81 @@
-# Plan: TRV “Check → Heal” procedure (Zigbee2MQTT / Eurotronic)
+# Plan: Make Eurotronic TRVs “detectable + healable” (watchbots + manual reconfigure)
 
-Goal: make TRVs *self-healing* when they accept `/set` but do not publish state updates (stale `last_seen` / no follow-up message), with clear logging + a “needs wake” escalation path.
+Goal: if a Eurotronic TRV stops publishing (`last_seen` stale / no state updates), you get a Telegram alert quickly and you have a single, repeatable “heal” command that restores reporting (when the TRV is awake).
 
-Constraints/assumptions:
-- Zigbee2MQTT base topic is `lzig`.
-- TRV state topics: `lzig/<friendly_name>` (retained payload includes `last_seen`, `current_heating_setpoint`, etc.).
-- TRV set topics: `lzig/<friendly_name>/set`.
-- Manual healing operation is Zigbee2MQTT “configure” via MQTT bridge: `lzig/bridge/request/device/configure` → `lzig/bridge/response/device/configure`.
-- Battery TRVs are sleepy; any heal that requires Zigbee traffic only succeeds if the TRV is awake/reachable.
+This repo now supports that with:
+- `watchbots/` (Telegram alerts for MQTT liveliness + low battery)
+- `env.sh` command: `eurotronic reconfigure` (runs Zigbee2MQTT `bridge/request/device/configure` for the TRVs)
 
-## Success criteria
-- If a TRV is healthy, a `/set` produces a state update within a short window (you observed “two notifications” shortly after).
-- If a TRV is unhealthy, the system:
-  1) detects it deterministically,
-  2) attempts a safe heal (repeat set / optional get),
-  3) triggers `configure` only when needed,
-  4) logs a clear outcome (`healed` vs `needs_wake` vs `failed`),
-  5) avoids spamming the Zigbee mesh (rate limits/backoff).
+---
 
-## What “broken” looks like (detection signals)
-Primary trigger (your repeatable symptom):
-- You publish `lzig/<room>/set` (setpoint change) and **the TRV changes physically** but **no new state message** arrives on `lzig/<room>` (or `last_seen` doesn’t advance) within *T* seconds.
+## 1) Bring back watchbots (alerts)
 
-Secondary triggers (background health):
-- `last_seen` for a TRV is older than threshold (e.g. > 6h / > 24h) while others are active.
-- Zigbee2MQTT logs show timeouts for that TRV (ZCL write timeout, bindRsp timeout).
+### What it watches
+`watchbots` subscribes to the MQTT topics listed in `watchbots/config.json` under `mqtt.lists.*` and sends Telegram alerts when a topic has not produced a *fresh* update in `alive_minutes_sensor.<list>` minutes.
 
-## Heal actions (ordered, conservative)
-Each step is attempted only if the previous one fails, and each step is time-bounded.
+For Zigbee2MQTT devices it uses the `last_seen` field when it is “fresh” (i.e., not a cached/retained old state), so a stale device topic reliably triggers an alert.
 
-1) **Wait for normal ack window**
-   - After `/set`, wait `ack_window_s` (e.g. 10–15s) for an updated state message on `lzig/<room>`.
+### Setup checklist
+1) Create secrets file:
+   - copy `watchbots/secret_template.json` → `watchbots/secrets.json`
+   - fill `bots.sensors_watch_bot.token` + `chatId`
+   - add your Telegram user id(s) to `users`
 
-2) **Re-send the last known setpoint**
-   - Publish again to `lzig/<room>/set` the same setpoint you just sent (idempotent).
-   - Wait `ack_window_s` again.
-   - Rationale: catches missed delivery without heavier operations.
+2) Configure MQTT + thresholds:
+   - edit `watchbots/config.json`
+   - verify `mqtt.host`/`mqtt.port` is reachable from the host running systemd
+   - set `alive_minutes_sensor.eurotronics` to your desired detection window
 
-3) **Optional: request a read (`/get`)**
-   - Publish `lzig/<room>/get` (if supported by the device/converter) and wait briefly.
-   - Note: some devices won’t respond unless awake; treat timeout as informative, not fatal.
+3) Install/start as systemd service:
+   ```bash
+   export RASPI_HOME=/home/wass/raspi
+   source ./env.sh
+   install watchbots
+   journalctl -u watchbots -f
+   ```
 
-4) **Trigger Zigbee2MQTT “configure”**
-   - Publish to `lzig/bridge/request/device/configure` with payload `"<friendly_name>"` (or IEEE).
-   - Subscribe to `lzig/bridge/response/device/configure` and capture:
-     - `status: ok` → consider it “reconfigured”; then wait for the next state update.
-     - `status: error` + timeout → mark `needs_wake`.
+---
 
-5) **Escalation: “needs wake”**
-   - If configure fails due to timeouts, record a sticky alert that the TRV must be woken physically.
-   - When the user wakes it (button/menu), re-run configure once, then clear the alert.
+## 2) The “broken TRV” signal (what you trust)
 
-## Rate limiting / safety rules (to avoid mesh spam)
-- Per-device cooldowns:
-  - Don’t run `configure` for the same TRV more than once per e.g. 15 minutes unless a manual “wake now” is active.
-- Global limits:
-  - Max 1 configure attempt at a time (avoid flooding).
-  - Backoff if multiple TRVs fail at once (could indicate network/coordinator issues).
-- Don’t fight other automations:
-  - Only re-send the same setpoint you were already trying to apply.
-  - Never “guess” a new setpoint.
+You already observed a very reliable symptom:
+- `/set` changes the TRV physically, but **no new state** is published on `lzig/<friendly name>` (and `last_seen` doesn’t advance).
 
-## Where to implement it (options)
+Operationally, treat the following as “broken reporting”:
+- watchbots alerts: `⏳ lzig/<room> heat> not seen for X minutes`
+- or you notice `/set` has no follow-up state notifications
 
-### Option A (recommended): Dedicated always-on “trv-healer” systemd service
-What it does:
-- Subscribes to:
-  - `lzig/<trv>/set` (detect user/app commands)
-  - `lzig/<trv>` (observe state/last_seen updates)
-  - `lzig/bridge/response/device/configure` (observe configure results)
-- Runs the detection + heal state machine per device.
-- Logs to journald (and optionally to MQTT topic like `lzig/trv-healer/<room>`).
+---
 
-Pros:
-- Works regardless of which client sends the `/set` (astro, scripts, etc.).
-- Immediate, deterministic, and decoupled from UI availability.
+## 3) The heal workflow (manual + repeatable)
 
-Cons:
-- Another service to maintain (but small).
+Key idea: Zigbee2MQTT “configure” fixes **bindings/reporting** but only works when the TRV is awake/reachable.
 
-### Option B: Hook into astro (UI/API-level healing)
-What it does:
-- After `PUT /api/heat`, the server waits for a matching state update event.
-- If not seen, triggers `configure` and returns an explicit “needs wake” status to the UI.
+When you get the alert:
+1) Wake the TRV (button/menu so it stays awake for a short window)
+2) Run the reconfigure command:
+   ```bash
+   export RASPI_HOME=/home/wass/raspi
+   source ./env.sh
+   eurotronic reconfigure
+   ```
+   - By default it reads the TRV list from `watchbots/config.json` (`mqtt.lists.eurotronics`).
+   - To target one device:
+     ```bash
+     eurotronic reconfigure --device "living heat"
+     ```
+3) Verify you see fresh updates again (watchbots “back online”, `last_seen` updates, app shows state)
 
-Pros:
-- Great UX (“livingroom needs wake” shown instantly).
-- No extra daemon if all setpoints come from astro.
+If reconfigure fails:
+- it usually means the TRV wasn’t awake long enough or the link is weak right now → wake again and retry immediately.
 
-Cons:
-- Doesn’t heal when setpoints come from other automations/clients.
+---
 
-### Option C: Scheduled health check (systemd timer/cron)
-What it does:
-- Every N minutes, checks `last_seen` for each TRV.
-- If stale, tries configure with backoff and emits alerts.
+## 4) Optional next hardening steps (later)
 
-Pros:
-- Simple.
+If you want to reduce manual work further (without spamming Zigbee):
+- Add a *single* “retry once” action: on a watchbots “stale TRV” alert, wake the TRV and then run `eurotronic reconfigure --device "<name>"`.
+- Add a systemd timer that runs `eurotronic reconfigure` once per day (only if you’ve confirmed it doesn’t create noise on your mesh).
 
-Cons:
-- Doesn’t directly target your strongest signal (“/set without report”).
-- Can be slower to react.
-
-### Option D: Zigbee2MQTT extension
-What it does:
-- Runs inside Zigbee2MQTT and reacts to announces/state.
-
-Pros:
-- Closest to Z2M internals.
-
-Cons:
-- Most invasive; upgrades/maintenance harder; not preferred for a home-critical workflow.
-
-## Recommended architecture (A + small UI feedback)
-1) Implement Option A as the “truth” layer (always-on healer).
-2) Optionally enhance astro to *display* the healer status (read-only), so you get clear “needs wake” prompts.
-
-## Implementation steps (deliverables)
-
-### Phase 1 — Define exact rules (1 hour)
-- List TRVs to manage (friendly names).
-- Choose time windows:
-  - `ack_window_s` (start with 15s)
-  - `configure_timeout_s` (start with 30s)
-  - cooldowns/backoff.
-- Define what counts as “ack”:
-  - any message on `lzig/<trv>` with `last_seen` newer than the set time, OR
-  - `current_heating_setpoint` matching the requested value (plus `last_seen` moved).
-
-### Phase 2 — Build minimal healer service (MVP)
-- MQTT client + per-device state machine.
-- Journald logging (INFO for healed, WARN for needs_wake, ERROR for repeated failures).
-- Dry-run mode optional (log what it *would* do).
-
-### Phase 3 — Add observability + operator workflow
-- Emit a simple status topic:
-  - `lzig/trv-healer/<trv>` payload `{status, last_ok, last_error, last_seen, needs_wake}`.
-- Add a runbook snippet for “how to wake TRV and confirm”:
-  - wake → healer retries configure once → status clears.
-
-### Phase 4 — Hardening
-- Ensure single-flight configure (global mutex).
-- Persist minimal state (last attempts per device) to survive restarts.
-- Add “network-wide incident mode” if many devices fail simultaneously.
-
-## Operator runbook (what you do when it breaks)
-1) Look at healer logs: “which TRV needs wake”.
-2) Wake that TRV physically.
-3) Confirm it’s back (fresh `last_seen`, healer clears alert, optional `device-info` shows bindings/reporting).
+The safest default remains: alert quickly, then reconfigure only when needed (and while awake).
 

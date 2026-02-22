@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+svc_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+app_user="${SUDO_USER:-wass}"
+log_dir="/var/log/watchbots"
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "error: node is required (install nodejs + npm first)" >&2
+  exit 1
+fi
+if ! command -v npm >/dev/null 2>&1; then
+  echo "error: npm is required (install nodejs + npm first)" >&2
+  exit 1
+fi
+
+install -d -m 0755 "${log_dir}"
+if id -u "${app_user}" >/dev/null 2>&1; then
+  chown "${app_user}:${app_user}" "${log_dir}"
+fi
+
+if [[ ! -f "${svc_dir}/secrets.json" ]]; then
+  echo "warning: missing ${svc_dir}/secrets.json (copy from secret_template.json)" >&2
+fi
+
+echo "Installing node dependencies in ${svc_dir} (user: ${app_user})"
+if id -u "${app_user}" >/dev/null 2>&1 && command -v runuser >/dev/null 2>&1; then
+  runuser -u "${app_user}" -- bash -lc "cd \"${svc_dir}\" && npm ci --omit=dev --no-audit --no-fund"
+else
+  (cd "${svc_dir}" && npm ci --omit=dev --no-audit --no-fund)
+  if id -u "${app_user}" >/dev/null 2>&1; then
+    chown -R "${app_user}:${app_user}" "${svc_dir}/node_modules" || true
+  fi
+fi
+
+echo "watchbots prerequisites installed"

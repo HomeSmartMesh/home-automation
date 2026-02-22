@@ -1,0 +1,17 @@
+{
+  "name": "watchbots",
+  "version": "1.0.0",
+  "description": "Telegram bot to watch MQTT sensors (liveliness + low battery)",
+  "main": "watchbots.js",
+  "dependencies": {
+    "mqtt": "^4.3.7",
+    "telegraf": "^3.38.0",
+    "winston": "^3.3.3"
+  },
+  "scripts": {
+    "start": "node watchbots.js",
+    "debug": "node --nolazy watchbots.js"
+  },
+  "author": "wassfila",
+  "license": "MIT"
+}

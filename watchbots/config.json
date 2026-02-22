@@ -2,7 +2,7 @@
         "host":"mqtt_broquer",
         "port":1883,
         "keepalive":60,
-        "client_id":"watch_bots",
+        "client_id":"watchbots",
         "lists":{
             "eurotronics":[
                 "lzig/living heat",
@@ -69,8 +69,8 @@
         "nrf":1
     },
     "log":{
-        "logfile":"/home/pi/share/watch_bots(date).log",
-        "exceptions_log_file":"watch_bots_exceptions.log",
+        "logfile":"/var/log/watchbots/watchbots(date).log",
+        "exceptions_log_file":"/var/log/watchbots/watchbots-exceptions.log",
         "level":"info"
     }
 }

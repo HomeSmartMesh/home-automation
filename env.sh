@@ -14,6 +14,7 @@ RASPI_SYSTEMD_SERVICES=(
     hue
     zigbee2mqtt
     pc_power
+    watchbots
     influxdb
     mosquitto
     grafana-server
@@ -32,6 +33,43 @@ _raspi_print_service_status() {
     fi
 
     printf "%-20s %s\n" "${service}" "${status}"
+}
+
+eurotronic() {
+    local action="${1:-}"
+    shift || true
+
+    local script="${RASPI_HOME}/zigbee2mqtt/eurotronic_reconfigure.py"
+
+    _eurotronic_usage() {
+        cat >&2 <<'EOF'
+usage:
+  eurotronic reconfigure [--device "living heat"] [--timeout-s 30] [--mqtt-host localhost] [--mqtt-port 1883]
+
+notes:
+  - With no --device, the device list is read from: watchbots/config.json (mqtt.lists.eurotronics)
+  - Sleepy TRVs must be awake for configure to succeed.
+EOF
+    }
+
+    if [[ ! -f "${script}" ]]; then
+        echo "error: missing script: ${script}" >&2
+        return 1
+    fi
+
+    case "${action}" in
+        reconfigure)
+            python3 "${script}" "$@"
+            ;;
+        ""|-h|--help|help)
+            _eurotronic_usage
+            ;;
+        *)
+            echo "error: unknown eurotronic action: ${action}" >&2
+            _eurotronic_usage
+            return 2
+            ;;
+    esac
 }
 
 _raspi_http_ready() {

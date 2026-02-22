@@ -1,0 +1,18 @@
+[Unit]
+Description=Watch MQTT sensors and alert via Telegram
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/wass/raspi/watchbots
+ExecStart=/usr/bin/env node /home/wass/raspi/watchbots/watchbots.js
+Restart=on-failure
+RestartSec=5
+User=wass
+Group=wass
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
+Alias=watch_bots.service
