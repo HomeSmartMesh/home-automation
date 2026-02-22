@@ -21,6 +21,42 @@ What fixed it:
 
 It started working again once Zigbee2MQTT could successfully talk to it (fresh MQTT publishes on `lzig/living heat` with a recent `last_seen`).
 
+### Why “configure healed it” is a plausible root cause
+
+In this incident, the most consistent explanation is a **state mismatch**:
+
+- Zigbee2MQTT can remember “this device is configured” (in its DB / `bridge/devices`), while
+- the TRV itself can be in a state where its **binding table / reporting configuration is missing or not effective**.
+
+When that happens the device can look “half-joined”:
+
+- It is on the network and may even `announce`/rejoin.
+- It may accept some commands at the application layer.
+- But it won’t proactively report attributes, so your UI stays stale.
+
+Running Zigbee2MQTT’s manual **device configure** (while the TRV is awake) forces Zigbee2MQTT to re-apply:
+
+- binds (clusters bound to the coordinator), and
+- attribute reporting (what gets reported, how often, and what change triggers a report).
+
+This can restore normal reporting **without changing the parent router**.
+
+### Where the inconsistency comes from (protocol vs Zigbee2MQTT)
+
+This “I think you’re configured but you aren’t” situation is a combination of Zigbee realities and Zigbee2MQTT tradeoffs:
+
+- **Bindings/reporting live on the device.** Zigbee attribute reporting configuration and the binding table are stored on the TRV (not on the coordinator). If the TRV loses that state (battery pull, firmware bug, internal reset), the coordinator doesn’t automatically know.
+- **There is no always-on handshake.** Zigbee does not provide a cheap, push-based “reporting still configured” health signal. You *can* query things (binding table, reporting config), but:
+  - it requires the device to be awake and reachable,
+  - it’s extra traffic,
+  - and not all devices implement everything reliably.
+- **Zigbee2MQTT avoids reconfiguring all the time.** Z2M keeps a `meta.configured` flag in its database to prevent spamming the network with bind/reporting commands on every restart/announce (especially painful with sleepy devices). That means Z2M can temporarily be “wrong” if the device’s internal state changed.
+
+Net effect:
+
+- A device can be *joined + interviewed* but effectively *not configured for reporting*.
+- Manual `bridge/request/device/configure` is the practical way to reconcile the two states when this happens.
+
 ## Mental model: why “set works but get does not” can happen
 
 Eurotronic Spirit TRVs are **battery end devices**:
@@ -144,8 +180,29 @@ If it fails, wake the TRV again and retry immediately.
 If you keep seeing write/bind timeouts:
 
 - Move the TRV temporarily closer to the coordinator (or a strong router) to stabilize the interview/configure.
-- Add/relocate mains-powered Zigbee routers near the room (plugs/repeaters).
-- Avoid relying on a single weak router; a bad parent can make the TRV appear “randomly offline”.
+- Relocate an existing mains-powered Zigbee router closer to the radiator (TRVs sit next to metal and often have worse RF than “normal” sensors).
+- Avoid relying on a single weak/flaky parent router; a bad parent can make the TRV appear “randomly offline”.
+
+#### Parent selection (“why I have many routers but it still fails”)
+
+Having “many routers” is not enough if the TRV chooses a poor parent.
+
+Common pattern:
+
+- At pairing/rejoin time, the TRV selects a parent with the best signal *at that moment*.
+- Later, if that parent is unstable or the link degrades, you see:
+  - timeouts (`Publish 'set' ... failed`, bind/write timeouts),
+  - `device_announce` events (rejoin),
+  - long stale `last_seen`.
+
+To intentionally steer a TRV to a better parent:
+
+1) Place/plug a good router **very close** to the TRV (same room, a few meters).
+2) Temporarily power off (or unplug) other nearby routers so the TRV has fewer “bad” choices.
+3) Wake the TRV and trigger a rejoin (or re-pair if needed).
+4) Once it is stable and reporting, restore power to the other routers.
+
+This avoids adding “one router per TRV”; often **one well-placed router** can serve multiple nearby TRVs.
 
 ### Step 5: only enable `permit_join` when truly pairing as new
 
