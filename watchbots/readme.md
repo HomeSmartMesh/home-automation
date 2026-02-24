@@ -6,11 +6,15 @@ Telegram bots (Telegraf) that watch MQTT topics for:
 <img src="./watch_bots.png">
 
 ## How it works
-- Subscribes to all topics listed in `config.json` under `mqtt.lists.*`.
+- Subscribes to all topics listed in `config.yaml` under `mqtt.lists.*`.
 - On each message:
   - if payload contains `last_seen` and it is “fresh” (basically *now*), it uses that timestamp,
   - otherwise it uses the local receive time.
 - Every ~10 seconds it checks `alive_minutes_sensor` / `alive_minutes_list` and sends Telegram alerts via `sensors_watch_bot`.
+
+## Fanout (publishers)
+You can enable/disable outbound publishers in `config.yaml`:
+- `fanout.telegram`: `true`/`false`
 
 ## Setup
 1) Create `watchbots/secrets.json` (this repo ignores it on purpose):
@@ -18,10 +22,12 @@ Telegram bots (Telegraf) that watch MQTT topics for:
    - fill `bots.sensors_watch_bot.token` + `chatId`
    - add your Telegram user id(s) to `users`
 
-2) Edit `watchbots/config.json`:
+2) Edit `watchbots/config.yaml`:
    - set `mqtt.host`/`mqtt.port`
    - set your topic lists (e.g. `mqtt.lists.eurotronics`)
    - tune `alive_minutes_sensor` thresholds
+
+`config.json` is still accepted as a fallback for older deployments, but `config.yaml` takes precedence when present.
 
 ## Install (systemd, same convention as Loki/Promtail)
 From repo root:

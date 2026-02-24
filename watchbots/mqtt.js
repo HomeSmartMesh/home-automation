@@ -1,10 +1,9 @@
-const fs = require('fs')
 const mqtt = require('mqtt')
+const config = require('./config_loader.js')
 const {logger} = require('./logger.js')
 const events = require('events')
 const Emitter = new events.EventEmitter()
 
-const config = JSON.parse(fs.readFileSync(__dirname+'/config.json'))
 var client;
 
 function onConnect() {
@@ -24,8 +23,26 @@ function onConnectionLost(responseObject) {
 }
 
 function onMessageArrived(topic,message) {
-  logger.debug(`mqtt> ${topic} : ${message}`);
-  Emitter.emit('mqtt',{topic:topic,msg:JSON.parse(message)});
+  let raw = ""
+  try{
+    raw = message.toString()
+  }catch(e){
+    raw = String(message)
+  }
+
+  logger.debug(`mqtt> ${topic} : ${raw}`);
+
+  // Not all topics are JSON (e.g. Shelly power topics). Never crash on parse.
+  let msg = null
+  try{
+    msg = JSON.parse(raw)
+  }catch(_e){
+    // Provide a minimal object so callers can still update "alive" timestamps.
+    const num = Number(raw)
+    msg = Number.isFinite(num) ? {value:num,raw:raw} : {raw:raw}
+  }
+
+  Emitter.emit('mqtt',{topic:topic,msg:msg});
 }
 
 function start(){

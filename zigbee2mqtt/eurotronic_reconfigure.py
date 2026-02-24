@@ -19,9 +19,25 @@ def _load_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as f:
         return json.load(f)
 
+def _load_config(path: Path) -> Any:
+    suffix = path.suffix.lower()
+    if suffix == ".json":
+        return _load_json(path)
+    if suffix in (".yaml", ".yml"):
+        try:
+            import yaml  # type: ignore
+        except Exception as e:  # pragma: no cover
+            raise SystemExit(
+                "Missing dependency: pyyaml. Install it (e.g. `pip3 install pyyaml`) and retry.\n"
+                f"Import error: {e}"
+            )
+        with path.open("r", encoding="utf-8") as f:
+            return yaml.safe_load(f)
+    raise SystemExit(f"Unsupported config type: {path} (expected .yaml/.yml/.json)")
+
 
 def _devices_from_watchbots_config(*, path: Path, list_name: str, base_topic: str) -> list[str]:
-    cfg = _load_json(path)
+    cfg = _load_config(path)
     topics = cfg["mqtt"]["lists"][list_name]
     devices: list[str] = []
     for topic in topics:
@@ -128,7 +144,7 @@ def main(argv: list[str]) -> int:
 
     parser.add_argument(
         "--watchbots-config",
-        default=str(Path(__file__).resolve().parents[1] / "watchbots" / "config.json"),
+        default=str(Path(__file__).resolve().parents[1] / "watchbots" / "config.yaml"),
         help="Used only when no --device is provided.",
     )
     parser.add_argument("--watchbots-list", default="eurotronics", help="List name under watchbots config mqtt.lists.")
@@ -177,4 +193,3 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))
-

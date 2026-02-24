@@ -66,7 +66,7 @@ scrape_configs:
       - decolorize: {}
     relabel_configs:
       - source_labels: ['__journal__systemd_unit']
-        regex: (thread_tags|heat_cut|influx_mqtt|bathroom|hue|zigbee2mqtt|pc_power|influxdb|mosquitto)\.service
+        regex: (thread_tags|heat_cut|influx_mqtt|bathroom|hue|zigbee2mqtt|pc_power|watchbots|influxdb|mosquitto)\.service
         action: keep
       - source_labels: ['__journal__systemd_unit']
         target_label: 'unit'

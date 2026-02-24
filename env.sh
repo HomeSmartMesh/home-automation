@@ -47,7 +47,7 @@ usage:
   eurotronic reconfigure [--device "living heat"] [--timeout-s 30] [--mqtt-host localhost] [--mqtt-port 1883]
 
 notes:
-  - With no --device, the device list is read from: watchbots/config.json (mqtt.lists.eurotronics)
+  - With no --device, the device list is read from: watchbots/config.yaml (mqtt.lists.eurotronics)
   - Sleepy TRVs must be awake for configure to succeed.
 EOF
     }

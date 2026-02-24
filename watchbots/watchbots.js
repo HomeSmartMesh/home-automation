@@ -1,19 +1,38 @@
 const fs = require('fs');
-const Telegraf = require('telegraf')
+const config = require('./config_loader.js')
 const {logger} = require('./logger.js')
 const mqtt = require('./mqtt.js')
-const Markup = require('telegraf/markup')
+const { createFanout } = require('./fanout.js')
 //const events = require('events')
 //const Emitter = new events.EventEmitter()
 
-let sensor_bot = null
-const secrets = JSON.parse(fs.readFileSync(__dirname+'/secrets.json'))
-const config = JSON.parse(fs.readFileSync(__dirname+'/config.json'))
 const startup_time = Date.now()
 let last_nrf = Date.now()
 let nrf_alerted = false
 
 let topics_map = {}
+
+function load_secrets(){
+  const candidates = [
+    __dirname + '/secrets.json',
+  ]
+  for(const path of candidates){
+    try{
+      if(fs.existsSync(path)){
+        return JSON.parse(fs.readFileSync(path))
+      }
+    }catch(e){
+      logger.warn(`failed to read secrets file ${path}: ${e}`)
+      return null
+    }
+  }
+  logger.warn(`no secrets file found (expected one of: ${candidates.join(', ')})`)
+  return null
+}
+
+const secrets = load_secrets()
+const publishers = createFanout({ logger, config, secrets, mqtt })
+publishers.start()
 
 function last_seen_fresh(date){
   let now = Date.now()
@@ -27,59 +46,14 @@ function last_seen_fresh(date){
 
 function alert(msg){
   logger.info(`⚠ ${msg}`)
-  sensor_bot.telegram.sendMessage(secrets.bots.sensors_watch_bot.chatId,`⚠ ${msg}`)
+  publishers.publish('alert', { text: msg })
 }
 
 function info(msg){
   logger.info(`ℹ ${msg}`)
-  sensor_bot.telegram.sendMessage(secrets.bots.sensors_watch_bot.chatId,`ℹ ${msg}`)
+  publishers.publish('info', { text: msg })
 }
 
-
-
-function run_bot_smart_hover(){
-  function start(ctx){
-    logger.info({from:ctx.from})
-    logger.info({chat:ctx.chat})
-    if(secrets.users.includes(ctx.from.id)){
-          ctx.reply(`Hello! ${ctx.message.from.first_name}`)
-          logger.debug({message:ctx.message})
-      }else{
-          ctx.reply(`I don't know you yet, ${ctx.message.from.first_name}`)
-          logger.warn({unauthorised_user:ctx.from})
-      }
-  }
-
-  const token = secrets.bots.smart_hover_bot.token
-  const bot = new Telegraf(token)
-  
-  bot.start(start)
-  bot.command('goto_clean_zone', ({ reply }) =>reply('Going to clean zone'))
-  bot.command('clean_livingroom', ({ reply }) =>reply('Starting the livingroom cleaning'))
-  bot.command('clean_kitchen', ({ reply }) =>reply('The kitchen is already clean 🍽️'))
-  bot.command('clean_bedroom', ({ reply }) =>reply('The bedroom is already clean 🛏️'))
-  
-  bot.hears('clean', (ctx) =>
-    ctx.reply('Which room would you like to clean ❓', Markup
-      .keyboard(['/clean_livingroom', '/clean_kitchen', '/clean_bedroom'])
-      .oneTime()
-      .resize()
-      .extra()
-    )
-  )
-  
-  bot.help((ctx) => ctx.reply('How can I help you ❓'))
-  bot.hears('hi', (ctx) => ctx.reply('Hey there 👋'))
-  mqtt.Emitter.on('mqtt',(data)=>{
-    if(data.msg.hasOwnProperty("click")){
-      logger.verbose(`bot> ${data.topic} : click = ${data.msg.click}`)
-      bot.telegram.sendMessage(secrets.bots.smart_hover_bot.chatId,`button clicked ${data.msg.click}`)
-    }
-  })
-
-  bot.launch()
-  logger.info('smart_hover_bot started')
-}
 
 function init_topics_map(){
   let now = Date.now()
@@ -94,7 +68,8 @@ function check_topics_alive(){
   let now = Date.now()
   let nrf_age_minutes = (now - last_nrf)/(60*1000)
   
-  if((nrf_age_minutes > config.alive_minutes_list.nrf)&&(nrf_alerted == false)){
+  const nrf_threshold = config.alive_minutes_list ? config.alive_minutes_list.nrf : undefined
+  if((typeof nrf_threshold === "number") && (nrf_age_minutes > nrf_threshold) && (nrf_alerted == false)){
     alert(` ⏳ nrf > not seen for ${(nrf_age_minutes).toFixed(0)} minutes`)
     nrf_alerted = true
   }else{
@@ -102,7 +77,12 @@ function check_topics_alive(){
   }
   for(let [topic,params] of Object.entries(topics_map)){
     let age_ms =params.hasOwnProperty("last_seen")?now - params.last_seen:now - startup_time
-    let cfg_alive_ms = config.alive_minutes_sensor[params.list]*60*1000
+    const minutes = config.alive_minutes_sensor ? config.alive_minutes_sensor[params.list] : undefined
+    if(typeof minutes !== "number"){
+      logger.warn(`missing alive_minutes_sensor for list '${params.list}' (topic: ${topic})`)
+      continue
+    }
+    let cfg_alive_ms = minutes*60*1000
     logger.verbose(`age:${(age_ms/(60*1000)).toFixed(1)} min ;config:${(cfg_alive_ms/(60*1000)).toFixed(1)}\tstatus:${params.connection_status} ; list:${params.list} ; ${topic}`)
     if((age_ms > cfg_alive_ms)&&(params.connection_status != "alerted")){
       alert(` ⏳ ${topic}> not seen for ${(age_ms/(60*1000)).toFixed(0)} minutes`)
@@ -113,6 +93,15 @@ function check_topics_alive(){
 
 
 function watch_topics(data){
+  if(!topics_map.hasOwnProperty(data.topic)){
+    logger.debug(`ignoring unexpected topic: ${data.topic}`)
+    return
+  }
+  if(!data || !data.msg || typeof data.msg !== "object"){
+    logger.debug(`ignoring invalid mqtt payload for ${data.topic}`)
+    return
+  }
+
   let list = topics_map[data.topic].list
   if(list == "nrf"){
     last_nrf = Date.now()
@@ -166,42 +155,15 @@ function watch_topics(data){
   }
 }
 
-function run_bot_sensors_watch(){
-  const token = secrets.bots.sensors_watch_bot.token
-  const bot = new Telegraf(token)
-
-  function start(ctx){
-    logger.info({from:ctx.from})
-    logger.info({chat:ctx.chat})
-    if(secrets.users.includes(ctx.from.id)){
-          ctx.reply(`Hello! ${ctx.message.from.first_name}`)
-          logger.debug({message:ctx.message})
-      }else{
-          ctx.reply(`I don't know you yet, ${ctx.message.from.first_name}`)
-          logger.warn({unauthorised_user:ctx.from})
-      }
-  }
-
-  bot.start(start)
-  
-  bot.help((ctx) => ctx.reply('I can only send sensors alerts'))
-  bot.hears('hi', (ctx) => ctx.reply('Hey there 👋'))
-  mqtt.Emitter.on('mqtt',(data)=>{
-    watch_topics(data)
-  })
-
-  bot.launch()
-  logger.info('sensors_watch started')
-  logger.error("check error")
-  logger.info("check info")
-  logger.debug("check debug")
-  logger.verbose("check verbose")
-  return bot
-}
-
 //------------------ main ------------------
-sensor_bot = run_bot_sensors_watch()
 init_topics_map()
+mqtt.Emitter.on('mqtt',(data)=>{
+  try{
+    watch_topics(data)
+  }catch(e){
+    logger.warn(`watch_topics failed for topic '${data && data.topic ? data.topic : "unknown"}': ${e}`)
+  }
+})
 mqtt.start()
 
 const first_run_delay_ms = 10000
@@ -211,5 +173,3 @@ setTimeout(()=>{
   },
   first_run_delay_ms
 )
-
-
