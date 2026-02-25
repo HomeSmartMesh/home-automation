@@ -13,15 +13,6 @@ mqtt:
       - lzig/bedroom heat
       - lzig/office heat
       - lzig/bathroom heat
-    nrf:
-      - nrf/livingroom window tag
-      - nrf/hallway tag
-      - nrf/balcony tag
-      - nrf/bathroom tag
-      - nrf/livingroom tag
-      - nrf/office tag
-      - nrf/bedroom tag
-      - nrf/kitchen tag
     aqara:
       - lzig/bedroom window
       - lzig/kitchen window
@@ -38,10 +29,6 @@ mqtt:
   subscribe: true
 
 watch:
-  nrf:
-    voltage:
-      minimum: 2.1
-      back: 2.5
   aqara:
     voltage:
       minimum: 1800
@@ -52,16 +39,11 @@ watch:
       back: 30
 
 alive_minutes_sensor:
-  nrf: 65
   aqara: 165
   eurotronics: 440
   shelly: 10
-
-alive_minutes_list:
-  nrf: 1
 
 log:
   logfile: /var/log/watchbots/watchbots(date).log
   exceptions_log_file: /var/log/watchbots/watchbots-exceptions.log
   level: info
-

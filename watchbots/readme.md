@@ -10,7 +10,7 @@ Telegram bots (Telegraf) that watch MQTT topics for:
 - On each message:
   - if payload contains `last_seen` and it is “fresh” (basically *now*), it uses that timestamp,
   - otherwise it uses the local receive time.
-- Every ~10 seconds it checks `alive_minutes_sensor` / `alive_minutes_list` and sends Telegram alerts via `sensors_watch_bot`.
+- Every ~10 seconds it checks `alive_minutes_sensor` and sends Telegram alerts via `sensors_watch_bot`.
 
 ## Fanout (publishers)
 You can enable/disable outbound publishers in `config.yaml`:

@@ -7,8 +7,6 @@ const { createFanout } = require('./fanout.js')
 //const Emitter = new events.EventEmitter()
 
 const startup_time = Date.now()
-let last_nrf = Date.now()
-let nrf_alerted = false
 
 let topics_map = {}
 
@@ -66,15 +64,6 @@ function init_topics_map(){
 
 function check_topics_alive(){
   let now = Date.now()
-  let nrf_age_minutes = (now - last_nrf)/(60*1000)
-  
-  const nrf_threshold = config.alive_minutes_list ? config.alive_minutes_list.nrf : undefined
-  if((typeof nrf_threshold === "number") && (nrf_age_minutes > nrf_threshold) && (nrf_alerted == false)){
-    alert(` ⏳ nrf > not seen for ${(nrf_age_minutes).toFixed(0)} minutes`)
-    nrf_alerted = true
-  }else{
-    logger.verbose(`no alert: nrf age = ${nrf_age_minutes} minutes`)
-  }
   for(let [topic,params] of Object.entries(topics_map)){
     let age_ms =params.hasOwnProperty("last_seen")?now - params.last_seen:now - startup_time
     const minutes = config.alive_minutes_sensor ? config.alive_minutes_sensor[params.list] : undefined
@@ -103,15 +92,6 @@ function watch_topics(data){
   }
 
   let list = topics_map[data.topic].list
-  if(list == "nrf"){
-    last_nrf = Date.now()
-    if(nrf_alerted){
-      info(` ⏳ nrf > back online `)
-      nrf_alerted = false
-    }else{
-      logger.debug(`nrf > upate`)
-    }
-  }
   if(!data.msg.hasOwnProperty("last_seen")){
     let last_seen = Date.now();
     topics_map[data.topic].last_seen = last_seen
