@@ -4,7 +4,7 @@
   "description": "controlling smart socket for starting a PC and an ethernet repeater",
   "main": "pc.js",
   "dependencies": {
-    "mqtt": "^3.0.0",
+    "mqtt": "^4.3.7",
     "winston": "^3.2.1"
   },
   "devDependencies": {},
