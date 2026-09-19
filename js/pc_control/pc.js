@@ -12,6 +12,10 @@ let retro_dimmer_status = {"alive":false,"list":[0,0,0,0,0,0,0,0]}
 let auto_on_off = true
 let sonos_off = true
 
+//z2m echoes a burst of stale state:"ON" messages after an OFF, which can re-trigger the countdown within ms
+const shutdown_cooldown_ms = 60*1000
+let last_shutdown_ms = 0
+
 function pc_shutdown(){
   logger.info(`pc> shutting down`)
   mqtt.publish(config.control.pc,'{"state":"OFF"}')
@@ -23,8 +27,14 @@ function call_low(){
     logger.debug(`pc> count down ${count_low}`)
   }else{
     if(pc_reley_status == "ON"){
-      pc_shutdown()
-      count_low = 0
+      const since_shutdown = Date.now() - last_shutdown_ms
+      if(since_shutdown > shutdown_cooldown_ms){
+        pc_shutdown()
+        last_shutdown_ms = Date.now()
+        count_low = 0
+      }else{
+        logger.verbose(`pc> shutdown skipped, last one ${since_shutdown} ms ago`)
+      }
     }
     //else do nothing skip counting the off time, as it might be long - saving energy
   }

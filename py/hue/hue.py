@@ -26,7 +26,27 @@ def update_broker_state(room_name,cmd):
         clientMQTT.publish(f"lights/{room_name}",cmd)
     return
 
-def switch_off(room_name):
+OFF_DELAY_SEC = 5
+BLINK_SEC = 0.5
+# room_name -> (token, timer) of a pending delayed switch off (room is dimmed, waiting to go off)
+pending_off = {}
+pending_lock = threading.Lock()
+
+def cancel_pending_off(room_name):
+    with pending_lock:
+        pending = pending_off.pop(room_name, None)
+    if pending is None:
+        return False
+    pending[1].cancel()
+    log.info(f"{room_name} lights> delayed Switch OFF cancelled")
+    return True
+
+def switch_off(room_name,token):
+    with pending_lock:
+        pending = pending_off.get(room_name)
+        if pending is None or pending[0] is not token:
+            return  # cancelled or superseded in the meantime
+        del pending_off[room_name]
     update_broker_state(room_name,"OFF")
     log.info(f"{room_name} lights> delayed Switch OFF")
     room = config["lightmap"][room_name]
@@ -35,11 +55,51 @@ def switch_off(room_name):
     return
 
 def delayed_switch_off(room_name):
-    timer = threading.Timer(5,switch_off, args=(room_name,))
+    token = object()
+    timer = threading.Timer(OFF_DELAY_SEC,switch_off, args=(room_name,token))
+    with pending_lock:
+        pending_off[room_name] = (token,timer)
     timer.start()
     return
 
-def room_lights_control(room_name,cmd,toggle_value="MID"):
+def blink_off(room_name):
+    room = config["lightmap"][room_name]
+    for light_name in room["lights"]:
+        b.set_light(light_name, {'on' : False, 'transitiontime' : 0})
+    sleep(BLINK_SEC)
+
+def room_normal_level(room_name):
+    return config["lightmap"][room_name].get("normal","MID")
+
+def room_is_low(room_name):
+    on_lights = [lights[name] for name in config["lightmap"][room_name]["lights"] if lights[name].on]
+    return len(on_lights) > 0 and all(light.brightness <= 1 for light in on_lights)
+
+def room_lights_control(room_name,cmd,toggle_value=None):
+    if(toggle_value is None):
+        toggle_value = room_normal_level(room_name)
+    if(cmd == "TOGGLE"):
+        if(room_name in pending_off):
+            # short press while fading out => back to normal intensity
+            log.info(f"{room_name} lights> TOGGLE during delayed OFF => {toggle_value}")
+            room_lights_control(room_name,toggle_value)
+            return
+        any_light_is_on = False
+        for room_light in config["lightmap"][room_name]["lights"]:
+            if(lights[room_light].on):
+                any_light_is_on = True
+                continue
+        if(any_light_is_on):
+            room_lights_control(room_name,"OFF")
+        else:
+            room_lights_control(room_name,toggle_value)
+        return
+    was_pending_off = cancel_pending_off(room_name)
+    if(cmd == "DIM" and not was_pending_off and room_is_low(room_name)):
+        # long press while already low => back to normal intensity
+        log.info(f"{room_name} lights> DIM while low => {toggle_value}")
+        room_lights_control(room_name,toggle_value)
+        return
     update_broker_state(room_name,cmd)
     log.info(f"{room_name} lights> {cmd}")
     room = config["lightmap"][room_name]
@@ -47,9 +107,13 @@ def room_lights_control(room_name,cmd,toggle_value="MID"):
         for light_name in room["lights"]:
             lights[light_name].on = True
     elif(cmd == "OFF"):
-        room_lights_control(room_name,"DIM")
+        for light_name in room["lights"]:
+            b.set_light(light_name, {'on' : True, 'bri' : 1})
         delayed_switch_off(room_name)
     elif(cmd == "DIM"):
+        if(was_pending_off):
+            # long press while fading out => blink as confirmation, then stay dimmed
+            blink_off(room_name)
         for light_name in room["lights"]:
             b.set_light(light_name, {'on' : True, 'bri' : 1})
     elif(cmd == "MID"):
@@ -59,17 +123,6 @@ def room_lights_control(room_name,cmd,toggle_value="MID"):
         for light_name in room["lights"]:
             lights[light_name].on = False
             b.set_light(light_name, {'on' : True, 'bri' : 254})
-    elif(cmd == "TOGGLE"):
-        any_light_is_on = False
-        for room_light in room["lights"]:
-            if(lights[room_light].on):
-                any_light_is_on = True
-                continue
-        if(any_light_is_on):
-            room_lights_control(room_name,"OFF")
-        else:
-            room_lights_control(room_name,toggle_value)
-        return
 
 def room_light_brightness(room_name,brightness):
     room = config["lightmap"][room_name]
@@ -137,7 +190,7 @@ def bathroom_light_double(payload):
         elif("long" in action):
             room_lights_control("bathroom","DIM")
         else:
-            room_lights_control("bathroom","TOGGLE","BRIGHT")
+            room_lights_control("bathroom","TOGGLE")
     return
 
 def bedroom_light_switch(payload):
@@ -240,7 +293,9 @@ def light_list_clicks(room_name,payload):
     room = config["lightmap"][room_name]
     jval = json.loads(payload)
     if("click" in jval and jval["click"] == "single"):
-        if(lights[room["lights"][0]].on):
+        if(room_name in pending_off):
+            room_lights_control(room_name,"TOGGLE")
+        elif(lights[room["lights"][0]].on):
             room_lights_control(room_name,"OFF")
         else:
             #command so that it does not go to previous level before adjusting the brightness
